@@ -43,7 +43,7 @@ class SubCategory(models.Model):
   category = models.ForeignKey(Category, max_length=100, on_delete=models.CASCADE)
 
   def __str__(self):
-    return name
+    return self.name
 
 
 class MyUser(AbstractBaseUser):
@@ -60,7 +60,6 @@ class MyUser(AbstractBaseUser):
   last_name = models.CharField(max_length=100)
   country = models.CharField(max_length=100, default="")
   city = models.CharField(max_length=100, default="")
-  category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
   sub_category = models.ForeignKey(SubCategory, on_delete=models.SET_NULL, null=True)
   role = models.CharField(max_length=6, choices=ROLE_CHOICES, default=REGULAR_USER, help_text="Account Type")
 
