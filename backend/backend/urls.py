@@ -22,11 +22,12 @@ from rest_framework_simplejwt.views import (
 )
 from rest_framework import routers, serializers, viewsets
 
-from backend.views import CategoryViewSet, SubCategoryViewSet
+from backend.views import CategoryViewSet, SubCategoryViewSet, MyUserViewSet
 
 router = routers.DefaultRouter()
 router.register('category', CategoryViewSet)
 router.register('sub-category', SubCategoryViewSet)
+router.register('users', MyUserViewSet)
 
 urlpatterns = [
     path('api/', include(router.urls)),

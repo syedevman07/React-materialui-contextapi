@@ -1,6 +1,6 @@
 from rest_framework import routers, serializers, viewsets
 from backend.models import MyUser, Category, SubCategory
-from backend.serializers import CategorySerializer, SubCategoryRetrieveSerializer, SubCategoryUpdateSerializer
+from backend.serializers import CategorySerializer, SubCategoryRetrieveSerializer, SubCategoryUpdateSerializer, MyUserRetrieveSerializer, MyUserUpdateSerializer
 from backend.permissions import AdminOnly, ReadOnly
 
 from rest_framework.permissions import AllowAny
@@ -20,3 +20,13 @@ class SubCategoryViewSet(viewsets.ModelViewSet):
       return SubCategoryUpdateSerializer
 
   queryset =  SubCategory.objects.all()
+
+
+class MyUserViewSet(viewsets.ModelViewSet):
+  permission_classes = [AllowAny]
+  queryset = MyUser.objects.all()
+  def get_serializer_class(self):
+    if self.action == 'list':
+      return MyUserRetrieveSerializer
+    else:
+      return MyUserUpdateSerializer

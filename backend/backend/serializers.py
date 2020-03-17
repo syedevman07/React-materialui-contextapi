@@ -20,3 +20,17 @@ class SubCategoryUpdateSerializer(serializers.ModelSerializer):
   class Meta:
     model = SubCategory
     fields = ['id', 'name', 'category']
+
+class MyUserRetrieveSerializer(serializers.ModelSerializer):
+  sub_category = SubCategoryRetrieveSerializer(many=False)
+
+  class Meta:
+    model = MyUser
+    fields = ['id', 'email', 'first_name', 'last_name', 'country', 'city', 'role', 'sub_category']
+
+class MyUserUpdateSerializer(serializers.ModelSerializer):
+  sub_category = serializers.PrimaryKeyRelatedField(queryset=SubCategory.objects.all(), required=False)
+
+  class Meta:
+    model = MyUser
+    fields = ['id', 'email', 'first_name', 'last_name', 'country', 'city', 'role', 'sub_category']
