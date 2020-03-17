@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+from datetime import timedelta
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -37,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
     'backend'
 ]
 
@@ -101,6 +103,35 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+if os.getenv('ACCESS_TOKEN_LIFETIME_MINUTES'):
+    ACCESS_TOKEN_LIFETIME_MINUTES =  int(os.getenv('ACCESS_TOKEN_LIFETIME_MINUTES'))
+else:
+    ACCESS_TOKEN_LIFETIME_MINUTES = 5
+
+if os.getenv('REFRESH_TOKEN_LIFETIME_MINUTES'):
+    REFRESH_TOKEN_LIFETIME_MINUTES =  int(os.getenv('REFRESH_TOKEN_LIFETIME_MINUTES'))
+else:
+    REFRESH_TOKEN_LIFETIME_MINUTES = 1
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=ACCESS_TOKEN_LIFETIME_MINUTES),
+    'REFRESH_TOKEN_LIFETIME': timedelta(minutes=REFRESH_TOKEN_LIFETIME_MINUTES),
+    'ROTATE_REFRESH_TOKENS': False,
+    'BLACKLIST_AFTER_ROTATION': True,
+
+    'ALGORITHM': 'HS256',
+    'SIGNING_KEY': SECRET_KEY,
+    'VERIFYING_KEY': None,
+
+    'AUTH_HEADER_TYPES': ('Bearer',),
+    'USER_ID_FIELD': 'id',
+    'USER_ID_CLAIM': 'id',
+
+    'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
+    'TOKEN_TYPE_CLAIM': 'token_type',
+
+    'JTI_CLAIM': 'jti',
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
