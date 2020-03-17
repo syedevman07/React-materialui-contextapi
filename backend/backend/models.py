@@ -47,10 +47,12 @@ class SubCategory(models.Model):
 
 
 class MyUser(AbstractBaseUser):
+  ADMIN_USER = 1
+  REGULAR_USER = 2
 
   ROLE_CHOICES = (
-    ('Admin', 'Admin'),
-    ('User', 'User'),
+    (ADMIN_USER, 'Administrator'),
+    (REGULAR_USER, 'Regular User'),
   )
 
   email = models.EmailField(unique=True)
@@ -60,7 +62,7 @@ class MyUser(AbstractBaseUser):
   city = models.CharField(max_length=100, default="")
   category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
   sub_category = models.ForeignKey(SubCategory, on_delete=models.SET_NULL, null=True)
-  role = models.CharField(max_length=6, choices=ROLE_CHOICES, default="User", help_text="Account Type")
+  role = models.CharField(max_length=6, choices=ROLE_CHOICES, default=REGULAR_USER, help_text="Account Type")
 
   is_active = models.BooleanField(default=True)
   is_admin = models.BooleanField(default=False)
