@@ -22,10 +22,11 @@ class SubCategoryViewSet(viewsets.ModelViewSet):
 
 
 class MyUserViewSet(viewsets.ModelViewSet):
-  permission_classes = [AllowAny]
+  permission_classes = [AdminOnly|ReadOnly]
   queryset = MyUser.objects.all()
+
   def get_serializer_class(self):
-    if self.action == 'list':
+    if self.action == 'list' or self.action == 'retrieve':
       return MyUserRetrieveSerializer
     else:
       return MyUserUpdateSerializer
