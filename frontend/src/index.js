@@ -7,19 +7,23 @@ import ContextProvider from './context';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import theme from './context/constants/theme';
+import { ThemeProvider } from '@material-ui/core';
+
+
 
 const Main = () => {
   const history = createBrowserHistory();
 
   return (
     <ContextProvider>
-      {/* <ThemeProvider theme={theme}> */}
+      <ThemeProvider theme={theme}>
         <Router history={history}>
           {/* <HelmetProvider> */}
             <App />
           {/* </HelmetProvider> */}
         </Router>
-      {/* </ThemeProvider> */}
+      </ThemeProvider>
     </ContextProvider>
   );
 };
