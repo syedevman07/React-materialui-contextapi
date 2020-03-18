@@ -11,3 +11,7 @@ class AdminOnly(BasePermission):
 class ReadOnly(BasePermission):
   def has_permission(self, request, view):
     return request.method in SAFE_METHODS
+
+class AllowPost(BasePermission):
+  def has_permission(self, request, view):
+    return request.method == 'POST'

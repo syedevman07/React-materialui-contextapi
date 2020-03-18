@@ -1,8 +1,9 @@
 from rest_framework import routers, serializers, viewsets, generics
 from backend.models import MyUser, Category, SubCategory
-from backend.serializers import SignupSerializer, CategorySerializer, SubCategoryRetrieveSerializer, SubCategoryUpdateSerializer, MyUserRetrieveSerializer, MyUserUpdateSerializer
-from backend.permissions import AdminOnly, ReadOnly
+from backend.serializers import PasswordSerializer, SignupSerializer, CategorySerializer, SubCategoryRetrieveSerializer, SubCategoryUpdateSerializer, MyUserRetrieveSerializer, MyUserUpdateSerializer
+from backend.permissions import AdminOnly, ReadOnly, AllowPost
 from rest_framework.permissions import AllowAny
+from rest_framework.response import Response
 
 class CategoryViewSet(viewsets.ModelViewSet):
   permission_classes = [AdminOnly | ReadOnly]
@@ -30,7 +31,16 @@ class MyUserViewSet(viewsets.ModelViewSet):
       return MyUserRetrieveSerializer
     else:
       return MyUserUpdateSerializer
+  
+  # @action(detail=True, methods=['post'])
+  # def set_password(self, request, pk=None)
+  #   user = self.get_object()
+  #   serializer = PasswordSerializer(data=request.data)
+  #   if serializer.is_valid():
+  #     user.set_password(serializers.data['password'])
+  #     user.save()
+  #     return Response
 
 class SignupView(generics.CreateAPIView):
   serializer_class = SignupSerializer
-  permission_classes = [AllowAny, ]
+  permission_classes = [AllowAny,]
