@@ -61,6 +61,7 @@ class MyUser(AbstractBaseUser):
   last_name = models.CharField(max_length=100)
   country = models.CharField(max_length=100, default="")
   city = models.CharField(max_length=100, default="")
+  category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
   sub_category = models.ForeignKey(SubCategory, on_delete=models.SET_NULL, null=True)
   role = models.CharField(max_length=6, choices=ROLE_CHOICES, default=REGULAR_USER, help_text="Account Type")
 
@@ -78,6 +79,10 @@ class MyUser(AbstractBaseUser):
   REQUIRED_FIELDS = []
 
   objects = MyUserManager()
+
+  def save(self, *args, **kwargs):
+    self.category = self.sub_category.category
+    super(MyUser, self).save(*args, **kwargs)
 
   def __str__(self):
     return f"{self.first_name} {self.last_name}"

@@ -7,6 +7,12 @@ class CategorySerializer(serializers.ModelSerializer):
     model = Category
     fields = ['id', 'name']
 
+class SubCategorySimpleSerializer(serializers.ModelSerializer):
+
+  class Meta:
+    model = SubCategory
+    fields = ['id', 'name',]
+
 class SubCategoryRetrieveSerializer(serializers.ModelSerializer):
   category = CategorySerializer(many=False)
 
@@ -22,11 +28,12 @@ class SubCategoryUpdateSerializer(serializers.ModelSerializer):
     fields = ['id', 'name', 'category']
 
 class MyUserRetrieveSerializer(serializers.ModelSerializer):
-  sub_category = SubCategoryRetrieveSerializer(many=False)
+  sub_category = SubCategorySimpleSerializer(many=False)
+  category = CategorySerializer(many=False)
 
   class Meta:
     model = MyUser
-    fields = ['id', 'email', 'first_name', 'last_name', 'country', 'city', 'role', 'sub_category']
+    fields = ['id', 'email', 'first_name', 'last_name', 'country', 'city', 'role', 'category', 'sub_category']
 
 class MyUserUpdateSerializer(serializers.ModelSerializer):
   sub_category = serializers.PrimaryKeyRelatedField(queryset=SubCategory.objects.all(), required=False)
@@ -58,10 +65,3 @@ class PasswordSerializer(serializers.Serializer):
 
   class Meta:
     fields = ['password', ]
-
-
-# class ProfileSerializer(serializers):
-
-#   class Meta:
-#     model: MyUser
-    

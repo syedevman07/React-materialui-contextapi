@@ -29,7 +29,7 @@ class MyUserViewSet(viewsets.ModelViewSet):
   permission_classes = [AdminOnly|ReadOnly|AllowAny]
   queryset = MyUser.objects.all()
   filter_backends = [DjangoFilterBackend, filters.SearchFilter]
-  filterset_fields = ['sub_category', 'role']
+  filterset_fields = ['sub_category', 'category', 'role']
   search_fields = ['first_name', 'last_name', 'email', 'country', 'city']
 
   def get_queryset(self):
