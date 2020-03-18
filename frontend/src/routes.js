@@ -1,13 +1,18 @@
 import Users from './components/users';
-
+import User from './components/users/user';
 const routes = [
   {
-    to: '',
+    path: '/users',
     exact: true,
     component: Users,
   },
   {
-    to: '/users',
+    path: '/users/:id',
+    exact: true,
+    component: User,
+  },
+  {
+    path: '',
     exact: true,
     component: Users,
   },
