@@ -5,6 +5,8 @@ from backend.serializers import PasswordSerializer, SignupSerializer, CategorySe
 from backend.permissions import AdminOnly, ReadOnly, AllowPost
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters
 
 class CategoryViewSet(viewsets.ModelViewSet):
   permission_classes = [AdminOnly | ReadOnly]
@@ -26,6 +28,8 @@ class SubCategoryViewSet(viewsets.ModelViewSet):
 class MyUserViewSet(viewsets.ModelViewSet):
   permission_classes = [AdminOnly|ReadOnly]
   queryset = MyUser.objects.all()
+  filter_backends = [DjangoFilterBackend, filters.SearchFilter]
+  search_fields = ['first_name', 'last_name', 'email', 'country', 'city']
 
   def get_serializer_class(self):
     if self.action == 'list' or self.action == 'retrieve':
