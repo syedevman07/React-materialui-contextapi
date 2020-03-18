@@ -26,7 +26,7 @@ class SubCategoryViewSet(viewsets.ModelViewSet):
 
 
 class MyUserViewSet(viewsets.ModelViewSet):
-  permission_classes = [AdminOnly|ReadOnly|AllowAny]
+  permission_classes = [AdminOnly|ReadOnly]
   queryset = MyUser.objects.all()
   filter_backends = [DjangoFilterBackend, filters.SearchFilter]
   filterset_fields = ['sub_category', 'category', 'role']
