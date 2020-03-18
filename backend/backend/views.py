@@ -1,6 +1,6 @@
 from rest_framework import routers, serializers, viewsets, generics
 from rest_framework.decorators import action
-from backend.models import MyUser, Category, SubCategory
+from backend.models import MyUser, Category, SubCategory, ADMIN_USER, REGULAR_USER
 from backend.serializers import PasswordSerializer, SignupSerializer, CategorySerializer, SubCategoryRetrieveSerializer, SubCategoryUpdateSerializer, MyUserRetrieveSerializer, MyUserUpdateSerializer
 from backend.permissions import AdminOnly, ReadOnly, AllowPost
 from rest_framework.permissions import AllowAny, IsAuthenticated
@@ -30,6 +30,14 @@ class MyUserViewSet(viewsets.ModelViewSet):
   queryset = MyUser.objects.all()
   filter_backends = [DjangoFilterBackend, filters.SearchFilter]
   search_fields = ['first_name', 'last_name', 'email', 'country', 'city']
+
+  def get_queryset(self):
+    try:
+      if self.request.user.role == ADMIN_USER:
+        return MyUser.objects.all()
+    except:
+      pass
+    return MyUser.objects.filter(role=REGULAR_USER)
 
   def get_serializer_class(self):
     if self.action == 'list' or self.action == 'retrieve':

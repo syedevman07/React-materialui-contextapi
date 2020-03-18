@@ -46,9 +46,10 @@ class SubCategory(models.Model):
     return self.name
 
 
+ADMIN_USER = 1
+REGULAR_USER = 2
+
 class MyUser(AbstractBaseUser):
-  ADMIN_USER = 1
-  REGULAR_USER = 2
 
   ROLE_CHOICES = (
     (ADMIN_USER, 'Administrator'),
