@@ -23,6 +23,6 @@ const UserContextProvider = ({
     )
 }
 
-export const useUsers = () => useContext(Context);
+export const useUser = () => useContext(Context);
 
 export default UserContextProvider;

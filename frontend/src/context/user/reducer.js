@@ -1,5 +1,5 @@
 import {
-  GET_USERS,
+  GET_USERS_SUCCESS,
 } from './actions';
 
 import { initialState } from './context';
@@ -10,10 +10,14 @@ export default (
 ) => {
   const { type, payload } = action;
   switch(type) {
-      case GET_USERS:
+      case GET_USERS_SUCCESS:
+          const { data: { count, results}, params } = payload;
           return {
               ...state,
-              ...payload,
+              users: results,
+              count,
+              params: { ...state.params, ...params},
+              loading: false,
           };
       default:
           return state;

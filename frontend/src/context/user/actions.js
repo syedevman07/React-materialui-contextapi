@@ -1,11 +1,16 @@
 import * as API from './api';
 
-export const GET_USERS = 'GET_USERS';
+export const GET_USERS_SUCCESS = 'GET_USERS_SUCCESS';
 
 export const getUsers = dispatch => async (params) => {
-    const res = await API.getUsers(params);
+  try {
+    
+    const { data } = await API.getUsers(params);
     dispatch({
-        type: GET_USERS,
-        payload: { ...res.data, ...params },
+      type: GET_USERS_SUCCESS,
+      payload: { data, params },
     })
+  } catch {
+
+  }
 }
