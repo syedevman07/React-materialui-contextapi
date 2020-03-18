@@ -34,3 +34,16 @@ class MyUserUpdateSerializer(serializers.ModelSerializer):
   class Meta:
     model = MyUser
     fields = ['id', 'email', 'first_name', 'last_name', 'country', 'city', 'role', 'sub_category']
+
+class SignupSerializer(serializers.ModelSerializer):
+
+  class Meta:
+    model = MyUser
+    fields = ['id', 'email', 'password', 'first_name', 'last_name', 'country', 'city', 'sub_category']
+    extra_kwargs = {'password': {'write_only': True}}
+    
+  def create(self, validated_data):
+    user = MyUser(**validated_data)
+    user.set_password(validated_data['password'])
+    user.save()
+    return user

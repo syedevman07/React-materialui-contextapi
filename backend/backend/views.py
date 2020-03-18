@@ -1,8 +1,7 @@
-from rest_framework import routers, serializers, viewsets
+from rest_framework import routers, serializers, viewsets, generics
 from backend.models import MyUser, Category, SubCategory
-from backend.serializers import CategorySerializer, SubCategoryRetrieveSerializer, SubCategoryUpdateSerializer, MyUserRetrieveSerializer, MyUserUpdateSerializer
+from backend.serializers import SignupSerializer, CategorySerializer, SubCategoryRetrieveSerializer, SubCategoryUpdateSerializer, MyUserRetrieveSerializer, MyUserUpdateSerializer
 from backend.permissions import AdminOnly, ReadOnly
-
 from rest_framework.permissions import AllowAny
 
 class CategoryViewSet(viewsets.ModelViewSet):
@@ -30,3 +29,7 @@ class MyUserViewSet(viewsets.ModelViewSet):
       return MyUserRetrieveSerializer
     else:
       return MyUserUpdateSerializer
+
+class SignupView(generics.CreateAPIView):
+  serializer_class = SignupSerializer
+  permission_classes = [AllowAny, ]
