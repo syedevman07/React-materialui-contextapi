@@ -57,3 +57,6 @@ class SignupSerializer(serializers.ModelSerializer):
 
 class PasswordSerializer(serializers.Serializer):
   password = serializers.CharField(min_length=6, allow_blank=False)
+
+  class Meta:
+    fields = ['password', ]
