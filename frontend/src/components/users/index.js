@@ -5,29 +5,30 @@ import {
   Input,
   InputAdornment,
   IconButton,
+  CircularProgress,
   Paper,
   Table,
-  TableHead,
   TableBody,
-  TableFooter,
   TableRow,
   TableCell,
   TablePagination,
-  Typography,
   TableContainer,
-  Tab,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
-import MainLayout from '../Layout';
 import { useUser } from '../../context/user';
 
 import UserTableHeader from './table-header';
+import UserControl from './control';
 
 const useStyles = makeStyles({
   root: {
     width: '100%',
   },
+  loader: {
+    margin: 'auto',
+    height: '300px'
+  }
 });
 const Users = () => {
   const classes = useStyles();
@@ -36,14 +37,15 @@ const Users = () => {
   useEffect(() => {
     getUsers({ page, search, category, subCategory});
   }, []);
-  console.log("----------users", users)
+
   return (
-    <MainLayout>
+    <div>
+      <UserControl/>
       <Paper className={classes.root}>
         <TableContainer>
           <Table>
             <UserTableHeader/>
-            <TableBody>
+            {!loading ? <TableBody>
               {users.map((user, i) => (
                 <TableRow key={i} hover>
                   <TableCell>
@@ -69,7 +71,10 @@ const Users = () => {
                   </TableCell>
                 </TableRow>
               ))}
-            </TableBody>
+            </TableBody> :
+            <div className={classes.loader}>
+              <CircularProgress/>
+            </div> }
           </Table>
         </TableContainer>
         <TablePagination
@@ -81,7 +86,7 @@ const Users = () => {
           onChangePage={() => {}}
         />
       </Paper>
-    </MainLayout>
+    </div>
   )
 }
 
