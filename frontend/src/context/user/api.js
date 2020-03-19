@@ -5,9 +5,9 @@ export const getUsers = async ({ page, search, category, subCategory, role }) =>
         offset: page * 10,
         search,
     };
-    if (role) params.role = role;
-    if (category) params.category = category;
-    if (subCategory) params.sub_category = subCategory;
+    if (role && role !== 0) params.role = role;
+    if (category && category !== 0) params.category = category;
+    if (subCategory && subCategory !== 0) params.sub_category = subCategory;
     return Axios({
         method: 'GET',
         url: '/users/',
