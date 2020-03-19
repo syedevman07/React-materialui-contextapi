@@ -80,9 +80,9 @@ class MyUser(AbstractBaseUser):
 
   objects = MyUserManager()
 
-  def save(self, *args, **kwargs):
-    self.category = self.sub_category.category
-    super(MyUser, self).save(*args, **kwargs)
+  # def save(self, *args, **kwargs):
+  #   self.category = self.sub_category.category
+  #   super(MyUser, self).save(*args, **kwargs)
 
   def __str__(self):
     return f"{self.first_name} {self.last_name}"
@@ -102,3 +102,6 @@ class MyUser(AbstractBaseUser):
       "Is the user a member of staff?"
       # Simplest possible answer: All admins are staff
       return self.is_admin
+
+  class Meta:
+    verbose_name = "User"
