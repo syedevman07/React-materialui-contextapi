@@ -11,11 +11,11 @@ import { makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles(theme => ({
   formControl: {
     margin: theme.spacing(1),
-    minWidth: 180,
+    width: '100%'
   },
 }));
 
-const SubCategoryFilter = ({ defaultValue = 0, category = 0, onChangeHanlder = () => {}}) => {
+const SubCategoryFilter = ({ defaultValue = 0, variant="outlined", error, category = 0, onChangeHanlder = () => {}}) => {
   const classes = useStyles();
   const [subCategory, setSubCategory] = React.useState(defaultValue);
   const { data: { subCategories }, methods: { getSubCategories } } = useCategory();
@@ -38,7 +38,7 @@ const SubCategoryFilter = ({ defaultValue = 0, category = 0, onChangeHanlder = (
 
   const categorySubCategories = subCategories.filter(subCategory => subCategory.category.id === category || !category);
   return (
-    <FormControl variant="outlined" className={classes.formControl}>
+    <FormControl variant={variant} className={classes.formControl}>
       <InputLabel id="sub-category-filter-label">Sub Category</InputLabel>
       <Select
         value={subCategory || 0}
@@ -46,6 +46,7 @@ const SubCategoryFilter = ({ defaultValue = 0, category = 0, onChangeHanlder = (
         label="Sub Category"
         labelId="sub-category-filter-label"
         id="sub-category-filter-filled"
+        error={error}
       >
         <MenuItem value={0}>
           All Sub Categories

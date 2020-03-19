@@ -15,11 +15,19 @@ const useStyles = makeStyles({
     display: 'flex',
     justifyContent: 'space-between'
   },
+  category: {
+    width: 150,
+    marginRight: 15
+  },
+  subCategory: {
+    width: 180,
+    marginRight: 15,
+  },
   link: {
     color: '#fff',
     textDecoration : 'none'
   },
-  contorl: {
+  control: {
     display: 'flex',
   }
 });
@@ -36,8 +44,12 @@ const UserControl = () => {
   return <div className={classes.root}>
     <Button color="primary" variant="contained"><Link to='/users/new' className={classes.link}>Add New User</Link></Button>
     <div className={classes.control}>
-      <CategoryFilter defaultValue={category} onChangeHanlder={handleCategoryChange}/>
-      <SubCategoryFilter defaultValue={subCategory} category={category} onChangeHanlder={handleSubCategoryChange}/>
+      <div className={classes.category}>
+        <CategoryFilter defaultValue={category} onChangeHanlder={handleCategoryChange}/>
+      </div>
+      <div className={classes.subCategory}>
+        <SubCategoryFilter defaultValue={subCategory} category={category} onChangeHanlder={handleSubCategoryChange}/>
+      </div>
       <SearchControl />
     </div>
   </div>

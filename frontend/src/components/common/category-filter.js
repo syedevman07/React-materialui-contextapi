@@ -11,11 +11,11 @@ import { makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles(theme => ({
   formControl: {
     margin: theme.spacing(1),
-    minWidth: 150,
+    minWidth: '100%'
   },
 }));
 
-const CategoryFilter = ({ defaultValue = 0, onChangeHanlder = () => {}}) => {
+const CategoryFilter = ({ defaultValue = 0, error, variant="outlined", onChangeHanlder = () => {}}) => {
   const classes = useStyles();
   const [category, setCategory] = React.useState(defaultValue);
   const { data: { categories }, methods: { getCategories } } = useCategory();
@@ -30,7 +30,7 @@ const CategoryFilter = ({ defaultValue = 0, onChangeHanlder = () => {}}) => {
   };
 
   return (
-    <FormControl variant="outlined" className={classes.formControl}>
+    <FormControl variant={variant} className={classes.formControl}>
       <InputLabel id="demo-simple-select-outlined-label">Category</InputLabel>
       <Select
         value={category || 0}
@@ -38,6 +38,7 @@ const CategoryFilter = ({ defaultValue = 0, onChangeHanlder = () => {}}) => {
         label="Category"
         labelId="demo-simple-select-filled-label"
         id="demo-simple-select-filled"
+        error={error}
       >
         <MenuItem value={0}>
           All Categories
