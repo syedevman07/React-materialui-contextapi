@@ -1,4 +1,5 @@
 import Axios from '../../utils/axios';
+import ROLE from '../../utils/constants/role';
 
 export const getUsers = async ({ page, search, category, subCategory, role }) => {
     const params = {
@@ -13,4 +14,25 @@ export const getUsers = async ({ page, search, category, subCategory, role }) =>
         url: '/users/',
         params,
     });
+};
+
+export const createUser = async(payload) => {
+  const { firstName, lastName, email, role, password, category, subCategory, country, city} = payload;
+  let data = {
+    first_name: firstName,
+    last_name: lastName,
+    email,
+    password,
+    role,
+    country,
+    category,
+    sub_category: subCategory,
+    city,
+  };
+  
+  return Axios({
+    method: 'POST',
+    url: '/users/',
+    data,
+  })
 }

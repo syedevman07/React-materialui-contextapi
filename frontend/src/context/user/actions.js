@@ -1,6 +1,7 @@
 import * as API from './api';
 
 export const GET_USERS_SUCCESS = 'GET_USERS_SUCCESS';
+export const CREATE_USER = 'CREATE_USER';
 
 export const getUsers = dispatch => async (params) => {
   try {
@@ -14,3 +15,6 @@ export const getUsers = dispatch => async (params) => {
 
   }
 }
+
+export const createUser = dispatch => async (params) => 
+  API.createUser(params);

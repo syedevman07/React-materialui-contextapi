@@ -1,7 +1,7 @@
 import React, { useReducer, useContext } from 'react';
 import Context, { initialState } from './context';
 import reducer from './reducer';
-import { getUsers } from './actions';
+import { getUsers, createUser } from './actions';
 
 const UserContextProvider = ({
     children,
@@ -14,7 +14,8 @@ const UserContextProvider = ({
             value={{
                 data: state,
                 methods: {
-                    getUsers: getUsers(dispatch)
+                    getUsers: getUsers(dispatch),
+                    createUser: createUser(dispatch)
                 },
             }}
         >

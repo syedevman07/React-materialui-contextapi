@@ -27,20 +27,25 @@ import * as yup from 'yup';
 
 import CategoryFilter from '../common/category-filter';
 import SubCategoryFilter from '../common/sub-category-filter';
+import { useUser } from '../../context/user';
 
 const validationSchema = yup.object().shape({
   firstName: yup.string().required("First Name is required"),
   lastName: yup.string().required("Last Name is required"),
   email: yup.string().email().required("Email is required"),
   password: yup.string().min(8).required('Password is required'),
-  passwordRepeat: yup.string().min(8).oneOf([yup.ref('password'), null], 'Passwords must match'),
+  passwordRepeat: yup.string().min(8).oneOf([yup.ref('password')], 'Passwords must match'),
   country: yup.string().required("Country is required"),
-  city: yup.string().test('city-test', 'city is required when role is admin', function(value) {
-    return this.parent.role === 1;
-  }),
+  city: yup.string().required("City is required"),
   role: yup.number().required("Role is required"),
-  category: yup.number().required("Category is required").notOneOf([0]),
-  subCategory: yup.number().required("Sub Category is required").notOneOf([0]),
+  category: yup.number().test('Categpru-test', 'Category is required when role is no a admin', 
+    function(value) {
+      return this.parent.role === 1;
+    }).notOneOf([0]),
+  subCategory: yup.number().test('SubCategory-test', 'SubCategory is required when role is not a admin', 
+    function(value) {
+      return this.parent.role === 1;
+    }).notOneOf([0]),
 });
 
 const useStyles = makeStyles({
@@ -58,13 +63,14 @@ const useStyles = makeStyles({
     color: 'red'
   }
 });
+
 const User = () => {
   const { handleSubmit, control, errors, setValue, register } = useForm({
     validationSchema,
   });
   const [category, setCategory] = useState(0);
   const [subCategory, setSubCategory] = useState(0);
-
+  const { methods:  { createUser } } = useUser();
   const classes = useStyles();
   const creating = true;
 
@@ -83,7 +89,7 @@ const User = () => {
   }
 
   const submit = (values) => {
-
+    createUser(values);
   }
 
   return (
@@ -166,6 +172,7 @@ const User = () => {
                           id="demo-simple-select"
                           fullWidth
                           IconComponent={GroupIcon}
+                          error={errors.role}
                         >
                           <MenuItem value={1}>Admin</MenuItem>
                           <MenuItem value={20}>Regular User</MenuItem>
