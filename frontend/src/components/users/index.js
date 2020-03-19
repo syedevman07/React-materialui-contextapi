@@ -32,10 +32,10 @@ const useStyles = makeStyles({
 });
 const Users = () => {
   const classes = useStyles();
-  const { data: { users, loading, count, params: { page, search, category, subCategory } }, methods: { getUsers } } = useUser();
+  const { data: { users, loading, count, params, params: { page } }, methods: { getUsers } } = useUser();
 
   useEffect(() => {
-    getUsers({ page, search, category, subCategory});
+    getUsers(params);
   }, []);
 
   return (

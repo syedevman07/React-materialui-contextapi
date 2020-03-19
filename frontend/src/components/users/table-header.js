@@ -18,7 +18,7 @@ const UserTableHeader = () => (
   <TableHead>
     <TableRow>
       {tableHeaders.map(header =>
-      <TableCell>
+      <TableCell key={header}>
         {header}
       </TableCell>)}
     </TableRow>
