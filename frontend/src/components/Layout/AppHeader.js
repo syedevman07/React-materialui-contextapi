@@ -182,7 +182,7 @@ export default function PrimarySearchAppBar() {
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
             <IconButton aria-label="show 4 new mails" color="inherit">
-              <Link className={classes.link}><PeopleIcon /></Link>
+              <Link className={classes.link} to="/users/"><PeopleIcon /></Link>
             </IconButton>
             <IconButton aria-label="show 17 new notifications" color="inherit">
               <CategoryIcon />
