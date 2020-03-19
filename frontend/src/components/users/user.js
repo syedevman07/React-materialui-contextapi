@@ -1,11 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Button,
   Grid,
+  FormControl,
+  InputLabel,
+  InputAdornment,
+  Select,
+  MenuItem,
   Paper,
   TextField,
   Typography,
 } from '@material-ui/core';
+import Search from '@material-ui/icons/Search';
+import FormatColorTextIcon from '@material-ui/icons/FormatColorText';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import EmailIcon from '@material-ui/icons/Email';
+import GroupIcon from '@material-ui/icons/Group';
+import VpnKeyIcon from '@material-ui/icons/VpnKey';
+import CategoryIcon from '@material-ui/icons/Category';
+import LocationOnIcon from '@material-ui/icons/LocationOn';
+
 import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import { useForm, Controller } from 'react-hook-form';
@@ -21,9 +35,12 @@ const validationSchema = yup.object().shape({
   password: yup.string().min(8).required('Password is required'),
   passwordRepeat: yup.string().min(8).oneOf([yup.ref('password'), null], 'Passwords must match'),
   country: yup.string().required("Country is required"),
-  city: yup.string().required("City is required"),
-  category: yup.number().required("Category is required"),
-  subCategory: yup.number().required("Sub Category is required")
+  city: yup.string().test('city-test', 'city is required when role is admin', function(value) {
+    return this.parent.role === 1;
+  }),
+  role: yup.number().required("Role is required"),
+  category: yup.number().required("Category is required").notOneOf([0]),
+  subCategory: yup.number().required("Sub Category is required").notOneOf([0]),
 });
 
 const useStyles = makeStyles({
@@ -42,7 +59,7 @@ const useStyles = makeStyles({
   }
 });
 const User = () => {
-  const { handleSubmit, control, errors } = useForm({
+  const { handleSubmit, control, errors, setValue, register } = useForm({
     validationSchema,
   });
   const [category, setCategory] = useState(0);
@@ -51,19 +68,30 @@ const User = () => {
   const classes = useStyles();
   const creating = true;
 
+  useEffect(() => {
+    register({ name: 'category' });
+    register({ name: 'subCategory' });
+  }, [register]);
   const handleChangeCategory = category => {
     setCategory(category);
+    setValue('category', category);
   };
 
   const handleSubCategoryChange = subCategory => {
     setSubCategory(subCategory);
+    setValue('subCategory', subCategory);
   }
+
+  const submit = (values) => {
+
+  }
+
   return (
     <div className={classes.root}>
       <Typography variant="h5" component="h1" gutterBottom className={classes.title}>
           {creating ? "Create New User" : "Edit User"}
         </Typography>
-      <form onSubmit={handleSubmit(() => {})}>
+      <form onSubmit={handleSubmit(submit)}>
         <Paper style={{padding: '20px', width: '500px'}} className={classes.paper}>
             <Grid spacing={4} container >
               <Grid item xs={6}>
@@ -76,6 +104,13 @@ const User = () => {
                       type="text"
                       label="First Name"
                       fullWidth
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <AccountCircleIcon />
+                          </InputAdornment>
+                        ),
+                      }}
                     />}
                 />
               </Grid>
@@ -88,11 +123,18 @@ const User = () => {
                       error={errors.lastName}
                       type="text"
                       label="Last Name"
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <AccountCircleIcon />
+                          </InputAdornment>
+                        ),
+                      }}
                       fullWidth
                     />}
                 />
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={6}>
                 <Controller
                   name="email"
                   control={control}
@@ -101,9 +143,36 @@ const User = () => {
                       error={errors.email}
                       type="email"
                       label="Email"
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <EmailIcon />
+                          </InputAdornment>
+                        ),
+                      }}
                       fullWidth
                     />}
                 />
+              </Grid>
+              <Grid item xs={6}>
+                <FormControl className={classes.formControl} fullWidth>
+                  <InputLabel id="demo-simple-select-label">Role</InputLabel>
+                  <Controller
+                    name="role"
+                    control={control}
+                    as={
+                        <Select
+                          labelId="demo-simple-select-label"
+                          id="demo-simple-select"
+                          fullWidth
+                          IconComponent={GroupIcon}
+                        >
+                          <MenuItem value={1}>Admin</MenuItem>
+                          <MenuItem value={20}>Regular User</MenuItem>
+                        </Select>
+                    }
+                  />
+                </FormControl>
               </Grid>
               <Grid item xs={6}>
                 <Controller
@@ -115,6 +184,13 @@ const User = () => {
                       type="password"
                       label="Password"
                       fullWidth
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <VpnKeyIcon />
+                          </InputAdornment>
+                        ),
+                      }}
                     />}
                 />
               </Grid>
@@ -128,6 +204,13 @@ const User = () => {
                       type="password"
                       label="Password Repeat"
                       fullWidth
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <VpnKeyIcon />
+                          </InputAdornment>
+                        ),
+                      }}
                     />}
                 />
               </Grid>
@@ -135,6 +218,7 @@ const User = () => {
                 <CategoryFilter
                   variant="" 
                   defaultValue={category}
+                  error={errors.category}
                   onChangeHanlder={handleChangeCategory}
                 />
               </Grid>
@@ -143,6 +227,7 @@ const User = () => {
                   variant=""
                   defaultValue={subCategory}
                   category={category}
+                  error={errors.subCategory}
                   onChangeHanlder={handleSubCategoryChange}
                 />
               </Grid>
@@ -152,10 +237,17 @@ const User = () => {
                   control={control}
                   as={
                     <TextField
-                      error={errors.name}
+                      error={errors.country}
                       type="country"
                       label="Country"
                       fullWidth
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <LocationOnIcon />
+                          </InputAdornment>
+                        ),
+                      }}
                     />}
                 />
               </Grid>
@@ -165,10 +257,17 @@ const User = () => {
                   control={control}
                   as={
                     <TextField
-                      error={errors.name}
+                      error={errors.city}
                       type="city"
                       label="City"
                       fullWidth
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <LocationOnIcon />
+                          </InputAdornment>
+                        ),
+                      }}
                     />}
                 />
               </Grid>
@@ -185,10 +284,8 @@ const User = () => {
               </Button>
             </Grid>
             </Grid>
-            {/* {user.user_level === roles.SUPER_ADMIN ? null : <Grid container style={{marginTop: '20px'}}>
-            </Grid>} */}
           </Paper>
-          </form>
+        </form>
     </div>
   )
 };
