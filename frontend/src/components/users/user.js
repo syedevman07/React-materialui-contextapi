@@ -11,13 +11,10 @@ import {
   TextField,
   Typography,
 } from '@material-ui/core';
-import Search from '@material-ui/icons/Search';
-import FormatColorTextIcon from '@material-ui/icons/FormatColorText';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import EmailIcon from '@material-ui/icons/Email';
 import GroupIcon from '@material-ui/icons/Group';
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
-import CategoryIcon from '@material-ui/icons/Category';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 
 import { Link } from 'react-router-dom';

@@ -1,6 +1,8 @@
 import Users from './components/users';
 import User from './components/users/user';
-const routes = [
+import Login from './components/login';
+
+export const commonRoutes = [
   {
     path: '/users',
     exact: true,
@@ -16,7 +18,27 @@ const routes = [
     exact: true,
     component: Users,
   },
-  // { status: 404, path: '*', component: NotFound },
 ];
 
-export default routes;
+export const noAuthRoutes = [
+  {
+    path: '/login',
+    exact: true,
+    component: Login,
+  },
+  {
+    path: '/signup',
+    exact: true,
+    component: User,
+  }
+]
+
+export const authRoutes = [
+  {
+    path: '/profile',
+    exact: true,
+    component: User,
+  }
+];
+
+export const adminRoutes = [];

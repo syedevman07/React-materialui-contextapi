@@ -1,7 +1,7 @@
-import React, { useReducer, useContext } from 'react';
+import React, { useReducer, useState, useContext, useEffect } from 'react';
 import Context, { initialState } from './context';
 import reducer from './reducer';
-import { getUsers, createUser } from './actions';
+import { getUsers, createUser, login, isLoggedIn, isAdmin, resetStore } from './actions';
 
 const UserContextProvider = ({
     children,
@@ -9,13 +9,24 @@ const UserContextProvider = ({
 }) => {
     const [state, dispatch] = useReducer(reducer, initialContext);
 
+    useEffect(() => {
+        const userData = localStorage.getItem("appUser", state);
+        if(state.updatedAt) {
+            localStorage.setItem("appUser", JSON.stringify(state));
+        } else if(userData) {
+            resetStore(dispatch)(JSON.parse(userData));
+        }
+    }, [state.updatedAt]);
     return (
         <Context.Provider
             value={{
                 data: state,
                 methods: {
                     getUsers: getUsers(dispatch),
-                    createUser: createUser(dispatch)
+                    createUser: createUser(dispatch),
+                    login: login(dispatch),
+                    isLoggedIn: isLoggedIn(state),
+                    isAdmin: isAdmin(state),
                 },
             }}
         >

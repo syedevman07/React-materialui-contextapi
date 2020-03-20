@@ -2,6 +2,8 @@ import { createContext } from 'react';
 
 export const initialState = {
     users: [],
+    currentUser: {},
+    loginLoading: false,
     params: {
       page: 0,
       category: null,
@@ -11,6 +13,7 @@ export const initialState = {
     },
     loading: true,
     count: 0,
+    updatedAt: null,
   };
 
 const context = createContext();

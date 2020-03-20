@@ -29,10 +29,23 @@ export const createUser = async(payload) => {
     sub_category: subCategory,
     city,
   };
-  
+
   return Axios({
     method: 'POST',
     url: '/users/',
     data,
   })
 }
+
+export const login = async data => Axios({
+  method: 'POST',
+  url: '/token/',
+  data,
+});
+
+export const getProfile = async data => Axios({
+  method: 'GET',
+  url: '/profile/',
+  data,
+}, true)
+
