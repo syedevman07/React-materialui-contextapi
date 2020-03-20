@@ -11,4 +11,15 @@ const Axios = axios.create({
   })(),
 });
 
-export default Axios;
+export default (data, needsToken = false) => {
+  if(!needsToken) {
+    return Axios(data);
+  }
+  return Axios({
+    ...data,
+    headers: {
+      ...data.headers,
+      'Authorization': `Bearer ${localStorage.getItem("token")}`,
+    }
+  });
+}
