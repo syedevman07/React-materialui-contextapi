@@ -22,18 +22,20 @@ from rest_framework_simplejwt.views import (
 )
 from rest_framework import routers, serializers, viewsets
 
-from backend.views import CategoryViewSet, SubCategoryViewSet, MyUserViewSet, SignupView
+from backend.views import CategoryViewSet, SubCategoryViewSet, MyUserViewSet, SignupView, profile
 
 router = routers.DefaultRouter()
 router.register('category', CategoryViewSet)
 router.register('sub-category', SubCategoryViewSet)
 router.register('users', MyUserViewSet)
+# router.register('profile', ProfileViewSet)
 
 urlpatterns = [
-    path('api/', include(router.urls)),
-    path('api/signup', SignupView.as_view()),
     path('admin/', admin.site.urls),
+    path('api/', include(router.urls)),
+    path('api/signup/', SignupView.as_view()),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pai'),            # get token for simplejwt
     path('api/refresh-token/', TokenRefreshView.as_view(), name='token_refresh'),           # refresh token for simple jwt
     path('api/verify-token/', TokenVerifyView.as_view(), name='token_verify'),
+    path('api/profile/', profile)
 ]

@@ -7,6 +7,7 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
+from rest_framework.decorators import api_view
 
 class CategoryViewSet(viewsets.ModelViewSet):
   permission_classes = [AdminOnly | ReadOnly]
@@ -66,30 +67,38 @@ class SignupView(generics.CreateAPIView):
   permission_classes = [AllowAny,]
 
 
-class ProfileViewSet(viewsets.ModelViewSet):
-  permission_classes = [IsAuthenticated, ]
-  serializer_class = MyUserUpdateSerializer
+# class ProfileViewSet(viewsets.ModelViewSet):
+#   permission_classes = [IsAuthenticated, ]
+#   serializer_class = MyUserUpdateSerializer
 
-  def get(self, request, *args, **kwargs):
+#   def get_queryset(self):
+#     return MyUser.objects.filter(id=request.user.id)
+
+#   def list(self, request, *args, **kwargs):
+#     serializer = MyUserRetrieveSerializer(self.queryset, many=False)
+#     return Response(serializer.data)
+
+#   def partial_update(self, request, *args, **kwargs):
+#     instance = request.user
+#     serializer = self.serializer_class(instance, data=request.data, partial=True)
+#     serializer.is_valid(raise_exception=True)
+#     serializer.save()
+#     return Response(serializer.data)
+  
+#   @action(detail=False, methods=['post'])
+#   def set_password(self, request, pk=None):
+#     user = request.user
+#     serializer_class = self.get_serializer_class()
+#     serializer = serializer_class(data=request.data)
+#     if serializer.is_valid(raise_exception=True):
+#       user.set_password(serializer.data['password'])
+#       user.save()
+#       return Response({'status': 'password set'})
+#     else:
+#       return Response(serializer.errors,
+#         status=status.HTTP_400_BAD_REQUEST)
+
+@api_view()
+def profile(request):
     serializer = MyUserRetrieveSerializer(request.user)
     return Response(serializer.data)
-
-  def partial_update(self, request, *args, **kwargs):
-    instance = request.user
-    serializer = self.serializer_class(instance, data=request.data, partial=True)
-    serializer.is_valid(raise_exception=True)
-    serializer.save()
-    return Response(serializer.data)
-  
-  @action(detail=False, methods=['post'])
-  def set_password(self, request, pk=None):
-    user = request.user
-    serializer_class = self.get_serializer_class()
-    serializer = serializer_class(data=request.data)
-    if serializer.is_valid(raise_exception=True):
-      user.set_password(serializer.data['password'])
-      user.save()
-      return Response({'status': 'password set'})
-    else:
-      return Response(serializer.errors,
-        status=status.HTTP_400_BAD_REQUEST)
