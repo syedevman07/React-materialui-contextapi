@@ -1,3 +1,5 @@
+import produce from 'immer';
+
 import {
   GET_USERS_SUCCESS,
   LOGIN_REQUEST,
@@ -10,44 +12,32 @@ import { initialState } from './context';
 
 export default (
   state = initialState,
-  action = { type: undefined, payload: undefined }
-) => {
+  action,
+) =>  {
   const { type, payload } = action;
-  const newState = { ...state, updatedAt: new Date().getMilliseconds() }
-  switch(type) {
+  if(type === RESET_STORE) {
+    return { ...payload, updatedAt: new Date().getMilliseconds() }
+  }
+  return produce(state, draft => {
+    draft.updatedAt = new Date().getMilliseconds();
+    switch(type) {
       case GET_USERS_SUCCESS:
         const { data: { count, results}, params } = payload;
-        return {
-          ...newState,
-          users: results,
-          count,
-          params: { ...newState.params, ...params},
-          loading: false,
-        };
+        draft.users = results;
+        draft.count = count;
+        draft.loading = false;
+        draft.params = { ...draft.params, ...params};
+        break;
       case LOGIN_REQUEST:
-        return {
-          ...newState,
-          loginLoading: true,
-        }
+        draft.loginLoading = true;
+        break;
       case LOGIN_SUCCESS:
-        return {
-          ...newState,
-          currentUser: {
-            ...payload,
-          },
-          loginLoading: false,
-        }
+        draft.currentUser = payload;
+        draft.loginLoading = false;
+        break;
       case LOGIN_FAILURE: 
-        return {
-          ...newState,
-          loginLoading: false,
-        }
-      case RESET_STORE:
-        return {
-          ...payload,
-          updatedAt: new Date().getMilliseconds(),
-        }
-      default:
-          return state;
-  }
-}
+        draft.loginLoading = false;
+        break;
+    } 
+  })
+};
