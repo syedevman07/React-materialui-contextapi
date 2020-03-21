@@ -10,7 +10,7 @@ import {
   TableContainer,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-
+import { Link } from 'react-router-dom';
 import { useUser } from '../../context/user';
 
 import UserTableHeader from './table-header';
@@ -44,7 +44,7 @@ const Users = () => {
               {users.map((user, i) => (
                 <TableRow key={i} hover>
                   <TableCell>
-                    {user.email}
+                    <Link to={`/users/${user.id}`}>{user.email}</Link>
                   </TableCell>
                   <TableCell>
                     {user.first_name}
