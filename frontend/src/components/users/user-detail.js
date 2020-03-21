@@ -11,21 +11,11 @@ import {
   TextField,
   Typography,
 } from '@material-ui/core';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import EmailIcon from '@material-ui/icons/Email';
-import GroupIcon from '@material-ui/icons/Group';
-import VpnKeyIcon from '@material-ui/icons/VpnKey';
-import LocationOnIcon from '@material-ui/icons/LocationOn';
 
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
-import { useForm, Controller } from 'react-hook-form';
-import * as yup from 'yup';
-
-import CategoryFilter from '../common/category-filter';
-import SubCategoryFilter from '../common/sub-category-filter';
 import { useUser } from '../../context/user';
-
+import Enquiries from './enquiries';
 
 const useStyles = makeStyles({
   paper: {
@@ -102,6 +92,7 @@ const User = () => {
               </Grid>
             </Grid>
           </Paper>
+          <Enquiries enquiries={user.enquiries} user={user} />
     </div>
   )
 };
