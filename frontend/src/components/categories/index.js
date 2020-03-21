@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
+  Button,
   CircularProgress,
   Paper,
   Table,
@@ -19,6 +20,7 @@ import { useCategory } from '../../context/category';
 import EditDialog from './edit';
 import ConfirmDialog from '../common/confirm';
 import CategoryCreate from './create';
+import { getSubCategories } from '../../context/category/api';
 
 const useStyles = makeStyles({
   root: {
@@ -31,14 +33,24 @@ const useStyles = makeStyles({
   },
   delete: {
     color: 'red',
+  },
+  category: {
+    fontWeight: 'bold',
+  },
+  subCategory: {
+    paddingLeft: 20,
+  },
+  addCategoryButton: {
+    marginLeft: 20
   }
 });
 const Categories = () => {
   const classes = useStyles();
-  const { data: { categories, loading }, methods: { getCategories, deleteCategory } } = useCategory();
+  const { data, data: { categories, loading, subCategories }, methods: { getCategories, deleteCategory, getSubCategories } } = useCategory();
   const [category, setCategory] = useState();
   const [openEdit, setOpenEdit] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
+  const [creatingCategory, setCreatingCategory] = useState(false);
   const editCategory = (category) => {
     setCategory(category);
     setOpenEdit(true);
@@ -50,14 +62,14 @@ const Categories = () => {
   }
 
   const handleDeleteCategory = () => {
-    console.log(category)
     deleteCategory(category.id);
-  }
+  };
 
   const closeEdit = () => setOpenEdit(false);
   const closeDelete = () => setOpenDelete(false);
   useEffect(() => {
     getCategories();
+    getSubCategories();
   }, []);
 
   return (
@@ -73,41 +85,65 @@ const Categories = () => {
         message={`Are you sure to delete the category "${category && category .name || ""}"`}
       />
       <EditDialog open={openEdit} handleClose={closeEdit} category={category} />
-      <CategoryCreate />
+      <CategoryCreate open={creatingCategory} handleClose={() => setCreatingCategory(false)}/>
       <Paper>
         <TableContainer>
           <Table>
             <TableHead>
               <TableRow>
                 <TableCell>
-                  No
+                  Category
                 </TableCell>
                 <TableCell>
-                  Name
+                  Sub Category
                 </TableCell>
                 <TableCell>
-                  Actions
+                  {!creatingCategory ?
+                  <Button className={classes.addCategoryButton} color="secondary" variant="contained" onClick={() => setCreatingCategory(true)}>Add Category</Button>
+                  : null}
                 </TableCell>
               </TableRow>
             </TableHead>
             {!loading ? <TableBody>
               {categories.map((category, i) => (
-                <TableRow key={i} hover>
-                  <TableCell>
-                    {i}
-                  </TableCell>
-                  <TableCell>
-                    {category.name}
-                  </TableCell>
-                  <TableCell>
-                    <IconButton onClick={() => openDeleteCategory(category)}>
-                      <DeleteIcon className={classes.delete}/>
-                    </IconButton>
-                    <IconButton onClick={() => editCategory(category)}>
-                      <EditIcon />
-                    </IconButton>
-                  </TableCell>
-                </TableRow>
+                <>
+                  <TableRow key={i} hover>
+                    <TableCell>
+                      <Typography className={classes.category}>{category.name}</Typography>
+                    </TableCell>
+
+                    <TableCell>
+                      <Typography className={classes.category}><Button color="primary" variant="contained">Add Sub Category</Button></Typography>
+                    </TableCell>
+                    <TableCell>
+                      <IconButton onClick={() => openDeleteCategory(category)}>
+                        <DeleteIcon className={classes.delete}/>
+                      </IconButton>
+                      <IconButton onClick={() => editCategory(category)}>
+                        <EditIcon />
+                      </IconButton>
+                    </TableCell>
+                  </TableRow>
+                  {subCategories.filter(subCategory => subCategory.category.id === category.id).map(
+                    subCategory => (
+                      <TableRow>
+                        <TableCell>
+                          <Typography className={classes.subCategory}></Typography>
+                        </TableCell>
+                        <TableCell>
+                        <Typography className={classes.subCategory}>{subCategory.name}</Typography>
+                        </TableCell>
+                        <TableCell>
+                      <IconButton onClick={() => openDeleteCategory(category)}>
+                        <DeleteIcon className={classes.delete}/>
+                      </IconButton>
+                      <IconButton onClick={() => editCategory(category)}>
+                        <EditIcon />
+                      </IconButton>
+                    </TableCell>
+                      </TableRow>)
+                  )}
+                </>
               ))}
             </TableBody> :
             <div className={classes.loader}>
