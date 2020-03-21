@@ -1,5 +1,5 @@
 from rest_framework import routers, serializers, viewsets
-from backend.models import MyUser, Category, SubCategory
+from backend.models import MyUser, Category, SubCategory, Enquirery
 from django.shortcuts import get_object_or_404
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -27,6 +27,19 @@ class SubCategoryUpdateSerializer(serializers.ModelSerializer):
     model = SubCategory
     fields = ['id', 'name', 'category']
 
+
+class EnquirerySerializer(serializers.ModelSerializer):
+
+  class Meta:
+    model = Enquirery
+    fields = ['id', 'content']
+
+class EnquireryCreateSerializer(serializers.ModelSerializer):
+
+  class Meta:
+    model = Enquirery
+    fields = ['id', 'content', 'owner']
+
 class MyUserRetrieveSerializer(serializers.ModelSerializer):
   sub_category = SubCategorySimpleSerializer(many=False)
   category = CategorySerializer(many=False)
@@ -34,6 +47,15 @@ class MyUserRetrieveSerializer(serializers.ModelSerializer):
   class Meta:
     model = MyUser
     fields = ['id', 'email', 'first_name', 'last_name', 'country', 'city', 'role', 'category', 'sub_category']
+
+class MyUserDetailSerializer(serializers.ModelSerializer):
+  sub_category = SubCategorySimpleSerializer(many=False)
+  category = CategorySerializer(many=False)
+  enquiries = EnquirerySerializer(many=True, read_only=True)
+  class Meta:
+    model = MyUser
+    fields = ['id', 'email', 'first_name', 'last_name', 'country', 'city', 'role', 'category', 'sub_category', 'enquiries']
+
 
 class MyUserUpdateSerializer(serializers.ModelSerializer):
   sub_category = serializers.PrimaryKeyRelatedField(queryset=SubCategory.objects.all(), required=False)

@@ -1,8 +1,10 @@
 from rest_framework import routers, serializers, viewsets, generics
 from rest_framework.decorators import action
-from backend.models import MyUser, Category, SubCategory, ADMIN_USER, REGULAR_USER
-from backend.serializers import PasswordSerializer, SignupSerializer, CategorySerializer, SubCategoryRetrieveSerializer, SubCategoryUpdateSerializer, MyUserRetrieveSerializer, MyUserUpdateSerializer
-from backend.permissions import AdminOnly, ReadOnly, AllowPost
+from backend.models import MyUser, Category, SubCategory, Enquirery, ADMIN_USER, REGULAR_USER
+from backend.serializers import PasswordSerializer, SignupSerializer, CategorySerializer, SubCategoryRetrieveSerializer, \
+    SubCategoryUpdateSerializer, MyUserRetrieveSerializer, \
+   MyUserUpdateSerializer, MyUserDetailSerializer, EnquirerySerializer, EnquireryCreateSerializer
+from backend.permissions import AdminOnly, ReadOnly, AllowPost, EnquiryPermission
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
@@ -42,8 +44,10 @@ class MyUserViewSet(viewsets.ModelViewSet):
     return MyUser.objects.filter(role=REGULAR_USER)
 
   def get_serializer_class(self):
-    if self.action == 'list' or self.action == 'retrieve':
+    if self.action == 'list':
       return MyUserRetrieveSerializer
+    elif self.action == 'retrieve':
+      return MyUserDetailSerializer
     elif self.action == 'set_password':
       return PasswordSerializer
     else:
@@ -97,6 +101,17 @@ class SignupView(generics.CreateAPIView):
 #     else:
 #       return Response(serializer.errors,
 #         status=status.HTTP_400_BAD_REQUEST)
+
+class EnquireryViewSet(viewsets.ModelViewSet):
+  permission_classes = [EnquiryPermission, ]
+  queryset = Enquirery.objects.all()
+  serializer_class = EnquirerySerializer
+
+  def get_serializer_class(self):
+    if self.action == 'create':
+      return EnquireryCreateSerializer
+    else:
+      return EnquirerySerializer
 
 @api_view()
 def profile(request):
