@@ -18,6 +18,7 @@ import EditIcon from '@material-ui/icons/Edit';
 
 import { useCategory } from '../../context/category';
 import EditDialog from './edit';
+import SubCategoryEditDialog from './edit-sub-category';
 import ConfirmDialog from '../common/confirm';
 import CategoryCreate from './create';
 import CreateSubCategory from './create-sub-category';
@@ -49,7 +50,8 @@ const Categories = () => {
   const { data: { categories, loading, subCategories }, methods: { getCategories, deleteCategory, getSubCategories, deleteSubCategory } } = useCategory();
   const [category, setCategory] = useState();
   const [subCategory, setSubCategory] = useState();
-  const [openEdit, setOpenEdit] = useState(false);
+  const [openCategoryEdit, setOpenCategoryEdit] = useState(false);
+  const [openSubCategoryEdit, setOpenSubCategoryEdit] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
   const [openSubDelete, setOpenSubDelete] = useState(false);
   const [creatingCategory, setCreatingCategory] = useState(false);
@@ -57,7 +59,12 @@ const Categories = () => {
 
   const editCategory = (category) => {
     setCategory(category);
-    setOpenEdit(true);
+    setOpenCategoryEdit(true);
+  }
+
+  const editSubCategory = (subCategory) => {
+    setSubCategory(subCategory);
+    setOpenSubCategoryEdit(true);
   }
 
   /**
@@ -86,7 +93,10 @@ const Categories = () => {
     deleteSubCategory(subCategory.id);
   };
 
-  const closeEdit = () => setOpenEdit(false);
+  const closeEdit = () => {
+    setOpenCategoryEdit(false);
+    setOpenSubCategoryEdit(false);
+  }
 
   const closeCreate = () => {
     setCreatingCategory(false);
@@ -133,7 +143,8 @@ const Categories = () => {
         title="Delete Sub Category"
         message={`Are you sure to delete the sub category "${subCategory && subCategory .name || ""}"`}
       />
-      <EditDialog open={openEdit} handleClose={closeEdit} category={category} />
+      <EditDialog open={openCategoryEdit} handleClose={closeEdit} category={category} />
+      <SubCategoryEditDialog open={openSubCategoryEdit} handleClose={closeEdit} subCategory={subCategory} />
       <CategoryCreate open={creatingCategory} handleClose={closeCreate} />
       <CreateSubCategory open={creatingSubCategory} handleClose={closeCreate} category={category}/>
       <Paper>
@@ -187,7 +198,7 @@ const Categories = () => {
                       <IconButton onClick={() => openDeleteSubCategory(subCategory)}>
                         <DeleteIcon className={classes.delete}/>
                       </IconButton>
-                      <IconButton onClick={() => editCategory(category)}>
+                      <IconButton onClick={() => editSubCategory(subCategory)}>
                         <EditIcon />
                       </IconButton>
                     </TableCell>

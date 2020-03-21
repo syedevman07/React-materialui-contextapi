@@ -43,7 +43,7 @@ export default (
         break;
       case SUB_CATEGORY_UPDATE_SUCCESS:
         draft.subCategories = draft.subCategories.map(
-          subCategory => subCategory.id === payload.id ? { ...subCategory, payload } : subCategory);
+          subCategory => subCategory.id === payload.id ? { ...subCategory, name: payload.name } : subCategory);
         break;
 
     }
