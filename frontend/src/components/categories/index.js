@@ -20,7 +20,7 @@ import { useCategory } from '../../context/category';
 import EditDialog from './edit';
 import ConfirmDialog from '../common/confirm';
 import CategoryCreate from './create';
-import { getSubCategories } from '../../context/category/api';
+import CreateSubCategory from './create-sub-category';
 
 const useStyles = makeStyles({
   root: {
@@ -51,6 +51,8 @@ const Categories = () => {
   const [openEdit, setOpenEdit] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
   const [creatingCategory, setCreatingCategory] = useState(false);
+  const [creatingSubCategory, setCreatingSubCategory] = useState(false);
+
   const editCategory = (category) => {
     setCategory(category);
     setOpenEdit(true);
@@ -66,6 +68,22 @@ const Categories = () => {
   };
 
   const closeEdit = () => setOpenEdit(false);
+
+  const closeCreate = () => {
+    setCreatingCategory(false);
+    setCreatingSubCategory(false);
+  }
+
+  const addNewCategory = () => {
+    setCreatingCategory(true);
+    setCreatingSubCategory(false);
+  }
+
+  const addNewSubCategory = (category) => {
+    setCreatingCategory(false);
+    setCreatingSubCategory(true);
+    setCategory(category);
+  }
   const closeDelete = () => setOpenDelete(false);
   useEffect(() => {
     getCategories();
@@ -85,7 +103,8 @@ const Categories = () => {
         message={`Are you sure to delete the category "${category && category .name || ""}"`}
       />
       <EditDialog open={openEdit} handleClose={closeEdit} category={category} />
-      <CategoryCreate open={creatingCategory} handleClose={() => setCreatingCategory(false)}/>
+      <CategoryCreate open={creatingCategory} handleClose={closeCreate} />
+      <CreateSubCategory open={creatingSubCategory} handleClose={closeCreate} category={category}/>
       <Paper>
         <TableContainer>
           <Table>
@@ -99,7 +118,7 @@ const Categories = () => {
                 </TableCell>
                 <TableCell>
                   {!creatingCategory ?
-                  <Button className={classes.addCategoryButton} color="secondary" variant="contained" onClick={() => setCreatingCategory(true)}>Add Category</Button>
+                  <Button className={classes.addCategoryButton} color="secondary" variant="contained" onClick={addNewCategory}>Add Category</Button>
                   : null}
                 </TableCell>
               </TableRow>
@@ -113,7 +132,7 @@ const Categories = () => {
                     </TableCell>
 
                     <TableCell>
-                      <Typography className={classes.category}><Button color="primary" variant="contained">Add Sub Category</Button></Typography>
+                      <Typography className={classes.category}><Button color="primary" variant="contained" onClick={() => addNewSubCategory(category)}>Add Sub Category</Button></Typography>
                     </TableCell>
                     <TableCell>
                       <IconButton onClick={() => openDeleteCategory(category)}>
