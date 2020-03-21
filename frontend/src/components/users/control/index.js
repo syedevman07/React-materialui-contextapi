@@ -34,7 +34,7 @@ const useStyles = makeStyles({
 
 const UserControl = () => {
   const classes = useStyles();
-  const { data: { params, params: { category, subCategory } }, methods: { getUsers } } = useUser();
+  const { data: { params, params: { category, subCategory } }, methods: { getUsers, isAdmin } } = useUser();
   const handleCategoryChange = (selectedCategory) => {
     getUsers({...params, category: selectedCategory, subCategory: 0})
   }
@@ -42,7 +42,9 @@ const UserControl = () => {
     getUsers({...params, subCategory: selectedSubCategory})
   }
   return <div className={classes.root}>
-    <Button color="primary" variant="contained"><Link to='/users/new' className={classes.link}>Add New User</Link></Button>
+    <div>
+      {isAdmin() ? <Button color="primary" variant="contained"><Link to='/users/new' className={classes.link}>Add New User</Link></Button> : null}
+    </div>
     <div className={classes.control}>
       <div className={classes.category}>
         <CategoryFilter defaultValue={category} onChangeHanlder={handleCategoryChange}/>
