@@ -34,8 +34,18 @@ export const getUsers = dispatch => async (params) => {
   }
 }
 
-export const createUser = dispatch => async (data) => 
-  API.createUser(data);
+export const createUser = dispatch => async (data) =>{
+  try {
+    await API.createUser(data);
+    toast.success("User Create Success!");
+  } catch (e) {
+    if(e.email) {
+      toast.error(e.email[0]);
+    } else {
+      toast.error("User Create Failed!");
+    }
+  }
+}
 
 export const login = dispatch => async (data) => {
   dispatch({
@@ -74,14 +84,17 @@ export const isLoggedIn = state => () => {
 
 export const getUser = dispatch => async (id) => {
   try {
-    
     const { data } = await API.getUser(id);
     dispatch({
       type: GET_USER_SUCCESS,
       payload: data,
     })
   } catch {
-
+    dispatch({
+      type: GET_USER_SUCCESS,
+      payload: null,
+    })
+    toast.error("Error in feteching user profile!");
   }
 }
 

@@ -34,7 +34,7 @@ export const createUser = async(payload) => {
     method: 'POST',
     url: '/users/',
     data,
-  })
+  }, true)
 }
 
 export const login = async data => Axios({

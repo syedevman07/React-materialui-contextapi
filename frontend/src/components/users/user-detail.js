@@ -50,7 +50,13 @@ const User = () => {
   useEffect(() => {
     getUser(params.id);
   }, []);
-  console.log("user", user.sub_category)
+  if(!user) {
+    return (<div className={classes.root}>
+      <Typography variant="h5" component="h1" gutterBottom className={classes.title}>
+          User Not Found
+        </Typography>
+    </div>)
+  }
   return (
     <div className={classes.root}>
       <Typography variant="h5" component="h1" gutterBottom className={classes.title}>

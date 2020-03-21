@@ -37,11 +37,12 @@ const validationSchema = yup.object().shape({
   role: yup.number().required("Role is required"),
   category: yup.number().test('Categpru-test', 'Category is required when role is no a admin', 
     function(value) {
-      return this.parent.role === 1;
+      console.log("valeu, role", value, this.parent.role)
+      return this.parent.role === 1 || (value && this.parent.role == 2);
     }).notOneOf([0]),
   subCategory: yup.number().test('SubCategory-test', 'SubCategory is required when role is not a admin', 
     function(value) {
-      return this.parent.role === 1;
+      return this.parent.role === 1 || (value && this.parent.role == 2);
     }).notOneOf([0]),
 });
 
@@ -172,7 +173,7 @@ const User = () => {
                           error={errors.role}
                         >
                           <MenuItem value={1}>Admin</MenuItem>
-                          <MenuItem value={20}>Regular User</MenuItem>
+                          <MenuItem value={2}>Regular User</MenuItem>
                         </Select>
                     }
                   />

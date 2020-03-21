@@ -40,7 +40,12 @@ export const authRoutes = [
     path: '/profile',
     exact: true,
     component: User,
-  }
+  },
+  {
+    path: '/users/:id',
+    exact: true,
+    component: UserDetail,
+  },
 ];
 
 export const adminRoutes = [
