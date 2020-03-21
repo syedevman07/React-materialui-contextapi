@@ -17,10 +17,10 @@ const useStyles = makeStyles({
     marginRight: 30
   },
   addButton: {
-    color: 'red',
+    marginRight: 30
   }
 });
-export const CategoryCreate = () => {
+export const CategoryCreate = ({ open, handleClose}) => {
   const classes = useStyles();
   const [name, setName] = useState();
   const { methods: { createCategory } } = useCategory();
@@ -28,10 +28,14 @@ export const CategoryCreate = () => {
   const handleCreateCategory = () => {
     createCategory(name);
   }
+  if(!open) {
+    return null;
+  }
   return (
     <Paper className={classes.root}>
       <TextField className={classes.name} type="text" value={name} onChange={handleNameChange} placeholder="Category Name"/>
-      <Button color="primary" variant="contained" onClick={handleCreateCategory}>Add New Category</Button>
+      <Button color="primary" variant="contained" className={classes.addButton} onClick={handleCreateCategory}>Create</Button>
+      <Button color="secondary" variant="contained" onClick={handleClose}>Cancel</Button>
     </Paper>
   )
 };
