@@ -1,13 +1,12 @@
 import React from 'react';
 import { Switch, Route, Redirect } from 'react-router';
-
+import { ToastContainer, toast } from 'react-toastify';
 import { commonRoutes, authRoutes, noAuthRoutes, adminRoutes } from './routes';
 import MainLayout from './components/Layout';
 import { useUser } from './context/user';
 
 function App() {
-  const { methods: { isLoggedIn, isAdmin }, data } = useUser();
-  console.log("isAdmin, isLoggedIn", isAdmin(), isLoggedIn(), data)
+  const { methods: { isLoggedIn, isAdmin } } = useUser();
   const getRoutes = () => {
     if(isAdmin()) {
       return adminRoutes.concat(authRoutes).concat(commonRoutes);
@@ -19,6 +18,7 @@ function App() {
   }
   return (
     <MainLayout>
+      <ToastContainer autoClose={2000} position={toast.POSITION.TOP_RIGHT} />
       <Switch>
         {getRoutes().map((props, i) => 
         <Route key={i} {...props}/>)}

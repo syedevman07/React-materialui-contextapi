@@ -10,6 +10,7 @@ import * as serviceWorker from './serviceWorker';
 import theme from './utils/constants/theme';
 import { ThemeProvider } from '@material-ui/core';
 
+import 'react-toastify/dist/ReactToastify.css';
 
 
 const Main = () => {
