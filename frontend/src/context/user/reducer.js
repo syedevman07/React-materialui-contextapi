@@ -7,6 +7,7 @@ import {
   LOGIN_SUCCESS,
   LOGIN_FAILURE,
   RESET_STORE,
+  SEND_ENQUIERY_SUCCESS,
   SIGN_OUT,
 } from './actions';
 
@@ -46,6 +47,9 @@ export default (
         break;
       case SIGN_OUT:
         draft.currentUser = {}
+      case SEND_ENQUIERY_SUCCESS:
+        draft.user.enquiries = (draft.user.enquiries||[]).concat(payload);
+        break;
     } 
   })
 };

@@ -49,6 +49,15 @@ export const getProfile = async data => Axios({
   data,
 }, true)
 
+export const sendEnquiry = async (owner, content) => Axios({
+  method: 'POST',
+  url: '/enquiries/',
+  data: {
+    owner,
+    content,
+  },
+}, false);
+
 
 export const getUser = async id => Axios({
   method: 'GET',

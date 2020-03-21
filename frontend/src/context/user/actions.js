@@ -10,6 +10,7 @@ export const LOGIN_REQUEST = 'LOGIN_REQUEST';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGIN_FAILURE = 'LOGIN_FAILURE';
 export const RESET_STORE = 'RESET_STORE';
+export const SEND_ENQUIERY_SUCCESS = 'SEND_ENQUIERY_SUCCESS';
 export const SIGN_OUT = 'SIGN_OUT';
 
 
@@ -95,6 +96,19 @@ export const getUser = dispatch => async (id) => {
       payload: null,
     })
     toast.error("Error in feteching user profile!");
+  }
+}
+
+export const sendEnquiery = dispatch => async (userId, content) => {
+  try {
+    const { data } = await API.sendEnquiry(userId, content);
+    dispatch({
+      type: SEND_ENQUIERY_SUCCESS,
+      payload: data,
+    });
+    toast.success("Your message was delivered successfully.");
+  } catch {
+    toast.error("Message deliver failure");
   }
 }
 

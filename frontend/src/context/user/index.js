@@ -9,6 +9,7 @@ import {
     isLoggedIn,
     isAdmin,
     resetStore,
+    sendEnquiery,
     signOut,
 } from './actions';
 
@@ -38,6 +39,7 @@ const UserContextProvider = ({
                     isLoggedIn: isLoggedIn(state),
                     isAdmin: isAdmin(state),
                     signOut: signOut(dispatch),
+                    sendEnquiery: sendEnquiery(dispatch),
                 },
             }}
         >
