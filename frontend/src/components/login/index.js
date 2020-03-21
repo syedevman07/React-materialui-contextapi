@@ -17,6 +17,7 @@ const validationSchema = yup.object().shape({
   email: yup.string().email().required(),
   password: yup.string().required().min(8)
 });
+
 const useStyles = makeStyles({
   paper: {
     maxWidth: 400,

@@ -1,5 +1,7 @@
 import * as API from './api';
 import ROLE from '../../utils/constants/role';
+import { toast } from 'react-toastify';
+import { history } from '../..';
 
 export const GET_USERS_SUCCESS = 'GET_USERS_SUCCESS';
 export const CREATE_USER = 'CREATE_USER';
@@ -9,11 +11,13 @@ export const LOGIN_FAILURE = 'LOGIN_FAILURE';
 export const RESET_STORE = 'RESET_STORE';
 export const SIGN_OUT = 'SIGN_OUT';
 
+
 export const signOut = dispatch => async => {
   localStorage.removeItem('token');
   dispatch({
     type: SIGN_OUT,
   });
+  history.push("/");
 }
 export const getUsers = dispatch => async (params) => {
   try {
@@ -40,6 +44,8 @@ export const login = dispatch => async (data) => {
     const { access } = result.data;
     localStorage.setItem("token", access);
     result = await API.getProfile();
+    toast.success("Login Success!");
+    history.push("/");
     dispatch({
       type: LOGIN_SUCCESS,
       payload: result.data,

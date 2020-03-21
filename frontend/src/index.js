@@ -12,9 +12,9 @@ import { ThemeProvider } from '@material-ui/core';
 
 import 'react-toastify/dist/ReactToastify.css';
 
+export const history = createBrowserHistory();
 
 const Main = () => {
-  const history = createBrowserHistory();
 
   return (
     <ContextProvider>
