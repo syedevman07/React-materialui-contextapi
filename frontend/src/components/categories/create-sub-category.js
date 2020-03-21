@@ -35,10 +35,10 @@ const useStyles = makeStyles({
 export const SubCategoryCreate = ({ open, handleClose, category}) => {
   const classes = useStyles();
   const [name, setName] = useState();
-  const { methods: { createCategory } } = useCategory();
+  const { methods: { createSubCategory } } = useCategory();
   const handleNameChange = (e) => setName(e.target.value);
-  const handleCreateCategory = () => {
-    createCategory(name);
+  const handleSubCreateCategory = () => {
+    createSubCategory(category.id, name);
   }
   if(!open) {
     return null;
@@ -50,7 +50,7 @@ export const SubCategoryCreate = ({ open, handleClose, category}) => {
       </Typography>
       <div className={classes.body}>
         <TextField className={classes.name} type="text" value={name} onChange={handleNameChange} placeholder="Sub Category Name"/>
-        <Button color="primary" variant="contained" className={classes.addButton} onClick={handleCreateCategory}>Create</Button>
+        <Button color="primary" variant="contained" className={classes.addButton} onClick={handleSubCreateCategory}>Create</Button>
         <Button color="secondary" variant="contained" onClick={handleClose}>Cancel</Button>
       </div>
     </Paper>

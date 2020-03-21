@@ -5,6 +5,7 @@ import {
   CATEGORY_UPDATE_SUCCESS,
   CATEGORY_DELETE_SUCCESS,
   CATEGORY_CREATE_SUCCESS,
+  SUB_CATEGORY_CREATE_SUCCESS,
 } from './actions';
 
 import { initialState } from './context';
@@ -32,30 +33,9 @@ export default (
       case CATEGORY_CREATE_SUCCESS:
         draft.categories = draft.categories.concat(payload)
         break;
+      case SUB_CATEGORY_CREATE_SUCCESS:
+        draft.subCategories = draft.subCategories.concat(payload);
+        break;
     }
   }) 
 }
-
-// export default (
-//   state = initialState,
-//   action = { type: undefined, payload: undefined }
-// ) => {
-//   const { type, payload } = action;
-//   switch(type) {
-//     case GET_CATEGORIES_SUCCESS:
-//       return {
-//         ...state,
-//         categories: payload.data.results,
-//         categoryLoading: false,
-//       };
-//     case GET_SUB_CATEGORIES_SUCCESS:
-//       return {
-//         ...state,
-//         subCategories: payload.data.results,
-//         subCategoryLoading: false,
-//       };
-
-//     default:
-//       return state;
-//   }
-// }

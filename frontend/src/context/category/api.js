@@ -35,3 +35,13 @@ export const createCategory = async (name) =>
         name
       }
   }, true);
+
+export const createSubCategory = async (category, name) =>
+  Axios({
+    method: 'POST',
+    url: `/sub-category/`,
+    data: {
+      category,
+      name
+    }
+  }, true);
