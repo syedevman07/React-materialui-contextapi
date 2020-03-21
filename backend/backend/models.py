@@ -33,18 +33,17 @@ class MyUserManager(BaseUserManager):
 
 
 class Category(models.Model):
-  name = models.CharField(max_length=100)
+  name = models.CharField(max_length=100, unique=True)
   def __str__(self):
     return self.name
 
 
 class SubCategory(models.Model):
-  name = models.CharField(max_length=100)
+  name = models.CharField(max_length=100, unique=True)
   category = models.ForeignKey(Category, max_length=100, on_delete=models.CASCADE)
 
   def __str__(self):
     return self.name
-
 
 ADMIN_USER = 1
 REGULAR_USER = 2
@@ -105,3 +104,10 @@ class MyUser(AbstractBaseUser):
 
   class Meta:
     verbose_name = "User"
+
+class Enquirery(models.Model):
+  content = models.TextField()
+  owner = models.ForeignKey(MyUser, related_name="enquiries", on_delete=models.CASCADE)
+
+  def __str__(self):
+    return self.content[0:40]
