@@ -9,6 +9,7 @@ import {
     createCategory,
     createSubCategory,
     deleteSubCategory,
+    updateSubCategory,
 } from './actions';
 
 const CategoryContextProvider = ({
@@ -29,6 +30,7 @@ const CategoryContextProvider = ({
                     createCategory: createCategory(dispatch),
                     createSubCategory: createSubCategory(dispatch),
                     deleteSubCategory: deleteSubCategory(dispatch),
+                    updateSubCategory: updateSubCategory(dispatch),
                 },
             }}
         >

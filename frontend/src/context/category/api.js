@@ -51,3 +51,12 @@ export const createSubCategory = async (category, name) =>
       name
     }
   }, true);
+
+export const updateSubCategory = async (id, name) =>
+  Axios({
+    method: 'PATCH',
+    url: `/sub-category/${id}/`,
+    data: {
+      name,
+    }
+  }, true);
