@@ -22,9 +22,6 @@ function App() {
       <Switch>
         {getRoutes().map((props, i) => 
         <Route key={i} {...props}/>)}
-        {/* <Route path="">
-          <Redirect to="/" />
-        </Route> */}
       </Switch>
     </MainLayout>
   );

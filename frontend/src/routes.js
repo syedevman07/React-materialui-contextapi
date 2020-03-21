@@ -1,6 +1,7 @@
 import Users from './components/users';
 import User from './components/users/user';
 import Login from './components/login';
+import Categories from './components/categories';
 
 export const commonRoutes = [
   {
@@ -14,7 +15,7 @@ export const commonRoutes = [
     component: User,
   },
   {
-    path: '',
+    path: '/',
     exact: true,
     component: Users,
   },
@@ -41,4 +42,10 @@ export const authRoutes = [
   }
 ];
 
-export const adminRoutes = [];
+export const adminRoutes = [
+  {
+    path: '/categories',
+    exact: true,
+    component: Categories,
+  }
+];

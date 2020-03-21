@@ -5,6 +5,7 @@ export const initialState = {
   subCategories: [],
   categoryLoading: true,
   subCategoryLoading: true,
+  loading: false,
 };
 
 const context = createContext();
