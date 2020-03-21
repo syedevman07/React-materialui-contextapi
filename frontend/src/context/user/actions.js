@@ -17,6 +17,7 @@ export const signOut = dispatch => async => {
   dispatch({
     type: SIGN_OUT,
   });
+  toast.success("Signout Success!");
   history.push("/");
 }
 export const getUsers = dispatch => async (params) => {

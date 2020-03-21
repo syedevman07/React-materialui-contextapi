@@ -2,7 +2,8 @@ import produce from 'immer';
 import {
   GET_CATEGORIES_SUCCESS,
   GET_SUB_CATEGORIES_SUCCESS,
-  CATEGORY_UPDATE_SUCCESS
+  CATEGORY_UPDATE_SUCCESS,
+  CATEGORY_DELETE_SUCCESS
 } from './actions';
 import { initialState } from './context';
 
@@ -21,8 +22,10 @@ export default (
         draft.subCategories = payload;
         draft.subCategoryLoading = false;
       case CATEGORY_UPDATE_SUCCESS:
-        console.log("payload -")
         draft.categories = draft.categories.map(category => category.id === payload.id ? payload : category);
+        break;
+      case CATEGORY_DELETE_SUCCESS:
+        draft.categories = draft.categories.filter(category => category.id !== payload)
         break;
     }
   }) 

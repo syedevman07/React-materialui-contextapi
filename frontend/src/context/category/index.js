@@ -1,7 +1,7 @@
 import React, { useReducer, useContext } from 'react';
 import Context, { initialState } from './context';
 import reducer from './reducer';
-import { getCategories, getSubCategories, updateCategory } from './actions';
+import { getCategories, getSubCategories, updateCategory, deleteCategory } from './actions';
 
 const CategoryContextProvider = ({
     children,
@@ -16,7 +16,8 @@ const CategoryContextProvider = ({
                 methods: {
                     getCategories: getCategories(dispatch),
                     getSubCategories: getSubCategories(dispatch),
-                    updateCategory: updateCategory(dispatch)
+                    updateCategory: updateCategory(dispatch),
+                    deleteCategory: deleteCategory(dispatch)
                 },
             }}
         >

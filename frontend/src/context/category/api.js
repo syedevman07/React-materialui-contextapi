@@ -20,3 +20,9 @@ export const getSubCategories = async () =>
       method: 'GET',
       url: '/sub-category/',
   });
+
+export const deleteCategory = async (id) => 
+  Axios({
+      method: 'DELETE',
+      url: `/category/${id}/`,
+  }, true);
