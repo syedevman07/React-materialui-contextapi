@@ -17,6 +17,7 @@ import EditIcon from '@material-ui/icons/Edit';
 
 import { useCategory } from '../../context/category';
 import EditDialog from './edit';
+import ConfirmDialog from '../common/confirm';
 
 const useStyles = makeStyles({
   root: {
@@ -33,16 +34,27 @@ const useStyles = makeStyles({
 });
 const Categories = () => {
   const classes = useStyles();
-  const { data: { categories, loading }, methods: { getCategories } } = useCategory();
+  const { data: { categories, loading }, methods: { getCategories, deleteCategory } } = useCategory();
   const [category, setCategory] = useState();
   const [openEdit, setOpenEdit] = useState(false);
+  const [openDelete, setOpenDelete] = useState(false);
   const editCategory = (category) => {
     setCategory(category);
     setOpenEdit(true);
   }
 
-  const closeEdit = () => setOpenEdit(false);
+  const openDeleteCategory = (category) => {
+    setCategory(category);
+    setOpenDelete(true);
+  }
 
+  const handleDeleteCategory = () => {
+    console.log(category)
+    deleteCategory(category.id);
+  }
+
+  const closeEdit = () => setOpenEdit(false);
+  const closeDelete = () => setOpenDelete(false);
   useEffect(() => {
     getCategories();
   }, []);
@@ -52,7 +64,14 @@ const Categories = () => {
       <Typography>
         Categories
       </Typography>
-      <EditDialog open={openEdit} handleClose={closeEdit} category={category}/>
+      <ConfirmDialog 
+        open={openDelete}
+        handleAction={handleDeleteCategory}
+        handleClose={closeDelete}
+        title="Delete Category"
+        message={`Are you sure to delete the category "${category && category .name || ""}"`}
+      />
+      <EditDialog open={openEdit} handleClose={closeEdit} category={category} />
       <Paper>
         <TableContainer>
           <Table>
@@ -79,7 +98,7 @@ const Categories = () => {
                     {category.name}
                   </TableCell>
                   <TableCell>
-                    <IconButton>
+                    <IconButton onClick={() => openDeleteCategory(category)}>
                       <DeleteIcon className={classes.delete}/>
                     </IconButton>
                     <IconButton onClick={() => editCategory(category)}>
