@@ -6,6 +6,15 @@ export const getCategories = async () =>
       url: '/category/',
   });
 
+export const updateCategory = async (id, name) =>
+  Axios({
+    method: 'PUT',
+    url: `/category/${id}/`,
+    data: {
+      name,
+    }
+  }, true);
+
 export const getSubCategories = async () => 
   Axios({
       method: 'GET',

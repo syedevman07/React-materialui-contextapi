@@ -61,9 +61,6 @@ export const resetStore = dispatch => async (data) => {
 
 export const isLoggedIn = state => () => {
   const isLoggedIn = !!state.currentUser.id;
-  if (!isLoggedIn) {
-    localStorage.removeItem("token");
-  }
   return isLoggedIn;
 }
 
