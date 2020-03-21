@@ -112,7 +112,7 @@ export const createSubCategory = dispatch => async (categoryId, name) => {
     const { data } = await API.createSubCategory(categoryId, name);
     dispatch({
       type: SUB_CATEGORY_CREATE_SUCCESS,
-      payload: data,
+      payload: { subCategory: data, categoryId },
     });
     toast.success("Create Success!");
   } catch (e) {

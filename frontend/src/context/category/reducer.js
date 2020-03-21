@@ -36,7 +36,8 @@ export default (
         draft.categories = draft.categories.concat(payload)
         break;
       case SUB_CATEGORY_CREATE_SUCCESS:
-        draft.subCategories = draft.subCategories.concat(payload);
+        const category = draft.categories.filter(category => category.id === payload.categoryId)[0] || {};
+        draft.subCategories = draft.subCategories.concat({ ...payload.subCategory, category });
         break;
       case SUB_CATEGORY_DELETE_SUCCESS:
         draft.subCategories = draft.subCategories.filter(subCategory => subCategory.id !== payload);
