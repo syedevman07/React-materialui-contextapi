@@ -4,18 +4,15 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import InputBase from '@material-ui/core/InputBase';
-import Badge from '@material-ui/core/Badge';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
-import MenuIcon from '@material-ui/icons/Menu';
-import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import PeopleIcon from '@material-ui/icons/People';
 import CategoryIcon from '@material-ui/icons/Category';
 import { Link } from 'react-router-dom';
 import HomeIcon from '@material-ui/icons/Home';
+import { useUser } from '../../context/user';
 
 const useStyles = makeStyles(theme => ({
   grow: {
@@ -34,29 +31,9 @@ const useStyles = makeStyles(theme => ({
     color: 'white',
     textDecoration: 'none',
   },
-  search: {
-    position: 'relative',
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: fade(theme.palette.common.white, 0.15),
-    '&:hover': {
-      backgroundColor: fade(theme.palette.common.white, 0.25),
-    },
-    marginRight: theme.spacing(2),
-    marginLeft: 0,
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-      marginLeft: theme.spacing(3),
-      width: 'auto',
-    },
-  },
-  searchIcon: {
-    padding: theme.spacing(0, 2),
-    height: '100%',
-    position: 'absolute',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+  menuLink: {
+    color: 'black',
+    textDecoration: 'none',
   },
   inputRoot: {
     color: 'inherit',
@@ -70,6 +47,9 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.up('md')]: {
       width: '20ch',
     },
+  },
+  menu: {
+    marginTop: 40,
   },
   sectionDesktop: {
     display: 'none',
@@ -87,6 +67,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function PrimarySearchAppBar() {
   const classes = useStyles();
+  const { methods: { signOut, isLoggedIn, isAdmin } } = useUser();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
@@ -110,19 +91,31 @@ export default function PrimarySearchAppBar() {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
+  const logout = () => {
+    handleMenuClose();
+    signOut();
+  }
+
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
     <Menu
       anchorEl={anchorEl}
       anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
       id={menuId}
+      className={classes.menu}
       keepMounted
       transformOrigin={{ vertical: 'top', horizontal: 'right' }}
       open={isMenuOpen}
       onClose={handleMenuClose}
-    >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+    > 
+      {isLoggedIn() ? <>
+        <MenuItem onClick={handleMenuClose}><Link className={classes.menuLink} to="/profile">Profile</Link></MenuItem>
+        <MenuItem onClick={logout}>Sign out</MenuItem>
+      </> : 
+      <>
+        <MenuItem onClick={handleMenuClose}><Link className={classes.menuLink} to="/login">Login</Link></MenuItem>
+      </>
+      }
     </Menu>
   );
 
@@ -132,34 +125,26 @@ export default function PrimarySearchAppBar() {
       anchorEl={mobileMoreAnchorEl}
       anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
       id={mobileMenuId}
+      className={classes.menu}
       keepMounted
       transformOrigin={{ vertical: 'top', horizontal: 'right' }}
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem>
-        <IconButton aria-label="show 4 new mails" color="inherit">
-          <PeopleIcon />
-        </IconButton>
-        <p>Users</p>
-      </MenuItem>
-      <MenuItem>
-        <IconButton aria-label="show 11 new notifications" color="inherit">
-          <CategoryIcon />
-        </IconButton>
-        <p>Category</p>
-      </MenuItem>
-      <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          <AccountCircle />
-        </IconButton>
-        <p>Profile</p>
-      </MenuItem>
+      <MenuItem onClick={logout}><Link className={classes.menuLink} to="/Users">Users</Link></MenuItem>
+      {isAdmin() ? <>
+        <MenuItem onClick={logout}><Link className={classes.menuLink} to="/categories">Categories</Link></MenuItem>
+        <MenuItem onClick={logout}><Link className={classes.menuLink} to="/sub-categories">Sub-Categories</Link></MenuItem>
+      </> : null}
+      {isLoggedIn() ? <>
+        <MenuItem onClick={handleProfileMenuOpen}>
+          <Link className={classes.menuLink} to="/profile">Profile</Link>
+        </MenuItem>
+        <MenuItem onClick={handleProfileMenuOpen}>
+          <Link className={classes.menuLink} to="/login">Login</Link>
+        </MenuItem></> : 
+        <MenuItem onClick={logout}>Sign out</MenuItem>
+      }
     </Menu>
   );
 
@@ -175,10 +160,22 @@ export default function PrimarySearchAppBar() {
             <Link to=""><HomeIcon /></Link>
           </IconButton>
           <MenuItem>
-          <Typography className={classes.title} variant="h6" noWrap>
-            <Link className={classes.link} to="/users">Users</Link>
-          </Typography>
+            <Typography className={classes.title} variant="h6" noWrap>
+              <Link className={classes.link} to="/users">Users</Link>
+            </Typography>
           </MenuItem>
+          {isAdmin() ? <>
+            <MenuItem>
+              <Typography className={classes.title} variant="h6" noWrap>
+                <Link className={classes.link} to="/categories">Categories</Link>
+              </Typography>
+            </MenuItem>
+            <MenuItem>
+              <Typography className={classes.title} variant="h6" noWrap>
+                <Link className={classes.link} to="/sub-categories">Sub-Categories</Link>
+              </Typography>
+            </MenuItem>
+          </> : null}
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
             <IconButton aria-label="show 4 new mails" color="inherit">
