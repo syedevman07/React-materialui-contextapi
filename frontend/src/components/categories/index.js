@@ -18,6 +18,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import { useCategory } from '../../context/category';
 import EditDialog from './edit';
 import ConfirmDialog from '../common/confirm';
+import CategoryCreate from './create';
 
 const useStyles = makeStyles({
   root: {
@@ -72,6 +73,7 @@ const Categories = () => {
         message={`Are you sure to delete the category "${category && category .name || ""}"`}
       />
       <EditDialog open={openEdit} handleClose={closeEdit} category={category} />
+      <CategoryCreate />
       <Paper>
         <TableContainer>
           <Table>

@@ -3,8 +3,10 @@ import {
   GET_CATEGORIES_SUCCESS,
   GET_SUB_CATEGORIES_SUCCESS,
   CATEGORY_UPDATE_SUCCESS,
-  CATEGORY_DELETE_SUCCESS
+  CATEGORY_DELETE_SUCCESS,
+  CATEGORY_CREATE_SUCCESS,
 } from './actions';
+
 import { initialState } from './context';
 
 export default (
@@ -26,6 +28,9 @@ export default (
         break;
       case CATEGORY_DELETE_SUCCESS:
         draft.categories = draft.categories.filter(category => category.id !== payload)
+        break;
+      case CATEGORY_CREATE_SUCCESS:
+        draft.categories = draft.categories.concat(payload)
         break;
     }
   }) 

@@ -26,3 +26,12 @@ export const deleteCategory = async (id) =>
       method: 'DELETE',
       url: `/category/${id}/`,
   }, true);
+
+export const createCategory = async (name) => 
+  Axios({
+      method: 'POST',
+      url: `/category/`,
+      data: {
+        name
+      }
+  }, true);
