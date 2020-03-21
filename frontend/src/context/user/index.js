@@ -3,6 +3,7 @@ import Context, { initialState } from './context';
 import reducer from './reducer';
 import { 
     getUsers,
+    getUser,
     createUser,
     login,
     isLoggedIn,
@@ -31,6 +32,7 @@ const UserContextProvider = ({
                 data: state,
                 methods: {
                     getUsers: getUsers(dispatch),
+                    getUser: getUser(dispatch),
                     createUser: createUser(dispatch),
                     login: login(dispatch),
                     isLoggedIn: isLoggedIn(state),

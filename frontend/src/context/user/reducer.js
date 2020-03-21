@@ -2,6 +2,7 @@ import produce from 'immer';
 
 import {
   GET_USERS_SUCCESS,
+  GET_USER_SUCCESS,
   LOGIN_REQUEST,
   LOGIN_SUCCESS,
   LOGIN_FAILURE,
@@ -29,6 +30,9 @@ export default (
         draft.count = count;
         draft.loading = false;
         draft.params = { ...draft.params, ...params};
+        break;
+      case GET_USER_SUCCESS:
+        draft.user = payload;
         break;
       case LOGIN_REQUEST:
         draft.loginLoading = true;

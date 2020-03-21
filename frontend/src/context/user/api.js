@@ -49,3 +49,9 @@ export const getProfile = async data => Axios({
   data,
 }, true)
 
+
+export const getUser = async id => Axios({
+  method: 'GET',
+  url: `/users/${id}/`,
+  data: { id },
+});

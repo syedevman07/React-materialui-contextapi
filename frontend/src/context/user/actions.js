@@ -5,6 +5,7 @@ import { history } from '../..';
 
 export const GET_USERS_SUCCESS = 'GET_USERS_SUCCESS';
 export const CREATE_USER = 'CREATE_USER';
+export const GET_USER_SUCCESS = 'GET_USER_SUCCESS';
 export const LOGIN_REQUEST = 'LOGIN_REQUEST';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGIN_FAILURE = 'LOGIN_FAILURE';
@@ -69,6 +70,19 @@ export const resetStore = dispatch => async (data) => {
 export const isLoggedIn = state => () => {
   const isLoggedIn = !!state.currentUser.id;
   return isLoggedIn;
+}
+
+export const getUser = dispatch => async (id) => {
+  try {
+    
+    const { data } = await API.getUser(id);
+    dispatch({
+      type: GET_USER_SUCCESS,
+      payload: data,
+    })
+  } catch {
+
+  }
 }
 
 export const isAdmin = state => () =>  state.currentUser && state.currentUser.role === ROLE.Admin;
