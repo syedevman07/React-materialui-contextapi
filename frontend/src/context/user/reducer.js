@@ -6,6 +6,7 @@ import {
   LOGIN_SUCCESS,
   LOGIN_FAILURE,
   RESET_STORE,
+  SIGN_OUT,
 } from './actions';
 
 import { initialState } from './context';
@@ -18,6 +19,7 @@ export default (
   if(type === RESET_STORE) {
     return { ...payload, updatedAt: new Date().getMilliseconds() }
   }
+
   return produce(state, draft => {
     draft.updatedAt = new Date().getMilliseconds();
     switch(type) {
@@ -38,6 +40,8 @@ export default (
       case LOGIN_FAILURE: 
         draft.loginLoading = false;
         break;
+      case SIGN_OUT:
+        draft.currentUser = {}
     } 
   })
 };

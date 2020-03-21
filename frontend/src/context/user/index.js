@@ -1,7 +1,15 @@
 import React, { useReducer, useState, useContext, useEffect } from 'react';
 import Context, { initialState } from './context';
 import reducer from './reducer';
-import { getUsers, createUser, login, isLoggedIn, isAdmin, resetStore } from './actions';
+import { 
+    getUsers,
+    createUser,
+    login,
+    isLoggedIn,
+    isAdmin,
+    resetStore,
+    signOut,
+} from './actions';
 
 const UserContextProvider = ({
     children,
@@ -27,6 +35,7 @@ const UserContextProvider = ({
                     login: login(dispatch),
                     isLoggedIn: isLoggedIn(state),
                     isAdmin: isAdmin(state),
+                    signOut: signOut(dispatch),
                 },
             }}
         >

@@ -7,7 +7,7 @@ import ContextProvider from './context';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import theme from './context/constants/theme';
+import theme from './utils/constants/theme';
 import { ThemeProvider } from '@material-ui/core';
 
 

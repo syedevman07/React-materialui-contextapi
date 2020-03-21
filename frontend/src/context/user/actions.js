@@ -7,8 +7,14 @@ export const LOGIN_REQUEST = 'LOGIN_REQUEST';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGIN_FAILURE = 'LOGIN_FAILURE';
 export const RESET_STORE = 'RESET_STORE';
+export const SIGN_OUT = 'SIGN_OUT';
 
-
+export const signOut = dispatch => async => {
+  localStorage.removeItem('token');
+  dispatch({
+    type: SIGN_OUT,
+  });
+}
 export const getUsers = dispatch => async (params) => {
   try {
     
