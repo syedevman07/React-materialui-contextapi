@@ -8,6 +8,7 @@ export const CATEGORY_UPDATE_SUCCESS = 'CATEGORY_UPDATE_SUCCESS';
 export const CATEGORY_DELETE_SUCCESS = 'CATEGORY_DELETE_SUCCESS';
 export const CATEGORY_CREATE_SUCCESS = 'CATEGORY_CREATE_SUCCESS';
 export const SUB_CATEGORY_CREATE_SUCCESS = 'SUB_CATEGORY_CREATE_SUCCESS';
+export const SUB_CATEGORY_DELETE_SUCCESS = 'SUB_CATEGORY_DELETE_SUCCESS';
 
 export const getCategories = dispatch => async () => {
   try {
@@ -54,6 +55,20 @@ export const deleteCategory = dispatch => async (id) => {
     await API.deleteCategory(id);
     dispatch({
       type: CATEGORY_DELETE_SUCCESS,
+      payload: id,
+    });
+    toast.success("Delete Success!");
+  } catch (e) {
+    console.log("Category Delete Error:", e);
+    toast.error("Create Error!");
+  }
+}
+
+export const deleteSubCategory = dispatch => async (id) => {
+  try {
+    await API.deleteSubCategory(id);
+    dispatch({
+      type: SUB_CATEGORY_DELETE_SUCCESS,
       payload: id,
     });
     toast.success("Delete Success!");

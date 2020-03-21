@@ -46,10 +46,12 @@ const useStyles = makeStyles({
 });
 const Categories = () => {
   const classes = useStyles();
-  const { data, data: { categories, loading, subCategories }, methods: { getCategories, deleteCategory, getSubCategories } } = useCategory();
+  const { data: { categories, loading, subCategories }, methods: { getCategories, deleteCategory, getSubCategories, deleteSubCategory } } = useCategory();
   const [category, setCategory] = useState();
+  const [subCategory, setSubCategory] = useState();
   const [openEdit, setOpenEdit] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
+  const [openSubDelete, setOpenSubDelete] = useState(false);
   const [creatingCategory, setCreatingCategory] = useState(false);
   const [creatingSubCategory, setCreatingSubCategory] = useState(false);
 
@@ -58,6 +60,10 @@ const Categories = () => {
     setOpenEdit(true);
   }
 
+  /**
+   * 
+   * @param {*} category 
+   */
   const openDeleteCategory = (category) => {
     setCategory(category);
     setOpenDelete(true);
@@ -65,6 +71,19 @@ const Categories = () => {
 
   const handleDeleteCategory = () => {
     deleteCategory(category.id);
+  };
+ 
+  /**
+   * 
+   */
+
+  const openDeleteSubCategory = (subCategory) => {
+    setSubCategory(subCategory);
+    setOpenSubDelete(true);
+  }
+
+  const handleDeleteSubCategory = () => {
+    deleteSubCategory(subCategory.id);
   };
 
   const closeEdit = () => setOpenEdit(false);
@@ -84,7 +103,12 @@ const Categories = () => {
     setCreatingSubCategory(true);
     setCategory(category);
   }
-  const closeDelete = () => setOpenDelete(false);
+
+  const closeDelete = () => {
+    setOpenDelete(false);
+    setOpenSubDelete(false);
+  }
+
   useEffect(() => {
     getCategories();
     getSubCategories();
@@ -101,6 +125,13 @@ const Categories = () => {
         handleClose={closeDelete}
         title="Delete Category"
         message={`Are you sure to delete the category "${category && category .name || ""}"`}
+      />
+      <ConfirmDialog 
+        open={openSubDelete}
+        handleAction={handleDeleteSubCategory}
+        handleClose={closeDelete}
+        title="Delete Sub Category"
+        message={`Are you sure to delete the sub category "${subCategory && subCategory .name || ""}"`}
       />
       <EditDialog open={openEdit} handleClose={closeEdit} category={category} />
       <CategoryCreate open={creatingCategory} handleClose={closeCreate} />
@@ -153,7 +184,7 @@ const Categories = () => {
                         <Typography className={classes.subCategory}>{subCategory.name}</Typography>
                         </TableCell>
                         <TableCell>
-                      <IconButton onClick={() => openDeleteCategory(category)}>
+                      <IconButton onClick={() => openDeleteSubCategory(subCategory)}>
                         <DeleteIcon className={classes.delete}/>
                       </IconButton>
                       <IconButton onClick={() => editCategory(category)}>

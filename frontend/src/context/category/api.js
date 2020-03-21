@@ -27,6 +27,12 @@ export const deleteCategory = async (id) =>
       url: `/category/${id}/`,
   }, true);
 
+export const deleteSubCategory = async (id) => 
+  Axios({
+      method: 'DELETE',
+      url: `/sub-category/${id}/`,
+  }, true);
+
 export const createCategory = async (name) => 
   Axios({
       method: 'POST',

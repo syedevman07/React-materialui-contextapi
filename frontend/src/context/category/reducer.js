@@ -6,6 +6,7 @@ import {
   CATEGORY_DELETE_SUCCESS,
   CATEGORY_CREATE_SUCCESS,
   SUB_CATEGORY_CREATE_SUCCESS,
+  SUB_CATEGORY_DELETE_SUCCESS,
 } from './actions';
 
 import { initialState } from './context';
@@ -35,6 +36,9 @@ export default (
         break;
       case SUB_CATEGORY_CREATE_SUCCESS:
         draft.subCategories = draft.subCategories.concat(payload);
+        break;
+      case SUB_CATEGORY_DELETE_SUCCESS:
+        draft.subCategories = draft.subCategories.filter(subCategory => subCategory.id !== payload);
         break;
     }
   }) 

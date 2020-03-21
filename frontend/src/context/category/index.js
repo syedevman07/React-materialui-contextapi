@@ -7,7 +7,8 @@ import {
     updateCategory,
     deleteCategory,
     createCategory,
-    createSubCategory
+    createSubCategory,
+    deleteSubCategory,
 } from './actions';
 
 const CategoryContextProvider = ({
@@ -27,6 +28,7 @@ const CategoryContextProvider = ({
                     deleteCategory: deleteCategory(dispatch),
                     createCategory: createCategory(dispatch),
                     createSubCategory: createSubCategory(dispatch),
+                    deleteSubCategory: deleteSubCategory(dispatch),
                 },
             }}
         >
