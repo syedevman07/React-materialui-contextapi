@@ -38,7 +38,8 @@ const Enquiries = ({ enquiries, user }) => {
     return (<div className={classes.root}>
       <Typography variant="h5" component="h1" gutterBottom className={classes.title}>
           No Enquiries Found
-        </Typography>
+      </Typography>
+      <PostEnquiry userId={user.id}/>
     </div>)
   }
   return (

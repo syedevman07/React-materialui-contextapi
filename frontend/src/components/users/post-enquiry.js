@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Paper, Button, TextField } from '@material-ui/core';
+import { Paper, Button, TextField, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { useCategory } from '../../context/category';
 import { useUser } from '../../context/user';
@@ -42,7 +42,7 @@ export const CategoryCreate = ({ userId }) => {
         value={content}
         onChange={handleContentChange}
         placeholder="Enter your enquiry."/>
-      <Button color="primary" variant="contained" className={classes.addButton} onClick={handleSubmit}>Send</Button>
+      <Button color="primary" variant="contained" className={classes.addButton} onClick={handleSubmit}>Send a message</Button>
       <Button color="secondary" variant="contained" onClick={() => setContent("")}>Clear</Button>
     </Paper>
   )

@@ -21,7 +21,7 @@ import { Link, useParams } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import { useForm, Controller } from 'react-hook-form';
 import * as yup from 'yup';
-
+import PostEnquiry from './post-enquiry';
 import CategoryFilter from '../common/category-filter';
 import SubCategoryFilter from '../common/sub-category-filter';
 import { useUser } from '../../context/user';
@@ -314,6 +314,7 @@ const User = () => {
             </Grid>
           </Paper>
         </form>
+        {!creating ? <PostEnquiry userId={user.id}/> : null}
     </div>
   )
 };
