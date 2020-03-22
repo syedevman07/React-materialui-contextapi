@@ -17,19 +17,11 @@ export const getUsers = async ({ page, search, category, subCategory, role }) =>
 };
 
 export const createUser = async(payload) => {
-  const { firstName, lastName, email, role, password, category, subCategory, country, city} = payload;
-  let data = {
-    first_name: firstName,
-    last_name: lastName,
-    email,
-    password,
-    role,
-    country,
-    category,
-    sub_category: subCategory,
-    city,
-  };
-
+  const data = {
+    ...payload,
+    sub_category: payload.sub_category || null,
+    category: payload.category || null,
+  }
   return Axios({
     method: 'POST',
     url: '/users/',

@@ -294,7 +294,7 @@ const Profile = ({ isSignup }) => {
             </Grid>
             <Grid item xs={6}>
             {!isSignup ? 
-              <Button type="button" fullWidth variant="contained" color="secondary">Change Password</Button>
+              <Button type="button" fullWidth variant="contained" color="secondary"><Link to='/password-change'>Change Password</Link></Button>
               :
               <Button type="button" fullWidth variant="outlined" color="secondary"><Link to="/login">Login</Link></Button>}
             </Grid>

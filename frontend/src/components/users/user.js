@@ -17,7 +17,7 @@ import GroupIcon from '@material-ui/icons/Group';
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import { useForm, Controller } from 'react-hook-form';
 import * as yup from 'yup';
@@ -26,9 +26,9 @@ import CategoryFilter from '../common/category-filter';
 import SubCategoryFilter from '../common/sub-category-filter';
 import { useUser } from '../../context/user';
 
-const validationSchema = yup.object().shape({
-  firstName: yup.string().required("First Name is required"),
-  lastName: yup.string().required("Last Name is required"),
+const editValidationShape = {
+  first_name: yup.string().required("First Name is required"),
+  last_name: yup.string().required("Last Name is required"),
   email: yup.string().email().required("Email is required"),
   password: yup.string().min(8).required('Password is required'),
   passwordRepeat: yup.string().min(8).oneOf([yup.ref('password')], 'Passwords must match'),
@@ -38,13 +38,21 @@ const validationSchema = yup.object().shape({
   category: yup.number().test('Categpru-test', 'Category is required when role is no a admin', 
     function(value) {
       console.log("valeu, role", value, this.parent.role)
-      return this.parent.role === 1 || (value && this.parent.role == 2);
-    }).notOneOf([0]),
-  subCategory: yup.number().test('SubCategory-test', 'SubCategory is required when role is not a admin', 
+      return this.parent.role === 1 || ((value && value > 0) && this.parent.role == 2);
+    }),
+  sub_category: yup.number().test('SubCategory-test', 'SubCategory is required when role is not a admin', 
     function(value) {
-      return this.parent.role === 1 || (value && this.parent.role == 2);
-    }).notOneOf([0]),
-});
+      return this.parent.role === 1 || ((value && value > 0) && this.parent.role == 2);
+    }),
+}
+
+const createValidationShape = {
+  ...editValidationShape,
+  password: yup.string().min(8).required('Password is required'),
+  passwordRepeat: yup.string().required().min(8).oneOf([yup.ref('password')], 'Passwords must match'),
+}
+
+// const validationSchema = yup.object().shape();
 
 const useStyles = makeStyles({
   paper: {
@@ -63,27 +71,40 @@ const useStyles = makeStyles({
 });
 
 const User = () => {
-  const { handleSubmit, control, errors, setValue, register } = useForm({
-    validationSchema,
-  });
+  const { id } = useParams();
+  const creating = id === 'new';
+  console.log(createValidationShape)
+  const validationShape = creating ? createValidationShape : editValidationShape;
   const [category, setCategory] = useState(0);
-  const [subCategory, setSubCategory] = useState(0);
-  const { methods:  { createUser } } = useUser();
+  const [sub_category, setSubCategory] = useState(0);
+  const { methods:  { createUser, getUser }, data, data: { user = {} } } = useUser();
   const classes = useStyles();
-  const creating = true;
+  useEffect(() => {
+    if(!creating) {
+      getUser(id)
+    }
+  }, [id]);
 
+  const { handleSubmit, control, errors, setValue, register } = useForm({
+    validationSchema: yup.object().shape(validationShape),
+    defaultValues: creating ? {} : {
+      ...user,
+      category: user.category && user.category.id || 0,
+      sub_category: user.sub_category && user.sub_category.id || 0,
+    }
+  });
   useEffect(() => {
     register({ name: 'category' });
-    register({ name: 'subCategory' });
+    register({ name: 'sub_category' });
   }, [register]);
   const handleChangeCategory = category => {
     setCategory(category);
     setValue('category', category);
   };
 
-  const handleSubCategoryChange = subCategory => {
-    setSubCategory(subCategory);
-    setValue('subCategory', subCategory);
+  const handleSubCategoryChange = sub_category => {
+    setSubCategory(sub_category);
+    setValue('sub_category', sub_category);
   }
 
   const submit = (values) => {
@@ -100,11 +121,11 @@ const User = () => {
             <Grid spacing={4} container >
               <Grid item xs={6}>
                 <Controller
-                  name="firstName"
+                  name="first_name"
                   control={control}
                   as={
                     <TextField
-                      error={errors.firstName}
+                      error={errors.first_name}
                       type="text"
                       label="First Name"
                       fullWidth
@@ -120,11 +141,11 @@ const User = () => {
               </Grid>
               <Grid item xs={6}>
                 <Controller
-                  name="lastName"
+                  name="last_name"
                   control={control}
                   as={
                     <TextField
-                      error={errors.lastName}
+                      error={errors.last_name}
                       type="text"
                       label="Last Name"
                       InputProps={{
@@ -179,63 +200,65 @@ const User = () => {
                   />
                 </FormControl>
               </Grid>
-              <Grid item xs={6}>
-                <Controller
-                  name="password"
-                  control={control}
-                  as={
-                    <TextField
-                      error={errors.password}
-                      type="password"
-                      label="Password"
-                      fullWidth
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            <VpnKeyIcon />
-                          </InputAdornment>
-                        ),
-                      }}
-                    />}
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <Controller
-                  name="passwordRepeat"
-                  control={control}
-                  as={
-                    <TextField
-                      error={errors.passwordRepeat}
-                      type="password"
-                      label="Password Repeat"
-                      fullWidth
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            <VpnKeyIcon />
-                          </InputAdornment>
-                        ),
-                      }}
-                    />}
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <CategoryFilter
-                  variant="" 
-                  defaultValue={category}
-                  error={errors.category}
-                  onChangeHanlder={handleChangeCategory}
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <SubCategoryFilter
-                  variant=""
-                  defaultValue={subCategory}
-                  category={category}
-                  error={errors.subCategory}
-                  onChangeHanlder={handleSubCategoryChange}
-                />
-              </Grid>
+              {creating ? <>
+                <Grid item xs={6}>
+                  <Controller
+                    name="password"
+                    control={control}
+                    as={
+                      <TextField
+                        error={errors.password}
+                        type="password"
+                        label="Password"
+                        fullWidth
+                        InputProps={{
+                          startAdornment: (
+                            <InputAdornment position="start">
+                              <VpnKeyIcon />
+                            </InputAdornment>
+                          ),
+                        }}
+                      />}
+                  />
+                </Grid>
+                  <Grid item xs={6}>
+                    <Controller
+                      name="passwordRepeat"
+                      control={control}
+                      as={
+                        <TextField
+                          error={errors.passwordRepeat}
+                          type="password"
+                          label="Password Repeat"
+                          fullWidth
+                          InputProps={{
+                            startAdornment: (
+                              <InputAdornment position="start">
+                                <VpnKeyIcon />
+                              </InputAdornment>
+                            ),
+                          }}
+                        />}
+                    />
+                  </Grid>
+                  </> : null}
+                <Grid item xs={6}>
+                  <CategoryFilter
+                    variant="" 
+                    defaultValue={category}
+                    error={errors.category}
+                    onChangeHanlder={handleChangeCategory}
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <SubCategoryFilter
+                    variant=""
+                    defaultValue={sub_category}
+                    category={category}
+                    error={errors.sub_category}
+                    onChangeHanlder={handleSubCategoryChange}
+                  />
+                </Grid>
               <Grid item xs={6}>
                 <Controller
                   name="country"

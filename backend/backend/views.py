@@ -114,23 +114,3 @@ def change_password(request):
         status=status.HTTP_400_BAD_REQUEST)
 
 
-# class ProfileViewSet(viewsets.ModelViewSet):
-#   permission_classes = [IsAuthenticated, ]
-#   serializer_class = MyUserUpdateSerializer
-#   queryset = MyUser.objects.all()
-
-#   def get_queryset(self):
-#     return MyUser.objects.filter(id=self.request.user.id)
-
-#   def partial_update(self, request, *args, **kwargs):
-#     instance = request.user
-#     serializer = self.serializer_class(instance, data=request.data, partial=True)
-#     serializer.is_valid(raise_exception=True)
-#     serializer.save()
-#     return Response(serializer.data)
-  
-  # @action(detail=False, methods=['post'])
-  # def profile(request):
-  #     serializer = MyUserRetrieveSerializer(request.user)
-  #     return Response(serializer.data)
-

@@ -51,6 +51,7 @@ export const createUser = dispatch => async (data) =>{
   try {
     await API.createUser(data);
     toast.success("User Create Success!");
+    history.push("/users");
   } catch (e) {
     if(e.email) {
       toast.error(e.email[0]);

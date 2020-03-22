@@ -20,6 +20,7 @@ export default (
 ) =>  {
   const { type, payload } = action;
   if(type === RESET_STORE) {
+    console.log("------payload", payload)
     return { ...payload, updatedAt: new Date().getMilliseconds() }
   }
 
@@ -34,7 +35,7 @@ export default (
         draft.params = { ...draft.params, ...params};
         break;
       case GET_USER_SUCCESS:
-        draft.user = payload;
+        draft.user = payload || {};
         break;
       case LOGIN_REQUEST:
         draft.loginLoading = true;
@@ -49,10 +50,12 @@ export default (
       case SIGN_OUT:
         draft.currentUser = {}
       case SEND_ENQUIERY_SUCCESS:
-        draft.user.enquiries = (draft.user.enquiries||[]).concat(payload);
+        if(draft.user) {
+          draft.user.enquiries = ((draft.user && draft.user.enquiries)||[]).concat(payload);
+        }
+        break;
       case PROFILE_UPDATE_SUCCESS:
-        console.log("*************", payload)
-        draft.currentUser = { ...payload, enquiries: draft.currentUser.enquiries }
+        draft.currentUser = { ...payload, enquiries: (draft.currentUser && draft.currentUser.enquiries) || []}
         break;
     } 
   })

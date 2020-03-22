@@ -3,7 +3,7 @@ import { createContext } from 'react';
 export const initialState = {
     users: [],
     currentUser: {},
-    user: null,
+    user: {},
     loginLoading: false,
     params: {
       page: 0,

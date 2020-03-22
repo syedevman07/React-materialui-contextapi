@@ -92,7 +92,7 @@ const User = () => {
               </Grid>
             </Grid>
           </Paper>
-          <Enquiries enquiries={user.enquiries} user={user} />
+          <Enquiries enquiries={user.enquiries || []} user={user} />
     </div>
   )
 };
