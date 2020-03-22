@@ -32,7 +32,9 @@ const Users = () => {
   useEffect(() => {
     getUsers(params);
   }, []);
-
+  const handleChangePage = (e, pageNumber) => {
+    getUsers({...params, page: pageNumber });
+  }
   return (
     <div>
       <UserControl/>
@@ -78,7 +80,7 @@ const Users = () => {
           count={count}
           rowsPerPage={10}
           page={page}
-          onChangePage={() => {}}
+          onChangePage={handleChangePage}
         />
       </Paper>
     </div>
