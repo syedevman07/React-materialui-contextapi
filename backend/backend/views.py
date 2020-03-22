@@ -112,6 +112,8 @@ def change_password(request):
     else:
       return Response(serializer.errors,
         status=status.HTTP_400_BAD_REQUEST)
+
+
 # class ProfileViewSet(viewsets.ModelViewSet):
 #   permission_classes = [IsAuthenticated, ]
 #   serializer_class = MyUserUpdateSerializer

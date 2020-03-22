@@ -15,7 +15,8 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import EmailIcon from '@material-ui/icons/Email';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 
-import { Link } from 'react-router-dom';
+import VpnKeyIcon from '@material-ui/icons/VpnKey';
+import { Link, useLocation } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import { useForm, Controller } from 'react-hook-form';
 import * as yup from 'yup';
@@ -41,25 +42,46 @@ const useStyles = makeStyles({
   }
 });
 
-const Profile = () => {
-  const { methods:  { createUser, isAdmin, updateProfile }, data: { currentUser } } = useUser();
+const Profile = ({ isSignup }) => {
+  const { methods:  { signUp, isAdmin, updateProfile }, data: { currentUser } } = useUser();
   const [category, setCategory] = useState(currentUser.category && currentUser.category.id || 0);
   const [subCategory, setSubCategory] = useState(currentUser.subCategory && currentUser.subCategory.id || 0);
-  const validationSchema = yup.object().shape({
+  let validationSchema = yup.object().shape({
     first_name: yup.string().required("First Name is required"),
     last_name: yup.string().required("Last Name is required"),
     email: yup.string().email().required("Email is required"),
     country: yup.string().required("Country is required"),
     city: yup.string().required("City is required"),
     category: yup.number().test('Categpru-test', 'Category is required when role is no a admin', 
-    function(value) {
-      return isAdmin() || value !== 0;
-    }),
+      function(value) {
+        return isAdmin() || value !== 0;
+      }),
     subCategory: yup.number().test('SubCategory-test', 'SubCategory is required when role is not a admin', 
-    function(value) {
-      return isAdmin() || value !== 0;
-    }),
-  }); 
+      function(value) {
+        return isAdmin() || value !== 0;
+      }),
+  });
+
+  if(isSignup)
+  {
+    validationSchema = yup.object().shape({
+      first_name: yup.string().required("First Name is required"),
+      last_name: yup.string().required("Last Name is required"),
+      email: yup.string().email().required("Email is required"),
+      country: yup.string().required("Country is required"),
+      city: yup.string().required("City is required"),
+      password: yup.string().min(8).required('Password is required'),
+      passwordRepeat: yup.string().min(8).oneOf([yup.ref('password')], 'Passwords must match'),
+      category: yup.number().test('Categpru-test', 'Category is required when role is no a admin', 
+        function(value) {
+          return isAdmin() || value !== 0;
+        }),
+      subCategory: yup.number().test('SubCategory-test', 'SubCategory is required when role is not a admin', 
+        function(value) {
+          return isAdmin() || value !== 0;
+        }),
+    });
+  }
   const { handleSubmit, control, errors, setValue, register } = useForm({
     validationSchema,
     defaultValues: {
@@ -69,8 +91,6 @@ const Profile = () => {
     }
   });
   const classes = useStyles();
-  const creating = true;
-
   useEffect(() => {
     register({ name: 'category' });
     register({ name: 'sub_category' });
@@ -79,20 +99,24 @@ const Profile = () => {
     setCategory(category);
     setValue('category', category);
   };
-
+  
   const handleSubCategoryChange = subCategory => {
     setSubCategory(subCategory);
     setValue('sub_category', subCategory);
   }
-
+  
   const submit = (values) => {
-    updateProfile(values);
+    if (isSignup) {
+      signUp(values);
+    } else { 
+      updateProfile(values);
+    }
   }
 
   return (
     <div className={classes.root}>
       <Typography variant="h5" component="h1" gutterBottom className={classes.title}>
-          {creating ? "Create New User" : "Edit User"}
+          {!isSignup ? "User Prorile" : "Sign Up"}
         </Typography>
       <form onSubmit={handleSubmit(submit)}>
         <Paper style={{padding: '20px', width: '500px'}} className={classes.paper}>
@@ -160,6 +184,48 @@ const Profile = () => {
                     />}
                 />
               </Grid>
+              {isSignup ? <>
+                <Grid item xs={6}>
+                  <Controller
+                    name="password"
+                    control={control}
+                    as={
+                      <TextField
+                        error={errors.password}
+                        type="password"
+                        label="Password"
+                        fullWidth
+                        InputProps={{
+                          startAdornment: (
+                            <InputAdornment position="start">
+                              <VpnKeyIcon />
+                            </InputAdornment>
+                          ),
+                        }}
+                      />}
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <Controller
+                    name="passwordRepeat"
+                    control={control}
+                    as={
+                      <TextField
+                        error={errors.passwordRepeat}
+                        type="password"
+                        label="Password Repeat"
+                        fullWidth
+                        InputProps={{
+                          startAdornment: (
+                            <InputAdornment position="start">
+                              <VpnKeyIcon />
+                            </InputAdornment>
+                          ),
+                        }}
+                      />}
+                  />
+                </Grid> 
+              </> : null }
               <Grid item xs={6}>
                 <CategoryFilter
                   variant="" 
@@ -221,10 +287,16 @@ const Profile = () => {
               </Grid>
 
             <Grid item xs={6}>
+            {!isSignup ? 
               <Button type="submit" fullWidth variant="contained" color="primary">Update Profile</Button>
+              :
+              <Button type="submit" fullWidth variant="contained" color="primary">Submit</Button>}
             </Grid>
             <Grid item xs={6}>
+            {!isSignup ? 
               <Button type="button" fullWidth variant="contained" color="secondary">Change Password</Button>
+              :
+              <Button type="button" fullWidth variant="outlined" color="secondary"><Link to="/login">Login</Link></Button>}
             </Grid>
             </Grid>
           </Paper>

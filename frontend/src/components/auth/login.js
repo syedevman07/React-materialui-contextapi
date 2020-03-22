@@ -8,6 +8,7 @@ import {
   Typography
 } from '@material-ui/core';
 import EmailIcon from '@material-ui/icons/Email';
+import { Link } from 'react-router-dom';
 import { useForm, Controller } from 'react-hook-form';
 import { makeStyles } from '@material-ui/core/styles';
 import * as yup from 'yup';
@@ -34,6 +35,9 @@ const useStyles = makeStyles({
   },
   error: {
     color: 'red'
+  },
+  signup: {
+    marginTop: 20,
   }
 });
 
@@ -97,6 +101,9 @@ const Login = () => {
           </Grid>
         </Grid>
       </form>
+      <Grid spacing={6} xs={12} className={classes.signup}>
+              <Button type="submit" fullWidth variant="outlined" color="secondary"><Link to="/signup">Sign Up</Link></Button>
+          </Grid>
     </Paper>
   </div>
 }

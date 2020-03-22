@@ -93,7 +93,7 @@ const User = () => {
   return (
     <div className={classes.root}>
       <Typography variant="h5" component="h1" gutterBottom className={classes.title}>
-          {creating ? "Create New User" : "Edit User"}
+          {creating ? "Create User" : "Edit User"}
         </Typography>
       <form onSubmit={handleSubmit(submit)}>
         <Paper style={{padding: '20px', width: '500px'}} className={classes.paper}>

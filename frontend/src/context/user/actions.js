@@ -23,6 +23,17 @@ export const signOut = dispatch => async => {
   toast.success("Signout Success!");
   history.push("/");
 }
+
+export const signUp = dispatch => async data => {
+  try {
+    await API.signUp(data);
+    toast.success("Signup Success!");
+    history.push("/login");
+  } catch (e) {
+    toast.error("Signup Error");
+  }
+}
+
 export const getUsers = dispatch => async (params) => {
   try {
     

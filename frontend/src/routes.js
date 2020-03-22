@@ -1,3 +1,4 @@
+import React from 'react';
 import Users from './components/users';
 import User from './components/users/user';
 import UserDetail from './components/users/user-detail';
@@ -26,14 +27,19 @@ export const noAuthRoutes = [
     component: Login,
   },
   {
-    path: '/signup',
+    path: '/users/:id',
     exact: true,
-    component: User,
+    component: UserDetail,
   },
   {
     path: '/users/:id',
     exact: true,
     component: UserDetail,
+  },
+  {
+    path: '/signup',
+    exact: true,
+    component: () => <Profile isSignup={true} />
   },
 ]
 

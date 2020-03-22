@@ -84,3 +84,9 @@ export const changePassword = async data => Axios({
   url: '/change-password/',
   data,
 }, true)
+
+export const signUp = async data => Axios({
+  method: 'POST',
+  url: '/signup/',
+  data,
+})
