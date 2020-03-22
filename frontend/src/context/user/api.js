@@ -78,3 +78,9 @@ export const updateProfile = async payload => {
   data: payload,
 }, true)
 };
+
+export const changePassword = async data => Axios({
+  method: 'POST',
+  url: '/change-password/',
+  data,
+}, true)

@@ -2,7 +2,7 @@ from rest_framework import routers, serializers, viewsets, generics
 from rest_framework.decorators import action
 from backend.models import MyUser, Category, SubCategory, Enquirery, ADMIN_USER, REGULAR_USER
 from backend.serializers import PasswordSerializer, SignupSerializer, CategorySerializer, SubCategoryRetrieveSerializer, \
-    SubCategoryUpdateSerializer, MyUserRetrieveSerializer, \
+    SubCategoryUpdateSerializer, MyUserRetrieveSerializer, ChangeOwnPasswordSerializer, \
    MyUserUpdateSerializer, MyUserDetailSerializer, EnquirerySerializer, EnquireryCreateSerializer
 from backend.permissions import AdminOnly, ReadOnly, AllowPost, EnquiryPermission
 from rest_framework.permissions import AllowAny, IsAuthenticated
@@ -10,6 +10,8 @@ from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
 from rest_framework.decorators import api_view
+
+from  django.contrib.auth.password_validation import validate_password
 
 class CategoryViewSet(viewsets.ModelViewSet):
   permission_classes = [AdminOnly | ReadOnly]
@@ -66,6 +68,9 @@ class MyUserViewSet(viewsets.ModelViewSet):
       return Response(serializer.errors,
         status=status.HTTP_400_BAD_REQUEST)
 
+
+
+
 class SignupView(generics.CreateAPIView):
   serializer_class = SignupSerializer
   permission_classes = [AllowAny,]
@@ -93,8 +98,20 @@ def profile(request):
     serializer.is_valid(raise_exception=True)
     serializer.save()
     return Response(serializer.data)
-  
 
+
+@api_view(['POST'])
+def change_password(request):
+  user = request.user
+  serializer = ChangeOwnPasswordSerializer(data=request.data)
+  if serializer.is_valid(raise_exception=True):
+    if request.user.check_password(serializer.data['oldPassword']):
+      user.set_password(serializer.data['newPassword'])
+      user.save()
+      return Response({'status': 'password set'}) 
+    else:
+      return Response(serializer.errors,
+        status=status.HTTP_400_BAD_REQUEST)
 # class ProfileViewSet(viewsets.ModelViewSet):
 #   permission_classes = [IsAuthenticated, ]
 #   serializer_class = MyUserUpdateSerializer
@@ -115,15 +132,3 @@ def profile(request):
   #     serializer = MyUserRetrieveSerializer(request.user)
   #     return Response(serializer.data)
 
-  # @action(detail=False, methods=['post'])
-  # def set_password(self, request, pk=None):
-  #   user = request.user
-  #   serializer_class = self.get_serializer_class()
-  #   serializer = serializer_class(data=request.data)
-  #   if serializer.is_valid(raise_exception=True):
-  #     user.set_password(serializer.data['password'])
-  #     user.save()
-  #     return Response({'status': 'password set'})
-  #   else:
-  #     return Response(serializer.errors,
-  #       status=status.HTTP_400_BAD_REQUEST)

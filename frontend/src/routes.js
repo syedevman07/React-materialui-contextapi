@@ -3,6 +3,7 @@ import User from './components/users/user';
 import UserDetail from './components/users/user-detail';
 import Login from './components/auth/login';
 import Profile from './components/auth/profile';
+import PasswordChange from './components/auth/password-change';
 import Categories from './components/categories';
 
 export const commonRoutes = [
@@ -47,6 +48,11 @@ export const authRoutes = [
     exact: true,
     component: UserDetail,
   },
+  {
+    path: '/password-change',
+    exact: true,
+    component: PasswordChange,
+  }
 ];
 
 export const adminRoutes = [

@@ -94,7 +94,14 @@ class SignupSerializer(MyUserUpdateSerializer):
     extra_kwargs = {'password': {'write_only': True}}
 
 class PasswordSerializer(serializers.Serializer):
-  password = serializers.CharField(min_length=6, allow_blank=False)
+  password = serializers.CharField(min_length=8, allow_blank=False)
 
   class Meta:
     fields = ['password', ]
+
+class ChangeOwnPasswordSerializer(serializers.Serializer):
+  oldPassword = serializers.CharField(min_length=8, allow_blank=False)
+  newPassword = serializers.CharField(min_length=8, allow_blank=False)
+
+  class Meta:
+    fields = ['oldPassword', 'newPassword']

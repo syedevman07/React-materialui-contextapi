@@ -115,6 +115,16 @@ export const getUser = dispatch => async (id) => {
   }
 }
 
+export const changePassword = dispatch => async data => {
+  try {
+    await API.changePassword(data);
+    toast.success("Password Change Success!");
+  } catch (e) {
+    console.log("Passowrd Change Error...", e);
+    toast.error("Password Change Failure!");
+  }
+}
+
 export const sendEnquiery = dispatch => async (userId, content) => {
   try {
     const { data } = await API.sendEnquiry(userId, content);

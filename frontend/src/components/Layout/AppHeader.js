@@ -110,6 +110,7 @@ export default function PrimarySearchAppBar() {
     > 
       {isLoggedIn() ? <>
         <MenuItem onClick={handleMenuClose}><Link className={classes.menuLink} to="/profile">Profile</Link></MenuItem>
+        <MenuItem onClick={handleMenuClose}><Link className={classes.menuLink} to="/password-change">Change Password</Link></MenuItem>
         <MenuItem onClick={logout}>Sign out</MenuItem>
       </> : 
       <>
