@@ -12,14 +12,15 @@ const Axios = axios.create({
 });
 
 export default (data, needsToken = false) => {
-  if(!needsToken) {
+  const token = localStorage.getItem("token");
+  if(!needsToken || !token) {
     return Axios(data);
   }
   return Axios({
     ...data,
     headers: {
       ...data.headers,
-      'Authorization': `Bearer ${localStorage.getItem("token")}`,
+      'Authorization': `Bearer ${token}`,
     }
   });
 }

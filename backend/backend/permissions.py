@@ -10,6 +10,7 @@ class AdminOnly(BasePermission):
 
 class ReadOnly(BasePermission):
   def has_permission(self, request, view):
+    print("----------", request.method)
     return request.method in SAFE_METHODS
 
 class AllowPost(BasePermission):

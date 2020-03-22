@@ -13,7 +13,7 @@ export const getUsers = async ({ page, search, category, subCategory, role }) =>
         method: 'GET',
         url: '/users/',
         params,
-    });
+    }, true);
 };
 
 export const createUser = async(payload) => {
@@ -55,7 +55,7 @@ export const getUser = async id => Axios({
   method: 'GET',
   url: `/users/${id}/`,
   data: { id },
-});
+}, true);
 
 export const updateProfile = async payload => {
   if (payload.sub_category == 0) {

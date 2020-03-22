@@ -15,6 +15,8 @@ const useStyles = makeStyles({
   },
   content: {
     width: '100%',
+  },
+  info: {
     marginBottom: 30
   },
   addButton: {
@@ -42,6 +44,7 @@ export const CategoryCreate = ({ userId }) => {
         value={content}
         onChange={handleContentChange}
         placeholder="Enter your enquiry."/>
+      <Typography className={classes.info}>Minimum 50 characters</Typography>
       <Button color="primary" variant="contained" className={classes.addButton} onClick={handleSubmit}>Send a message</Button>
       <Button color="secondary" variant="contained" onClick={() => setContent("")}>Clear</Button>
     </Paper>

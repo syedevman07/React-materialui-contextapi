@@ -31,7 +31,7 @@ class SubCategoryViewSet(viewsets.ModelViewSet):
 
 
 class MyUserViewSet(viewsets.ModelViewSet):
-  permission_classes = [AdminOnly|ReadOnly]
+  permission_classes = [AllowAny|AdminOnly|ReadOnly]
   queryset = MyUser.objects.all()
   filter_backends = [DjangoFilterBackend, filters.SearchFilter]
   filterset_fields = ['sub_category', 'category', 'role']
@@ -41,8 +41,8 @@ class MyUserViewSet(viewsets.ModelViewSet):
     try:
       if self.request.user.role == ADMIN_USER:
         return MyUser.objects.all()
-    except:
-      pass
+    except Exception as e:
+      print(e)
     return MyUser.objects.filter(role=REGULAR_USER)
 
   def get_serializer_class(self):
