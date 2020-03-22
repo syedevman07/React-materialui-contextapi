@@ -70,7 +70,7 @@ const User = () => {
                 Country
               </Grid>
               <Grid item xs={8}>
-                {user.coutry}
+                {user.country}
               </Grid>
               <Grid item xs={4} className={classes.label}>
                 City
