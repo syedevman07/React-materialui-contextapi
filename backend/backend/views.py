@@ -71,37 +71,6 @@ class SignupView(generics.CreateAPIView):
   permission_classes = [AllowAny,]
 
 
-# class ProfileViewSet(viewsets.ModelViewSet):
-#   permission_classes = [IsAuthenticated, ]
-#   serializer_class = MyUserUpdateSerializer
-
-#   def get_queryset(self):
-#     return MyUser.objects.filter(id=request.user.id)
-
-#   def list(self, request, *args, **kwargs):
-#     serializer = MyUserRetrieveSerializer(self.queryset, many=False)
-#     return Response(serializer.data)
-
-#   def partial_update(self, request, *args, **kwargs):
-#     instance = request.user
-#     serializer = self.serializer_class(instance, data=request.data, partial=True)
-#     serializer.is_valid(raise_exception=True)
-#     serializer.save()
-#     return Response(serializer.data)
-  
-#   @action(detail=False, methods=['post'])
-#   def set_password(self, request, pk=None):
-#     user = request.user
-#     serializer_class = self.get_serializer_class()
-#     serializer = serializer_class(data=request.data)
-#     if serializer.is_valid(raise_exception=True):
-#       user.set_password(serializer.data['password'])
-#       user.save()
-#       return Response({'status': 'password set'})
-#     else:
-#       return Response(serializer.errors,
-#         status=status.HTTP_400_BAD_REQUEST)
-
 class EnquireryViewSet(viewsets.ModelViewSet):
   permission_classes = [EnquiryPermission, ]
   queryset = Enquirery.objects.all()
@@ -113,7 +82,48 @@ class EnquireryViewSet(viewsets.ModelViewSet):
     else:
       return EnquirerySerializer
 
-@api_view()
+@api_view(['GET', 'PATCH', 'PUT'])
 def profile(request):
+  if request.method == 'GET':
     serializer = MyUserRetrieveSerializer(request.user)
     return Response(serializer.data)
+  if request.method == 'PATCH':
+    instance = request.user
+    serializer = MyUserUpdateSerializer(instance, data=request.data, partial=True)
+    serializer.is_valid(raise_exception=True)
+    serializer.save()
+    return Response(serializer.data)
+  
+
+# class ProfileViewSet(viewsets.ModelViewSet):
+#   permission_classes = [IsAuthenticated, ]
+#   serializer_class = MyUserUpdateSerializer
+#   queryset = MyUser.objects.all()
+
+#   def get_queryset(self):
+#     return MyUser.objects.filter(id=self.request.user.id)
+
+#   def partial_update(self, request, *args, **kwargs):
+#     instance = request.user
+#     serializer = self.serializer_class(instance, data=request.data, partial=True)
+#     serializer.is_valid(raise_exception=True)
+#     serializer.save()
+#     return Response(serializer.data)
+  
+  # @action(detail=False, methods=['post'])
+  # def profile(request):
+  #     serializer = MyUserRetrieveSerializer(request.user)
+  #     return Response(serializer.data)
+
+  # @action(detail=False, methods=['post'])
+  # def set_password(self, request, pk=None):
+  #   user = request.user
+  #   serializer_class = self.get_serializer_class()
+  #   serializer = serializer_class(data=request.data)
+  #   if serializer.is_valid(raise_exception=True):
+  #     user.set_password(serializer.data['password'])
+  #     user.save()
+  #     return Response({'status': 'password set'})
+  #   else:
+  #     return Response(serializer.errors,
+  #       status=status.HTTP_400_BAD_REQUEST)

@@ -5,6 +5,7 @@ import {
     getUsers,
     getUser,
     createUser,
+    updateProfile,
     login,
     isLoggedIn,
     isAdmin,
@@ -40,6 +41,7 @@ const UserContextProvider = ({
                     isAdmin: isAdmin(state),
                     signOut: signOut(dispatch),
                     sendEnquiery: sendEnquiery(dispatch),
+                    updateProfile: updateProfile(dispatch),
                 },
             }}
         >

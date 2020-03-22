@@ -29,7 +29,6 @@ router.register('category', CategoryViewSet)
 router.register('sub-category', SubCategoryViewSet)
 router.register('users', MyUserViewSet)
 router.register('enquiries', EnquireryViewSet)
-# router.register('profile', ProfileViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),

@@ -64,3 +64,17 @@ export const getUser = async id => Axios({
   url: `/users/${id}/`,
   data: { id },
 });
+
+export const updateProfile = async payload => {
+  if (payload.sub_category == 0) {
+    payload.sub_category = null;
+  }
+  if (payload.category == 0) {
+    payload.category = null;
+  }
+  return Axios({
+  method: 'PATCH',
+  url: `/profile/`,
+  data: payload,
+}, true)
+};

@@ -68,21 +68,20 @@ class MyUserDetailSerializer(serializers.ModelSerializer):
     model = MyUser
     fields = ['id', 'email', 'first_name', 'last_name', 'country', 'city', 'role', 'category', 'sub_category', 'enquiries']
 
-
 class MyUserUpdateSerializer(serializers.ModelSerializer):
-  sub_category = serializers.PrimaryKeyRelatedField(queryset=SubCategory.objects.all(), required=False)
+  # sub_category = SubCategorySimpleSerializer(many=False)
+  # category = CategorySerializer(many=False)
 
   class Meta:
     model = MyUser
-    fields = ['id', 'email', 'password', 'first_name', 'last_name', 'country', 'city', 'role', 'category', 'sub_category']
-    extra_kwargs = {'password': {'write_only': True}}
+    fields = ['id', 'email', 'first_name', 'last_name', 'country', 'city', 'category', 'sub_category']
 
   def create(self, validated_data):
     user = MyUser(**validated_data)
     user.set_password(validated_data['password'])
     user.save()
     return user
-
+  
   def to_representation(self, instance):
     serializer = MyUserRetrieveSerializer(instance)
     return serializer.data

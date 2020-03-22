@@ -1,7 +1,8 @@
 import Users from './components/users';
 import User from './components/users/user';
 import UserDetail from './components/users/user-detail';
-import Login from './components/login';
+import Login from './components/auth/login';
+import Profile from './components/auth/profile';
 import Categories from './components/categories';
 
 export const commonRoutes = [
@@ -39,7 +40,7 @@ export const authRoutes = [
   {
     path: '/profile',
     exact: true,
-    component: User,
+    component: Profile,
   },
   {
     path: '/users/:id',

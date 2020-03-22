@@ -11,6 +11,7 @@ export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGIN_FAILURE = 'LOGIN_FAILURE';
 export const RESET_STORE = 'RESET_STORE';
 export const SEND_ENQUIERY_SUCCESS = 'SEND_ENQUIERY_SUCCESS';
+export const PROFILE_UPDATE_SUCCESS = 'PROFILE_UPDATE_SUCCESS';
 export const SIGN_OUT = 'SIGN_OUT';
 
 
@@ -57,17 +58,32 @@ export const login = dispatch => async (data) => {
     const { access } = result.data;
     localStorage.setItem("token", access);
     result = await API.getProfile();
-    toast.success("Login Success!");
     history.push("/");
     dispatch({
       type: LOGIN_SUCCESS,
       payload: result.data,
     });
+    toast.success("Login Success!");
   } catch (e) {
     localStorage.removeItem("token");
+    toast.error("Login Failure!");
     dispatch({
       type: LOGIN_FAILURE,
     })
+  }
+}
+
+export const updateProfile = dispatch => async (payload) => {
+  try {
+    let { data } = await API.updateProfile(payload);
+    toast.success("Profile Update Success!");
+    dispatch({
+      type: PROFILE_UPDATE_SUCCESS,
+      payload: data,
+    })
+  } catch (e) {
+    console.log(e)
+    toast.error("Profile Update Failure!");
   }
 }
 

@@ -8,6 +8,7 @@ import {
   LOGIN_FAILURE,
   RESET_STORE,
   SEND_ENQUIERY_SUCCESS,
+  PROFILE_UPDATE_SUCCESS,
   SIGN_OUT,
 } from './actions';
 
@@ -49,6 +50,9 @@ export default (
         draft.currentUser = {}
       case SEND_ENQUIERY_SUCCESS:
         draft.user.enquiries = (draft.user.enquiries||[]).concat(payload);
+      case PROFILE_UPDATE_SUCCESS:
+        console.log("*************", payload)
+        draft.currentUser = { ...payload, enquiries: draft.currentUser.enquiries }
         break;
     } 
   })
