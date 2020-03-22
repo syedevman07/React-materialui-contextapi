@@ -46,7 +46,7 @@ const Enquiries = ({ enquiries, user }) => {
       <Typography variant="h5" component="h1" gutterBottom className={classes.title}>
           Enquiries
         </Typography>
-        {enquiries.map(enquiry => (
+        {enquiries.filter(enquiry => enquiry).map(enquiry => (
           <Paper key={enquiry.id} className={classes.paper}>
             <Typography variant="h5" component="h1" color="primary" gutterBottom className={classes.enquiry}>
             {enquiry.content}

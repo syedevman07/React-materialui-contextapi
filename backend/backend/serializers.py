@@ -1,7 +1,8 @@
 from rest_framework import routers, serializers, viewsets
 from backend.models import MyUser, Category, SubCategory, Enquirery
 from django.shortcuts import get_object_or_404
-
+from django.core.mail import send_mail
+from django.conf import settings
 class CategorySerializer(serializers.ModelSerializer):
   class Meta:
     model = Category
@@ -39,6 +40,17 @@ class EnquireryCreateSerializer(serializers.ModelSerializer):
   class Meta:
     model = Enquirery
     fields = ['id', 'content', 'owner']
+
+  def create(self, validated_data):
+    enquiry = Enquirery.objects.create(**validated_data)
+    send_mail(
+        'A client sent you a message via toptal',
+        enquiry.content,
+        settings.EMAIL_HOST_USER,
+        [enquiry.owner.email],
+        fail_silently=False,
+    )
+    return enquiry
 
 class MyUserRetrieveSerializer(serializers.ModelSerializer):
   sub_category = SubCategorySimpleSerializer(many=False)
