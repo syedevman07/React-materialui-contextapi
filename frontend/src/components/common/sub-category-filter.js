@@ -15,7 +15,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const SubCategoryFilter = ({ defaultValue = 0, variant="outlined", error, category = 0, onChangeHanlder = () => {}}) => {
+const SubCategoryFilter = ({ defaultValue = 0, variant="outlined", defaultText="All Sub Categories", error, category = 0, onChangeHanlder = () => {}}) => {
   const classes = useStyles();
   const [subCategory, setSubCategory] = React.useState(defaultValue);
   const { data: { subCategories }, methods: { getSubCategories } } = useCategory();
@@ -27,9 +27,14 @@ const SubCategoryFilter = ({ defaultValue = 0, variant="outlined", error, catego
   }, []);
 
   useEffect(() => {
-    setSubCategory(0);
+    if ((category !== 0) && (!subCategories.filter(sub => sub.category.id === category).some(sub => subCategory === sub.id))) {
+      setSubCategory(0);
+    }
   }, [category]);
 
+  useEffect(() => {
+    setSubCategory(defaultValue);
+  }, [defaultValue]);
 
   const handleChange = event => {
     setSubCategory(event.target.value);
@@ -41,7 +46,7 @@ const SubCategoryFilter = ({ defaultValue = 0, variant="outlined", error, catego
     <FormControl variant={variant} className={classes.formControl}>
       <InputLabel id="sub-category-filter-label">Sub Category</InputLabel>
       <Select
-        value={subCategory || 0}
+        value={subCategory}
         onChange={handleChange}
         label="Sub Category"
         labelId="sub-category-filter-label"
@@ -49,7 +54,7 @@ const SubCategoryFilter = ({ defaultValue = 0, variant="outlined", error, catego
         error={error}
       >
         <MenuItem value={0}>
-          All Sub Categories
+          {defaultText}
         </MenuItem>
         {categorySubCategories.map(subCategory => <MenuItem key={subCategory.id} value={subCategory.id}>
           {subCategory.name}

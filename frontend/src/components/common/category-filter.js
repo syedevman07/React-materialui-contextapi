@@ -15,7 +15,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const CategoryFilter = ({ defaultValue = 0, error, variant="outlined", onChangeHanlder = () => {}}) => {
+const CategoryFilter = ({ defaultValue = 0, defaultText="All Categories", error, variant="outlined", onChangeHanlder = () => {}}) => {
   const classes = useStyles();
   const [category, setCategory] = React.useState(defaultValue);
   const { data: { categories }, methods: { getCategories } } = useCategory();
@@ -41,7 +41,7 @@ const CategoryFilter = ({ defaultValue = 0, error, variant="outlined", onChangeH
         error={error}
       >
         <MenuItem value={0}>
-          All Categories
+          {defaultText}
         </MenuItem>
         {categories.map(category => <MenuItem key={category.id} value={category.id}>
           {category.name}

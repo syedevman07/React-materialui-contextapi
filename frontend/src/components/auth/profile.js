@@ -6,6 +6,7 @@ import {
   Paper,
   TextField,
   Typography,
+  CircularProgress,
 } from '@material-ui/core';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import EmailIcon from '@material-ui/icons/Email';
@@ -41,7 +42,7 @@ const useStyles = makeStyles({
 const Profile = ({ isSignup }) => {
   const { methods:  { signUp, isAdmin, updateProfile }, data: { currentUser } } = useUser();
   const [category, setCategory] = useState((currentUser.category && currentUser.category.id) || 0);
-  const [subCategory, setSubCategory] = useState((currentUser.subCategory && currentUser.subCategory.id) || 0);
+  const [subCategory, setSubCategory] = useState((currentUser.sub_category && currentUser.sub_category.id) || 0);
   let validationSchema = yup.object().shape({
     first_name: yup.string().required("First Name is required"),
     last_name: yup.string().required("Last Name is required"),
@@ -83,7 +84,7 @@ const Profile = ({ isSignup }) => {
     defaultValues: {
       ...currentUser,
       category: (currentUser.category && currentUser.category.id) || 0,
-      sub_category: (currentUser.subCategory && currentUser.subCategory.id) || 0,
+      sub_category: (currentUser.sub_category && currentUser.sub_category.id) || 0,
     }
   });
   const classes = useStyles();
@@ -109,6 +110,9 @@ const Profile = ({ isSignup }) => {
     }
   }
 
+  if(!currentUser.id) {
+    return <CircularProgress />
+  }
   return (
     <div className={classes.root}>
       <Typography variant="h5" component="h1" gutterBottom className={classes.title}>
@@ -226,6 +230,7 @@ const Profile = ({ isSignup }) => {
                 <CategoryFilter
                   variant="" 
                   defaultValue={category}
+                  defaultText="Select Category"
                   error={errors.category}
                   onChangeHanlder={handleChangeCategory}
                 />
@@ -234,6 +239,7 @@ const Profile = ({ isSignup }) => {
                 <SubCategoryFilter
                   variant=""
                   defaultValue={subCategory}
+                  defaultText="Select Sub Category"
                   category={category}
                   error={errors.subCategory}
                   onChangeHanlder={handleSubCategoryChange}
