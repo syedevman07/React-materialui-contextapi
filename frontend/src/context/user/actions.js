@@ -61,6 +61,20 @@ export const createUser = dispatch => async (data) =>{
   }
 }
 
+export const deleteUser = dispatch => async (data) =>{
+  try {
+    await API.deleteUser(data);
+    toast.success("User Delete Success!");
+    history.push("/users");
+  } catch (e) {
+    if(e.email) {
+      toast.error(e.email[0]);
+    } else {
+      toast.error("User Delete Failed!");
+    }
+  }
+}
+
 export const login = dispatch => async (data) => {
   dispatch({
     type: LOGIN_REQUEST

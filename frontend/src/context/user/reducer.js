@@ -20,7 +20,6 @@ export default (
 ) =>  {
   const { type, payload } = action;
   if(type === RESET_STORE) {
-    console.log("------payload", payload)
     return { ...payload, updatedAt: new Date().getMilliseconds() }
   }
 

@@ -57,6 +57,12 @@ export const getUser = async id => Axios({
   data: { id },
 }, true);
 
+export const deleteUser = async id => Axios({
+  method: 'DELETE',
+  url: `/users/${id}/`,
+  data: { id },
+}, true);
+
 export const updateProfile = async payload => {
   if (payload.sub_category == 0) {
     payload.sub_category = null;

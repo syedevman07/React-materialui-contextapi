@@ -122,7 +122,7 @@ const Categories = () => {
   useEffect(() => {
     getCategories();
     getSubCategories();
-  }, []);
+  }, [getCategories, getSubCategories]);
 
   return (
     <div className={classes.root}>
