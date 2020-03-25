@@ -13,8 +13,9 @@ import * as yup from 'yup';
 import { useUser } from '../../context/user';
 
 const validationSchema = yup.object().shape({
-  oldPassword: yup.string().required().min(8),
-  newPassword: yup.string().required().min(8)
+  oldPassword: yup.string().required("Required").min(8, "Minimun 8 characters"),
+  newPassword: yup.string().required("Required").min(8, "Minimun 8 characters").notOneOf([yup.ref("oldPassword")], "Current passoword and new password are same."),
+  passwordRepeat: yup.string().required("Required").min(8, "Minimun 8 characters").oneOf([yup.ref("newPassword")], 'Passwords do not match'),
 });
 
 const useStyles = makeStyles({
@@ -43,9 +44,11 @@ const PasswordChange = () => {
     validationSchema
   });
   const submit = (values) => {
-    changePassword(values);
+    console.log("----------valeus", values)
+    changePassword({ oldPassword: values.oldPassword, newPassword: values.newPassword });
 
   }
+  console.log("errors!", errors)
   const classes = useStyles();
   return <div className={classes.root}>
     <Paper className={classes.paper}>
@@ -58,12 +61,12 @@ const PasswordChange = () => {
               control={control}
               as={
                 <TextField
-                  error={errors.oldPassword}
                   type="password"
                   label="Current Password"
                   fullWidth
                 />}
             />
+            <p className={classes.error}>{errors.oldPassword && errors.oldPassword.message}</p>
             </Grid>
           <Grid item xs={12}>
             <Controller
@@ -71,12 +74,26 @@ const PasswordChange = () => {
               control={control}
               as={
                 <TextField
-                  error={errors.newPassword}
                   type="password"
                   label="New Password"
                   fullWidth
                 />}
             />
+            <p className={classes.error}>{errors.newPassword && errors.newPassword.message}</p>
+          </Grid>
+          <Grid item xs={12}>
+            <Controller
+              name="passwordRepeat"
+              control={control}
+              as={
+                <TextField
+                  type="password"
+                  label="Repeat Password"
+
+                  fullWidth
+                />}
+            />
+            <p className={classes.error}>{errors.passwordRepeat && errors.passwordRepeat.message}</p>
           </Grid>
           <Grid item xs={12}>
               <Button type="submit" fullWidth variant="contained" color="primary">Submit</Button>
