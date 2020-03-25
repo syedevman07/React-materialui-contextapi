@@ -17,7 +17,7 @@ export const getCategories = dispatch => async () => {
     const { data } = await API.getCategories();
     dispatch({
       type: GET_CATEGORIES_SUCCESS,
-      payload: data.results,
+      payload: data,
     })
   } catch {
 
@@ -44,7 +44,7 @@ export const getSubCategories = dispatch => async () => {
     const { data } = await API.getSubCategories();
     dispatch({
       type: GET_SUB_CATEGORIES_SUCCESS,
-      payload: data.results,
+      payload: data,
     })
   } catch {
     

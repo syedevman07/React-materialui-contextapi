@@ -34,11 +34,17 @@ const CategoryFilter = ({ defaultValue = 0, defaultText="All Categories", error,
     onChangeHanlder(event.target.value);
   };
 
+  const getCategory = () => {
+    if(categories.some(cat => cat.id === category)) {
+      return category;
+    } 
+    return 0;
+  }
   return (
     <FormControl variant={variant} className={classes.formControl}>
       <InputLabel id="demo-simple-select-outlined-label">Category</InputLabel>
       <Select
-        value={category || 0}
+        value={getCategory()}
         onChange={handleChange}
         label="Category"
         labelId="demo-simple-select-filled-label"

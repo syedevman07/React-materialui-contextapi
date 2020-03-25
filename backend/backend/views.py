@@ -17,10 +17,11 @@ class CategoryViewSet(viewsets.ModelViewSet):
   permission_classes = [AdminOnly | ReadOnly]
   queryset =  Category.objects.all()
   serializer_class = CategorySerializer
+  pagination_class = None
 
 class SubCategoryViewSet(viewsets.ModelViewSet):
   permission_classes = [AdminOnly | ReadOnly]
-
+  pagination_class = None
   def get_serializer_class(self):
     if self.action == 'list':
       return SubCategoryRetrieveSerializer
@@ -78,6 +79,7 @@ class SignupView(generics.CreateAPIView):
 
 class EnquireryViewSet(viewsets.ModelViewSet):
   permission_classes = [EnquiryPermission, ]
+  pagination_class = None
   queryset = Enquirery.objects.all()
   serializer_class = EnquirerySerializer
 
