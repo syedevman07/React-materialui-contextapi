@@ -24,6 +24,7 @@ const useStyles = makeStyles({
   enquiry: {
     textAlign: 'left',
     fontSize: 15,
+    wordBreak: 'break-all'
   },
 });
 
