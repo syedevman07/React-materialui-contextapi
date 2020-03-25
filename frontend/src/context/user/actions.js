@@ -40,7 +40,7 @@ export const getUsers = dispatch => async (params) => {
     const { data } = await API.getUsers(params);
     dispatch({
       type: GET_USERS_SUCCESS,
-      payload: { data, params },
+      payload: { data, params: { ...params, page: Math.min(params.page, Math.ceil(data.count / 10))} },
     })
   } catch {
 

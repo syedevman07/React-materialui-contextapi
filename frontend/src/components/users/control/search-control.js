@@ -20,7 +20,7 @@ const UserControl = () => {
   const handleKeyDown = e => {
     const { keyCode } = e;
     if (keyCode === 13) {
-      getUsers({...params, search })
+      getUsers({...params, search, page: 0 })
     }
   };
 

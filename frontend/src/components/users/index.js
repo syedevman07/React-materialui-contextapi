@@ -57,6 +57,7 @@ const Users = () => {
     setUser({});
   } 
 
+  const getPage = () => Math.min(page, Math.ceil(count / 10) - 1)
   return (
     <div>
       <UserControl/>
@@ -115,7 +116,7 @@ const Users = () => {
           component="div"
           count={count}
           rowsPerPage={10}
-          page={page}
+          page={getPage()}
           onChangePage={handleChangePage}
         />
       </Paper>
