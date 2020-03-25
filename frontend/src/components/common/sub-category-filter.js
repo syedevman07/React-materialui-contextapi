@@ -27,7 +27,7 @@ const SubCategoryFilter = ({ defaultValue = 0, variant="outlined", defaultText="
   }, []);
 
   useEffect(() => {
-    if ((category !== 0) && (!subCategories.filter(sub => sub.category.id === category).some(sub => subCategory === sub.id))) {
+    if ((!subCategories.filter(sub => sub.category.id === category).some(sub => subCategory === sub.id))) {
       setSubCategory(0);
     }
   }, [category]);

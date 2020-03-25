@@ -62,6 +62,21 @@ export const deleteUser = async id => Axios({
   data: { id },
 }, true);
 
+export const updateUser = async (id, params) => {
+  const data = { ...params };
+  if(params.sub_category === 0) {
+    data.sub_category = null;
+  }
+  if(data.category == 0) {
+    data.category = null;
+  }
+  return Axios({
+    method: 'PATCH',
+    url: `/users/${id}/`,
+    data,
+  }, true);
+}
+
 export const updateProfile = async payload => {
   if (payload.sub_category === 0) {
     payload.sub_category = null;

@@ -10,6 +10,7 @@ import {
   Paper,
   TextField,
   Typography,
+  CircularProgress,
 } from '@material-ui/core';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import EmailIcon from '@material-ui/icons/Email';
@@ -21,23 +22,22 @@ import { Link, useParams } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import { useForm, Controller } from 'react-hook-form';
 import * as yup from 'yup';
-import PostEnquiry from './post-enquiry';
+
 import CategoryFilter from '../common/category-filter';
 import SubCategoryFilter from '../common/sub-category-filter';
 import { useUser } from '../../context/user';
+import * as API from '../../context/user/api';
+import Enquiries from './enquiries';
 
 const editValidationShape = {
   first_name: yup.string().required("First Name is required"),
   last_name: yup.string().required("Last Name is required"),
   email: yup.string().email().required("Email is required"),
-  password: yup.string().min(8).required('Password is required'),
-  passwordRepeat: yup.string().min(8).oneOf([yup.ref('password')], 'Passwords must match'),
   country: yup.string().required("Country is required"),
   city: yup.string().required("City is required"),
   role: yup.number().required("Role is required"),
   category: yup.number().test('Categpru-test', 'Category is required when role is no a admin', 
     function(value) {
-      console.log("valeu, role", value, this.parent.role)
       return this.parent.role === 1 || ((value && value > 0) && this.parent.role === 2);
     }),
   sub_category: yup.number().test('SubCategory-test', 'SubCategory is required when role is not a admin', 
@@ -75,27 +75,68 @@ const User = () => {
   const creating = id === 'new';
   const validationShape = creating ? createValidationShape : editValidationShape;
   const [category, setCategory] = useState(0);
+  const [role, setRole] = useState(0);
   const [sub_category, setSubCategory] = useState(0);
-  const { methods:  { createUser, getUser }, data: { user = {} } } = useUser();
+  const { methods:  { createUser, updateUser }, data: { user: { enquiries }} } = useUser();
+  const [user, setUser] = useState({});
+  const[ loading, setLoading ] = useState(!creating);
   const classes = useStyles();
+
+  const { handleSubmit, control, errors, setValue, register, getValues } = useForm({
+    validationSchema: yup.object().shape(validationShape),  
+  });
+  const handleRoleChange = (e) => {
+    setRole(e.target.value);
+    setValue('role', e.target.value);
+  };
+
   useEffect(() => {
     if(!creating) {
-      getUser(id)
+      API.getUser(id)
+      .then(({ data }) => {
+        setLoading(false)
+        setUser(data);
+        setValue("first_name", data.first_name);
+        setValue("last_name", data.last_name);
+        setValue("email", data.email);
+        setValue("role", data.role);
+        setValue("category", ((data.category  && data.category.id) || 0));
+        setCategory((data.category  && data.category.id) || 0);
+        setValue("sub_category", ((data.sub_category  && data.sub_category.id) || 0));
+        setSubCategory((data.sub_category  && data.sub_category.id) || 0);
+        setValue("country", data.country);
+        setValue("city", data.city);
+        setRole(data.role);
+      })
+    } else {
+      setCategory(0);
+      setSubCategory(0);
     }
   }, [id]);
 
-  const { handleSubmit, control, errors, setValue, register } = useForm({
-    validationSchema: yup.object().shape(validationShape),
-    defaultValues: creating ? {} : {
-      ...user,
-      category: (user.category && user.category.id) || 0,
-      sub_category: (user.sub_category && user.sub_category.id) || 0,
+  useEffect(() => {
+    if(user.category) {
+      setCategory(user.category.id || 0)
+    } else {
+      setCategory(0);
     }
-  });
+  }, [user.category])
+
+  useEffect(() => {
+    if(user.sub_category) {
+      setSubCategory(user.sub_category.id || 0)
+    } else {
+      setSubCategory(0)
+    }
+  }, [user.sub_category]);
+
+
   useEffect(() => {
     register({ name: 'category' });
     register({ name: 'sub_category' });
+    register({ name: 'role' });
   }, [register]);
+
   const handleChangeCategory = category => {
     setCategory(category);
     setValue('category', category);
@@ -107,8 +148,17 @@ const User = () => {
   }
 
   const submit = (values) => {
-    createUser(values);
+    if(creating) {
+      createUser(values);
+    } else {
+      updateUser(user.id, values)
+    }
   }
+
+  if(loading) {
+    return <CircularProgress />
+  }
+  console.log("errors", errors)
 
   return (
     <div className={classes.root}>
@@ -119,15 +169,14 @@ const User = () => {
         <Paper style={{padding: '20px', width: '500px'}} className={classes.paper}>
             <Grid spacing={4} container >
               <Grid item xs={6}>
-                <Controller
+              <Controller
                   name="first_name"
                   control={control}
                   as={
                     <TextField
                       error={errors.first_name}
                       type="text"
-                      label="First Name"
-                      fullWidth
+                      label="Last Name"
                       InputProps={{
                         startAdornment: (
                           <InputAdornment position="start">
@@ -135,6 +184,7 @@ const User = () => {
                           </InputAdornment>
                         ),
                       }}
+                      fullWidth
                     />}
                 />
               </Grid>
@@ -181,22 +231,18 @@ const User = () => {
               <Grid item xs={6}>
                 <FormControl className={classes.formControl} fullWidth>
                   <InputLabel id="demo-simple-select-label">Role</InputLabel>
-                  <Controller
-                    name="role"
-                    control={control}
-                    as={
-                        <Select
-                          labelId="demo-simple-select-label"
-                          id="demo-simple-select"
-                          fullWidth
-                          IconComponent={GroupIcon}
-                          error={errors.role}
-                        >
-                          <MenuItem value={1}>Admin</MenuItem>
-                          <MenuItem value={2}>Regular User</MenuItem>
-                        </Select>
-                    }
-                  />
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    fullWidth
+                    IconComponent={GroupIcon}
+                    error={errors.role}
+                    value={role}
+                    onChange={handleRoleChange}
+                  >
+                    <MenuItem value={1}>Admin</MenuItem>
+                    <MenuItem value={2}>Regular User</MenuItem>
+                  </Select>
                 </FormControl>
               </Grid>
               {creating ? <>
@@ -243,7 +289,8 @@ const User = () => {
                   </> : null}
                 <Grid item xs={6}>
                   <CategoryFilter
-                    variant="" 
+                    variant=""
+                    defaultText="Select Category" 
                     defaultValue={category}
                     error={errors.category}
                     onChangeHanlder={handleChangeCategory}
@@ -253,6 +300,7 @@ const User = () => {
                   <SubCategoryFilter
                     variant=""
                     defaultValue={sub_category}
+                    defaultText="Select Sub Category"
                     category={category}
                     error={errors.sub_category}
                     onChangeHanlder={handleSubCategoryChange}
@@ -313,7 +361,7 @@ const User = () => {
             </Grid>
           </Paper>
         </form>
-        {!creating ? <PostEnquiry userId={user.id}/> : null}
+        {creating ? null : <Enquiries enquiries={enquiries || []} user={user} />}
     </div>
   )
 };

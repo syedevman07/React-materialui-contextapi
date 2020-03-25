@@ -12,6 +12,7 @@ export const LOGIN_FAILURE = 'LOGIN_FAILURE';
 export const RESET_STORE = 'RESET_STORE';
 export const SEND_ENQUIERY_SUCCESS = 'SEND_ENQUIERY_SUCCESS';
 export const PROFILE_UPDATE_SUCCESS = 'PROFILE_UPDATE_SUCCESS';
+export const USER_UPDATE_SUCCESS = 'USER_UPDATE_SUCCESS';
 export const SIGN_OUT = 'SIGN_OUT';
 
 
@@ -36,7 +37,6 @@ export const signUp = dispatch => async data => {
 
 export const getUsers = dispatch => async (params) => {
   try {
-    
     const { data } = await API.getUsers(params);
     dispatch({
       type: GET_USERS_SUCCESS,
@@ -96,6 +96,20 @@ export const login = dispatch => async (data) => {
     dispatch({
       type: LOGIN_FAILURE,
     })
+  }
+}
+
+export const updateUser = dispatch => async (id, payload) => {
+  try {
+    let { data } = await API.updateUser(id, payload);
+    toast.success("User Update Success!");
+    dispatch({
+      type: USER_UPDATE_SUCCESS,
+      payload: data,
+    })
+  } catch (e) {
+    console.log(e)
+    toast.error("User Update Failure!");
   }
 }
 

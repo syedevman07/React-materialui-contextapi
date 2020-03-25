@@ -51,7 +51,7 @@ const Enquiries = ({ enquiries, user }) => {
           </Paper>
         )) 
         }
-        <PostEnquiry userId={user.id}/>
+       <PostEnquiry userId={user.id}/>
     </div>
   )
 };

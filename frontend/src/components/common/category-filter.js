@@ -24,6 +24,11 @@ const CategoryFilter = ({ defaultValue = 0, defaultText="All Categories", error,
       getCategories();
     }
   }, []);
+
+  useEffect(() => {
+    setCategory(defaultValue);
+  }, [defaultValue]);
+
   const handleChange = event => {
     setCategory(event.target.value);
     onChangeHanlder(event.target.value);

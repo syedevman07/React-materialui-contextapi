@@ -14,6 +14,7 @@ import {
     resetStore,
     sendEnquiery,
     deleteUser,
+    updateUser,
     signOut,
 } from './actions';
 
@@ -47,6 +48,7 @@ const UserContextProvider = ({
                     updateProfile: updateProfile(dispatch),
                     changePassword: changePassword(dispatch),
                     deleteUser: deleteUser(dispatch),
+                    updateUser: updateUser(dispatch),
                     signUp: signUp(dispatch),
                 },
             }}
