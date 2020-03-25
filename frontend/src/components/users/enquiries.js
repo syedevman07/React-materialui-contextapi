@@ -3,6 +3,7 @@ import { Paper, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 import PostEnquiry from './post-enquiry';
+import { useUser } from '../../context/user';
 
 const useStyles = makeStyles({
   paper: {
@@ -29,13 +30,14 @@ const useStyles = makeStyles({
 });
 
 const Enquiries = ({ enquiries, user }) => {
+  const { data: { currentUser } } = useUser();
   const classes = useStyles();
   if(!enquiries.length) {
     return (<div className={classes.root}>
       <Typography variant="h5" component="h1" gutterBottom className={classes.title}>
           No Enquiries Found
       </Typography>
-      <PostEnquiry userId={user.id}/>
+      {(user.id === currentUser.id) ? null : <PostEnquiry userId={user.id}/> }
     </div>)
   }
   return (
@@ -51,7 +53,7 @@ const Enquiries = ({ enquiries, user }) => {
           </Paper>
         )) 
         }
-       {user ? <PostEnquiry userId={user.id}/> : null }
+       {(user.id === currentUser.id) ? null : <PostEnquiry userId={user.id}/> }
     </div>
   )
 };

@@ -16,11 +16,11 @@ const useStyles = makeStyles({
     justifyContent: 'space-between'
   },
   category: {
-    width: 150,
+    width: 200,
     marginRight: 15
   },
   subCategory: {
-    width: 180,
+    width: 200,
     marginRight: 15,
   },
   link: {

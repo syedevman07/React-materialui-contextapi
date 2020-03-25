@@ -91,7 +91,7 @@ class SignupSerializer(MyUserUpdateSerializer):
 
   class Meta:
     model = MyUser
-    fields = ['id', 'email', 'password', 'first_name', 'last_name', 'country', 'city', 'sub_category']
+    fields = ['id', 'email', 'password', 'first_name', 'last_name', 'country', 'city', 'category', 'sub_category']
     extra_kwargs = {'password': {'write_only': True}}
 
 class PasswordSerializer(serializers.Serializer):

@@ -28,7 +28,7 @@ export default function FormDialog({ open, handleClose, subCategory }) {
   useEffect(() => {
     setName((subCategory && subCategory.name) || "");
   }, [open]);
-  console.log("subCategr", subCategory);
+
   return (
     <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" >
       <DialogTitle id="form-dialog-title">Edit Sub Category</DialogTitle>

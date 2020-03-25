@@ -146,6 +146,7 @@ export const getUser = dispatch => async (id) => {
       type: GET_USER_SUCCESS,
       payload: data,
     })
+    return data;
   } catch {
     dispatch({
       type: GET_USER_SUCCESS,

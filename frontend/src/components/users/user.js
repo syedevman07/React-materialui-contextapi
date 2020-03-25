@@ -26,7 +26,6 @@ import * as yup from 'yup';
 import CategoryFilter from '../common/category-filter';
 import SubCategoryFilter from '../common/sub-category-filter';
 import { useUser } from '../../context/user';
-import * as API from '../../context/user/api';
 import Enquiries from './enquiries';
 
 const editValidationShape = {
@@ -77,12 +76,12 @@ const User = () => {
   const [category, setCategory] = useState(0);
   const [role, setRole] = useState(0);
   const [sub_category, setSubCategory] = useState(0);
-  const { methods:  { createUser, updateUser }, data: { user: { enquiries }} } = useUser();
+  const { methods:  { createUser, updateUser, getUser }, data: { user: selectedUser } } = useUser();
   const [user, setUser] = useState({});
   const[ loading, setLoading ] = useState(!creating);
   const classes = useStyles();
 
-  const { handleSubmit, control, errors, setValue, register, getValues } = useForm({
+  const { handleSubmit, control, errors, setValue, register } = useForm({
     validationSchema: yup.object().shape(validationShape),  
   });
   const handleRoleChange = (e) => {
@@ -92,8 +91,8 @@ const User = () => {
 
   useEffect(() => {
     if(!creating) {
-      API.getUser(id)
-      .then(({ data }) => {
+      getUser(id)
+      .then((data) => {
         setLoading(false)
         setUser(data);
         setValue("first_name", data.first_name);
@@ -158,7 +157,7 @@ const User = () => {
   if(loading) {
     return <CircularProgress />
   }
-  console.log("errors", errors)
+
 
   return (
     <div className={classes.root}>
@@ -351,17 +350,16 @@ const User = () => {
               <Button type="submit" fullWidth variant="contained" color="primary">Submit</Button>
             </Grid>
             <Grid item xs={4}>
-              <Button type="button" fullWidth variant="contained" color="secondary">Reset</Button>
             </Grid>
             <Grid item xs={4}>
-              <Button>
-                <Link color="primary" to="/users/">Back to Users</Link>
-              </Button>
+              <Link to="/users/">
+                Back to users
+              </Link>
             </Grid>
             </Grid>
           </Paper>
         </form>
-        {creating ? null : <Enquiries enquiries={enquiries || []} user={user} />}
+        {creating ? null : <Enquiries enquiries={selectedUser.enquiries || []} user={user} />}
     </div>
   )
 };

@@ -42,7 +42,6 @@ const useStyles = makeStyles({
 
 const Profile = ({ isSignup }) => {
   const { methods:  { signUp, isAdmin, updateProfile }, data: { currentUser } } = useUser();
-  console.log("currentUser", currentUser)
   const [category, setCategory] = useState((currentUser.category && currentUser.category.id) || 0);
   const [subCategory, setSubCategory] = useState((currentUser.sub_category && currentUser.sub_category.id) || 0);
   let validationSchema = yup.object().shape({
@@ -55,7 +54,7 @@ const Profile = ({ isSignup }) => {
       function(value) {
         return isAdmin() || value !== 0;
       }),
-    subCategory: yup.number().test('SubCategory-test', 'SubCategory is required when role is not a admin', 
+    sub_category: yup.number().test('SubCategory-test', 'SubCategory is required when role is not a admin', 
       function(value) {
         return isAdmin() || value !== 0;
       }),
@@ -75,7 +74,7 @@ const Profile = ({ isSignup }) => {
         function(value) {
           return isAdmin() || value !== 0;
         }),
-      subCategory: yup.number().test('SubCategory-test', 'SubCategory is required when role is not a admin', 
+      sub_category: yup.number().test('SubCategory-test', 'SubCategory is required when role is not a admin', 
         function(value) {
           return isAdmin() || value !== 0;
         }),
@@ -112,13 +111,13 @@ const Profile = ({ isSignup }) => {
     }
   }
 
-  if(!currentUser.id) {
+  if(!currentUser.id && !isSignup) {
     return <CircularProgress />
   }
   return (
     <div className={classes.root}>
       <Typography variant="h5" component="h1" gutterBottom className={classes.title}>
-          {!isSignup ? "User Prorile" : "Sign Up"}
+          {!isSignup ? "User Profile" : "Sign Up"}
         </Typography>
       <form onSubmit={handleSubmit(submit)}>
         <Paper style={{padding: '20px', width: '500px'}} className={classes.paper}>
@@ -243,7 +242,7 @@ const Profile = ({ isSignup }) => {
                   defaultValue={subCategory}
                   defaultText="Select Sub Category"
                   category={category}
-                  error={errors.subCategory}
+                  error={errors.sub_category}
                   onChangeHanlder={handleSubCategoryChange}
                 />
               </Grid>
@@ -305,7 +304,7 @@ const Profile = ({ isSignup }) => {
             </Grid>
           </Paper>
         </form>
-        <Enquiries enquiries={currentUser.enquiries}/>
+        {(isAdmin() || isSignup) ? null : <Enquiries enquiries={currentUser.enquiries} user={currentUser}/>}
     </div>
   )
 };

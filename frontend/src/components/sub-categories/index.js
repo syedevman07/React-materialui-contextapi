@@ -50,7 +50,6 @@ const Categories = () => {
   }
 
   const handleDeleteCategory = () => {
-    console.log(category)
     deleteCategory(category.id);
   }
 

@@ -6,7 +6,20 @@ import {
 } from '@material-ui/core';
 import { useUser } from '../../context/user';
 
-const tableHeaders = [
+const adminTableHeaders = [
+  'No',
+  'Email',
+  'First Name',
+  'Last Name',
+  'Country',
+  'City',
+  'Role',
+  'Category',
+  'Sub Category',
+  'Actions'
+];
+
+const userTableHeaders = [
   'No',
   'First Name',
   'Last Name',
@@ -18,16 +31,15 @@ const tableHeaders = [
 
 const UserTableHeader = () => {
   const { methods: { isAdmin } } = useUser();
+  const tableHeaders = isAdmin() ? adminTableHeaders : userTableHeaders;
   return (
     <TableHead>
       <TableRow>
         {tableHeaders.map(header =>
-        <TableCell key={header}>
-          {header}
-        </TableCell>)}
-        {isAdmin() ? <TableCell key="actions">
-          Actions
-        </TableCell> : null}
+          <TableCell key={header}>
+            {header}
+          </TableCell>)
+        }
       </TableRow>
     </TableHead>
   )
