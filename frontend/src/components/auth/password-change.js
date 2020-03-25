@@ -8,6 +8,7 @@ import {
 } from '@material-ui/core';
 
 import { useForm, Controller } from 'react-hook-form';
+import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import * as yup from 'yup';
 import { useUser } from '../../context/user';
@@ -40,15 +41,15 @@ const useStyles = makeStyles({
 
 const PasswordChange = () => {
   const { methods: { changePassword } } = useUser();
+  const history = useHistory();
   const { handleSubmit, control, errors } = useForm({
     validationSchema
   });
   const submit = (values) => {
-    console.log("----------valeus", values)
     changePassword({ oldPassword: values.oldPassword, newPassword: values.newPassword });
-
+    history.go(-1);
   }
-  console.log("errors!", errors)
+
   const classes = useStyles();
   return <div className={classes.root}>
     <Paper className={classes.paper}>
