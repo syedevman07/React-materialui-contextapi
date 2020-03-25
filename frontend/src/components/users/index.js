@@ -8,9 +8,12 @@ import {
   TableCell,
   TablePagination,
   TableContainer,
+  IconButton,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
+import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
 import { useUser } from '../../context/user';
 
 import UserTableHeader from './table-header';
@@ -23,9 +26,13 @@ const useStyles = makeStyles({
   loader: {
     margin: 'auto',
     height: '300px'
+  },
+  delete: {
+    color: 'red',
   }
 });
 const Users = () => {
+  const { methods: { isAdmin } } = useUser();
   const classes = useStyles();
   const { data: { users, loading, count, params, params: { page } }, methods: { getUsers } } = useUser();
 
@@ -46,10 +53,10 @@ const Users = () => {
               {users.map((user, i) => (
                 <TableRow key={i} hover>
                   <TableCell>
-                    <Link to={`/users/${user.id}`}>{user.email}</Link>
+                    <Link to={`/users/${user.id}`}>{i + 1}</Link>
                   </TableCell>
                   <TableCell>
-                    {user.first_name}
+                    <Link to={`/users/${user.id}`}>{user.first_name}</Link>
                   </TableCell>
                   <TableCell>
                     {user.last_name}
@@ -66,7 +73,15 @@ const Users = () => {
                   <TableCell>
                     {user.sub_category && user.sub_category.name || ""}
                   </TableCell>
-                </TableRow>
+                  {isAdmin() ? <TableCell>
+                    <IconButton>
+                      <DeleteIcon className={classes.delete} />
+                    </IconButton>
+                    <IconButton>
+                    <Link to={`/users/${user.id}`}><EditIcon color="primary"/></Link>
+                    </IconButton>
+                  </TableCell> : null}
+                </TableRow> 
               ))}
             </TableBody> :
             <div className={classes.loader}>
