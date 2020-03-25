@@ -90,7 +90,7 @@ class EnquireryViewSet(viewsets.ModelViewSet):
 @api_view(['GET', 'PATCH', 'PUT'])
 def profile(request):
   if request.method == 'GET':
-    serializer = MyUserRetrieveSerializer(request.user)
+    serializer = MyUserDetailSerializer(request.user)
     return Response(serializer.data)
   if request.method == 'PATCH':
     instance = request.user

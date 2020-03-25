@@ -21,6 +21,7 @@ import * as yup from 'yup';
 import CategoryFilter from '../common/category-filter';
 import SubCategoryFilter from '../common/sub-category-filter';
 import { useUser } from '../../context/user';
+import Enquiries from '../users/enquiries';
 
 
 const useStyles = makeStyles({
@@ -41,6 +42,7 @@ const useStyles = makeStyles({
 
 const Profile = ({ isSignup }) => {
   const { methods:  { signUp, isAdmin, updateProfile }, data: { currentUser } } = useUser();
+  console.log("currentUser", currentUser)
   const [category, setCategory] = useState((currentUser.category && currentUser.category.id) || 0);
   const [subCategory, setSubCategory] = useState((currentUser.sub_category && currentUser.sub_category.id) || 0);
   let validationSchema = yup.object().shape({
@@ -303,6 +305,7 @@ const Profile = ({ isSignup }) => {
             </Grid>
           </Paper>
         </form>
+        <Enquiries enquiries={currentUser.enquiries}/>
     </div>
   )
 };

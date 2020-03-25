@@ -51,7 +51,7 @@ const Enquiries = ({ enquiries, user }) => {
           </Paper>
         )) 
         }
-       <PostEnquiry userId={user.id}/>
+       {user ? <PostEnquiry userId={user.id}/> : null }
     </div>
   )
 };
