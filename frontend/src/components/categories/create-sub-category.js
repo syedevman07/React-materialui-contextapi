@@ -1,15 +1,12 @@
 import React, { useState } from 'react';
-import { Paper, Button, TextField, Typography } from '@material-ui/core';
+import { Button, TextField, Dialog, DialogActions, DialogTitle, DialogContent } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { useCategory } from '../../context/category';
 
 const useStyles = makeStyles({
   root: {
     width: 500,
-    marginTop: 40,
-    marginBottom: 40,
     margin: 'auto',
-    justifyContent: 'center',
     padding: 20,
   },
   body: {
@@ -17,7 +14,7 @@ const useStyles = makeStyles({
     justifyContent: 'center',
   },
   name: {
-    marginRight: 30
+    margin: 'auto',
   },
   addButton: {
     marginRight: 30
@@ -39,21 +36,22 @@ export const SubCategoryCreate = ({ open, handleClose, category}) => {
   const handleNameChange = (e) => setName(e.target.value);
   const handleSubCreateCategory = () => {
     createSubCategory(category.id, name);
+    handleClose()
   }
-  if(!open) {
-    return null;
-  }
+
   return (
-    <Paper className={classes.root}>
-      <Typography className={classes.label}>
+    <Dialog open={open}>
+      <DialogTitle id="form-dialog-title">
         Create new sub category under the category <span className={classes.category}>{(category && category.name) || ""}</span>
-      </Typography>
-      <div className={classes.body}>
-        <TextField className={classes.name} type="text" value={name} onChange={handleNameChange} placeholder="Sub Category Name"/>
+      </DialogTitle>
+      <DialogContent className={classes.root}>
+        <TextField  fullWidth className={classes.name} type="text" value={name} onChange={handleNameChange} placeholder="Sub Category Name"/>
+      </DialogContent>
+      <DialogActions>
         <Button color="primary" variant="contained" className={classes.addButton} onClick={handleSubCreateCategory}>Create</Button>
         <Button color="secondary" variant="contained" onClick={handleClose}>Cancel</Button>
-      </div>
-    </Paper>
+      </DialogActions>
+    </Dialog>
   )
 };
 
