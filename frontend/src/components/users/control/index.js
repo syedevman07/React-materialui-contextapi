@@ -35,26 +35,29 @@ const useStyles = makeStyles({
 const UserControl = () => {
   const classes = useStyles();
   const { data: { params, params: { category, subCategory } }, methods: { getUsers, isAdmin } } = useUser();
+
   const handleCategoryChange = (selectedCategory) => {
     getUsers({...params, category: selectedCategory, subCategory: 0})
   }
   const handleSubCategoryChange = (selectedSubCategory) => {
     getUsers({...params, subCategory: selectedSubCategory})
   }
-  return <div className={classes.root}>
-    <div>
-      {isAdmin() ? <Button color="primary" variant="contained"><Link to='/users/new' className={classes.link}>Add New User</Link></Button> : null}
-    </div>
-    <div className={classes.control}>
-      <div className={classes.category}>
-        <CategoryFilter defaultValue={category} onChangeHanlder={handleCategoryChange}/>
+  return (
+    <div className={classes.root}>
+      <div>
+        {isAdmin() ? <Button color="primary" variant="contained"><Link to='/users/new' className={classes.link}>Add New User</Link></Button> : null}
       </div>
-      <div className={classes.subCategory}>
-        <SubCategoryFilter defaultValue={subCategory} category={category} onChangeHanlder={handleSubCategoryChange}/>
+      <div className={classes.control}>
+        <div className={classes.category}>
+          <CategoryFilter defaultValue={category} onChangeHanlder={handleCategoryChange}/>
+        </div>
+        <div className={classes.subCategory}>
+          <SubCategoryFilter defaultValue={subCategory} category={category} onChangeHanlder={handleSubCategoryChange}/>
+        </div>
+        <SearchControl />
       </div>
-      <SearchControl />
     </div>
-  </div>
+  )
 }
 
 export default UserControl;

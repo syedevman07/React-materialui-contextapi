@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   CircularProgress,
   Paper,
@@ -15,7 +15,7 @@ import { Link } from 'react-router-dom';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import { useUser } from '../../context/user';
-
+import DeleteConfirm from '../common/confirm';
 import UserTableHeader from './table-header';
 import UserControl from './control';
 
@@ -35,6 +35,8 @@ const Users = () => {
   const { methods: { isAdmin } } = useUser();
   const classes = useStyles();
   const { data: { users, loading, count, params, params: { page } }, methods: { getUsers } } = useUser();
+  const [user, setUser] = useState({});
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     getUsers(params);
@@ -42,9 +44,28 @@ const Users = () => {
   const handleChangePage = (e, pageNumber) => {
     getUsers({...params, page: pageNumber });
   }
+  const confirmDeleteUser = (user) => {
+    setOpen(true);
+    setUser(user);
+  }
+
+  const handleUserDelete = () => {
+
+  }
+  const handleCancelUserDelete = () => {
+    setOpen(false);
+    setUser({});
+  } 
+
   return (
     <div>
       <UserControl/>
+      <DeleteConfirm
+        open={open}
+        message={`Are you sure to delete user "${user.first_name || ""} ${user.last_name || ""}"`}
+        handleClose={handleCancelUserDelete}
+        handleAction={handleUserDelete}
+        />
       <Paper className={classes.root}>
         <TableContainer>
           <Table>
@@ -74,7 +95,7 @@ const Users = () => {
                     {user.sub_category && user.sub_category.name || ""}
                   </TableCell>
                   {isAdmin() ? <TableCell>
-                    <IconButton>
+                    <IconButton onClick={() => confirmDeleteUser(user)}>
                       <DeleteIcon className={classes.delete} />
                     </IconButton>
                     <IconButton>
