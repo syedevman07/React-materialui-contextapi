@@ -122,7 +122,7 @@ const Categories = () => {
   useEffect(() => {
     getCategories();
     getSubCategories();
-  }, [getCategories, getSubCategories]);
+  }, []);
 
   return (
     <div className={classes.root}>
@@ -134,14 +134,14 @@ const Categories = () => {
         handleAction={handleDeleteCategory}
         handleClose={closeDelete}
         title="Delete Category"
-        message={`Are you sure to delete the category "${category && category .name || ""}"`}
+        message={`Are you sure to delete the category "${(category && category.name) || ""}"`}
       />
-      <ConfirmDialog 
+      <ConfirmDialog
         open={openSubDelete}
         handleAction={handleDeleteSubCategory}
         handleClose={closeDelete}
         title="Delete Sub Category"
-        message={`Are you sure to delete the sub category "${subCategory && subCategory .name || ""}"`}
+        message={`Are you sure to delete the sub category "${(subCategory && subCategory.name) || ""}"`}
       />
       <EditDialog open={openCategoryEdit} handleClose={closeEdit} category={category} />
       <SubCategoryEditDialog open={openSubCategoryEdit} handleClose={closeEdit} subCategory={subCategory} />

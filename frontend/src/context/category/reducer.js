@@ -26,6 +26,7 @@ export default (
       case GET_SUB_CATEGORIES_SUCCESS:
         draft.subCategories = payload;
         draft.subCategoryLoading = false;
+        break;
       case CATEGORY_UPDATE_SUCCESS:
         draft.categories = draft.categories.map(category => category.id === payload.id ? payload : category);
         break;
@@ -46,7 +47,8 @@ export default (
         draft.subCategories = draft.subCategories.map(
           subCategory => subCategory.id === payload.id ? { ...subCategory, name: payload.name } : subCategory);
         break;
-
+     default:
+        break;
     }
   }) 
 }

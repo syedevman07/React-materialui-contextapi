@@ -1,16 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import {
-  Button,
-  Grid,
-  FormControl,
-  InputLabel,
-  InputAdornment,
-  Select,
-  MenuItem,
-  Paper,
-  TextField,
-  Typography,
-} from '@material-ui/core';
+import React, { useEffect } from 'react';
+import { Grid, Paper, Typography } from '@material-ui/core';
 
 import { useParams } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
@@ -82,13 +71,13 @@ const User = () => {
                 Category
               </Grid>
               <Grid item xs={8}>
-                {user.category && user.category.name || ""}
+                {(user.category && user.category.name) || ""}
               </Grid>
               <Grid item xs={4} className={classes.label}>
                 Sub Category
               </Grid>
               <Grid item xs={8}>
-                {user.sub_category && user.sub_category.name || ""}
+                {(user.sub_category && user.sub_category.name) || ""}
               </Grid>
             </Grid>
           </Paper>

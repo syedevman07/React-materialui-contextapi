@@ -89,10 +89,10 @@ const Users = () => {
                     {user.city}
                   </TableCell>
                   <TableCell>
-                    {user.category && user.category.name || ""}
+                    {(user.category && user.category.name) || ""}
                   </TableCell>
                   <TableCell>
-                    {user.sub_category && user.sub_category.name || ""}
+                    {(user.sub_category && user.sub_category.name) || ""}
                   </TableCell>
                   {isAdmin() ? <TableCell>
                     <IconButton onClick={() => confirmDeleteUser(user)}>

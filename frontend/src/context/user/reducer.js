@@ -48,6 +48,7 @@ export default (
         break;
       case SIGN_OUT:
         draft.currentUser = {}
+        break;
       case SEND_ENQUIERY_SUCCESS:
         if(draft.user) {
           draft.user.enquiries = ((draft.user && draft.user.enquiries)||[]).concat(payload);
@@ -56,6 +57,7 @@ export default (
       case PROFILE_UPDATE_SUCCESS:
         draft.currentUser = { ...payload, enquiries: (draft.currentUser && draft.currentUser.enquiries) || []}
         break;
+      default: break;
     } 
   })
 };

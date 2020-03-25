@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Paper, Button, TextField, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { useCategory } from '../../context/category';
 import { useUser } from '../../context/user';
 
 const useStyles = makeStyles({

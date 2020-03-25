@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Button,
   Paper,
   Grid,
-  InputAdornment,
   TextField,
   Typography
 } from '@material-ui/core';

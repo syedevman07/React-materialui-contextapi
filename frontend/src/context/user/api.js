@@ -1,5 +1,4 @@
 import Axios from '../../utils/axios';
-import ROLE from '../../utils/constants/role';
 
 export const getUsers = async ({ page, search, category, subCategory, role }) => {
     const params = {
@@ -64,10 +63,10 @@ export const deleteUser = async id => Axios({
 }, true);
 
 export const updateProfile = async payload => {
-  if (payload.sub_category == 0) {
+  if (payload.sub_category === 0) {
     payload.sub_category = null;
   }
-  if (payload.category == 0) {
+  if (payload.category === 0) {
     payload.category = null;
   }
   return Axios({

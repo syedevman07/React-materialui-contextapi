@@ -38,11 +38,11 @@ const editValidationShape = {
   category: yup.number().test('Categpru-test', 'Category is required when role is no a admin', 
     function(value) {
       console.log("valeu, role", value, this.parent.role)
-      return this.parent.role === 1 || ((value && value > 0) && this.parent.role == 2);
+      return this.parent.role === 1 || ((value && value > 0) && this.parent.role === 2);
     }),
   sub_category: yup.number().test('SubCategory-test', 'SubCategory is required when role is not a admin', 
     function(value) {
-      return this.parent.role === 1 || ((value && value > 0) && this.parent.role == 2);
+      return this.parent.role === 1 || ((value && value > 0) && this.parent.role === 2);
     }),
 }
 
@@ -73,11 +73,10 @@ const useStyles = makeStyles({
 const User = () => {
   const { id } = useParams();
   const creating = id === 'new';
-  console.log(createValidationShape)
   const validationShape = creating ? createValidationShape : editValidationShape;
   const [category, setCategory] = useState(0);
   const [sub_category, setSubCategory] = useState(0);
-  const { methods:  { createUser, getUser }, data, data: { user = {} } } = useUser();
+  const { methods:  { createUser, getUser }, data: { user = {} } } = useUser();
   const classes = useStyles();
   useEffect(() => {
     if(!creating) {
@@ -89,8 +88,8 @@ const User = () => {
     validationSchema: yup.object().shape(validationShape),
     defaultValues: creating ? {} : {
       ...user,
-      category: user.category && user.category.id || 0,
-      sub_category: user.sub_category && user.sub_category.id || 0,
+      category: (user.category && user.category.id) || 0,
+      sub_category: (user.sub_category && user.sub_category.id) || 0,
     }
   });
   useEffect(() => {

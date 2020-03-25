@@ -2,11 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {
   Button,
   Grid,
-  FormControl,
-  InputLabel,
   InputAdornment,
-  Select,
-  MenuItem,
   Paper,
   TextField,
   Typography,
@@ -16,7 +12,7 @@ import EmailIcon from '@material-ui/icons/Email';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import { useForm, Controller } from 'react-hook-form';
 import * as yup from 'yup';
@@ -44,8 +40,8 @@ const useStyles = makeStyles({
 
 const Profile = ({ isSignup }) => {
   const { methods:  { signUp, isAdmin, updateProfile }, data: { currentUser } } = useUser();
-  const [category, setCategory] = useState(currentUser.category && currentUser.category.id || 0);
-  const [subCategory, setSubCategory] = useState(currentUser.subCategory && currentUser.subCategory.id || 0);
+  const [category, setCategory] = useState((currentUser.category && currentUser.category.id) || 0);
+  const [subCategory, setSubCategory] = useState((currentUser.subCategory && currentUser.subCategory.id) || 0);
   let validationSchema = yup.object().shape({
     first_name: yup.string().required("First Name is required"),
     last_name: yup.string().required("Last Name is required"),
@@ -86,8 +82,8 @@ const Profile = ({ isSignup }) => {
     validationSchema,
     defaultValues: {
       ...currentUser,
-      category: currentUser.category && currentUser.category.id || 0,
-      sub_category: currentUser.subCategory && currentUser.subCategory.id || 0,
+      category: (currentUser.category && currentUser.category.id) || 0,
+      sub_category: (currentUser.subCategory && currentUser.subCategory.id) || 0,
     }
   });
   const classes = useStyles();

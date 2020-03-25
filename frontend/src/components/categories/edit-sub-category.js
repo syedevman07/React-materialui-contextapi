@@ -26,7 +26,7 @@ export default function FormDialog({ open, handleClose, subCategory }) {
   }
 
   useEffect(() => {
-    setName(subCategory && subCategory.name || "");
+    setName((subCategory && subCategory.name) || "");
   }, [open]);
   console.log("subCategr", subCategory);
   return (
@@ -41,7 +41,7 @@ export default function FormDialog({ open, handleClose, subCategory }) {
           type="text"
           onChange={handleNameChange}
           value={name}
-          defaultValue={subCategory && subCategory.name || ""}
+          defaultValue={(subCategory && subCategory.name) || ""}
           fullWidth
         />
       </DialogContent>

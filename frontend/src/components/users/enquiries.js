@@ -1,10 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import {
-  Button,
-  Paper,
-  Typography,
-} from '@material-ui/core';
-import { Link, useParams } from 'react-router-dom';
+import React from 'react';
+import { Paper, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 import PostEnquiry from './post-enquiry';

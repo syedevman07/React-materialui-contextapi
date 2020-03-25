@@ -46,7 +46,7 @@ export const SubCategoryCreate = ({ open, handleClose, category}) => {
   return (
     <Paper className={classes.root}>
       <Typography className={classes.label}>
-        Create new sub category under the category <span className={classes.category}>{category && category.name || ""}</span>
+        Create new sub category under the category <span className={classes.category}>{(category && category.name) || ""}</span>
       </Typography>
       <div className={classes.body}>
         <TextField className={classes.name} type="text" value={name} onChange={handleNameChange} placeholder="Sub Category Name"/>

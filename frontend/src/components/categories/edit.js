@@ -26,7 +26,7 @@ export default function FormDialog({ open, handleClose, category }) {
   }
 
   useEffect(() => {
-    setName(category && category.name || "");
+    setName((category && category.name) || "");
   }, [open]);
 
   return (
@@ -41,7 +41,7 @@ export default function FormDialog({ open, handleClose, category }) {
           type="text"
           onChange={handleNameChange}
           value={name}
-          defaultValue={category && category.name || ""}
+          defaultValue={(category && category.name) || ""}
           fullWidth
         />
       </DialogContent>
