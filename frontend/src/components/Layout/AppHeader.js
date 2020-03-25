@@ -22,10 +22,7 @@ const useStyles = makeStyles(theme => ({
     marginRight: theme.spacing(2),
   },
   title: {
-    display: 'none',
-    [theme.breakpoints.up('sm')]: {
-      display: 'block',
-    },
+    display: 'block',
   },
   link: {
     color: 'white',
@@ -52,16 +49,7 @@ const useStyles = makeStyles(theme => ({
     marginTop: 40,
   },
   sectionDesktop: {
-    display: 'none',
-    [theme.breakpoints.up('md')]: {
-      display: 'flex',
-    },
-  },
-  sectionMobile: {
-    display: 'flex',
-    [theme.breakpoints.up('md')]: {
-      display: 'none',
-    },
+    display: 'flex'
   },
 }));
 
@@ -78,18 +66,11 @@ export default function PrimarySearchAppBar() {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleMobileMenuClose = () => {
-    setMobileMoreAnchorEl(null);
-  };
 
   const handleMenuClose = () => {
     setAnchorEl(null);
-    handleMobileMenuClose();
   };
 
-  const handleMobileMenuOpen = event => {
-    setMobileMoreAnchorEl(event.currentTarget);
-  };
 
   const logout = () => {
     handleMenuClose();
@@ -121,34 +102,6 @@ export default function PrimarySearchAppBar() {
     </Menu>
   );
 
-  const mobileMenuId = 'primary-search-account-menu-mobile';
-  const renderMobileMenu = (
-    <Menu
-      anchorEl={mobileMoreAnchorEl}
-      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-      id={mobileMenuId}
-      className={classes.menu}
-      keepMounted
-      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-      open={isMobileMenuOpen}
-      onClose={handleMobileMenuClose}
-    >
-      <MenuItem onClick={logout}><Link className={classes.menuLink} to="/Users">Users</Link></MenuItem>
-      {isAdmin() ? <>
-        <MenuItem onClick={logout}><Link className={classes.menuLink} to="/categories">Categories</Link></MenuItem>
-        <MenuItem onClick={logout}><Link className={classes.menuLink} to="/sub-categories">Sub-Categories</Link></MenuItem>
-      </> : null}
-      {isLoggedIn() ? <>
-        <MenuItem onClick={handleProfileMenuOpen}>
-          <Link className={classes.menuLink} to="/profile">Profile</Link>
-        </MenuItem>
-        <MenuItem onClick={handleProfileMenuOpen}>
-          <Link className={classes.menuLink} to="/login">Login</Link>
-        </MenuItem></> : 
-        <MenuItem onClick={logout}>Sign out</MenuItem>
-      }
-    </Menu>
-  );
 
   return (
     <div className={classes.grow}>
@@ -166,26 +119,15 @@ export default function PrimarySearchAppBar() {
               <Link className={classes.link} to="/users">Users</Link>
             </Typography>
           </MenuItem>
-          {isAdmin() ? <>
+          {isAdmin() ?
             <MenuItem>
               <Typography className={classes.title} variant="h6" noWrap>
                 <Link className={classes.link} to="/categories">Categories</Link>
               </Typography>
             </MenuItem>
-            <MenuItem>
-              <Typography className={classes.title} variant="h6" noWrap>
-                <Link className={classes.link} to="/sub-categories">Sub-Categories</Link>
-              </Typography>
-            </MenuItem>
-          </> : null}
+            : null}
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            <IconButton aria-label="show 4 new mails" color="inherit">
-              <Link className={classes.link} to="/users/"><PeopleIcon /></Link>
-            </IconButton>
-            <IconButton aria-label="show 17 new notifications" color="inherit">
-              <CategoryIcon />
-            </IconButton>
             <IconButton
               edge="end"
               aria-label="account of current user"
@@ -197,20 +139,8 @@ export default function PrimarySearchAppBar() {
               <AccountCircle />
             </IconButton>
           </div>
-          <div className={classes.sectionMobile}>
-            <IconButton
-              aria-label="show more"
-              aria-controls={mobileMenuId}
-              aria-haspopup="true"
-              onClick={handleMobileMenuOpen}
-              color="inherit"
-            >
-              <MoreIcon />
-            </IconButton>
-          </div>
         </Toolbar>
       </AppBar>
-      {renderMobileMenu}
       {renderMenu}
     </div>
   );
