@@ -34,7 +34,7 @@ const useStyles = makeStyles({
 const Users = () => {
   const { methods: { isAdmin } } = useUser();
   const classes = useStyles();
-  const { data: { users, loading, count, params, params: { page } }, methods: { getUsers } } = useUser();
+  const { data: { users, loading, count, params, params: { page } }, methods: { getUsers, deleteUser } } = useUser();
   const [user, setUser] = useState({});
   const [open, setOpen] = useState(false);
 
@@ -50,7 +50,10 @@ const Users = () => {
   }
 
   const handleUserDelete = () => {
-
+    deleteUser(user.id)
+    .then(() => {
+      getUsers(params);
+    });
   }
   const handleCancelUserDelete = () => {
     setOpen(false);
