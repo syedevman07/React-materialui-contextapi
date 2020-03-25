@@ -21,6 +21,10 @@ const useStyles = makeStyles(theme => ({
   title: {
     display: 'block',
   },
+  name: {
+    marginTop: 'auto',
+    marginBottom: 'auto',
+  },
   link: {
     color: 'white',
     textDecoration: 'none',
@@ -52,6 +56,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function PrimarySearchAppBar() {
   const classes = useStyles();
+  const { data: { currentUser } } = useUser();
   const { methods: { signOut, isLoggedIn, isAdmin } } = useUser();
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -123,6 +128,7 @@ export default function PrimarySearchAppBar() {
             : null}
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
+            <Typography className={classes.name} variant="h6" noWrap>{currentUser.first_name || ""} {currentUser.last_name || ""}</Typography>
             <IconButton
               edge="end"
               aria-label="account of current user"
