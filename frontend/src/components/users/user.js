@@ -283,8 +283,8 @@ const User = () => {
                           }}
                         />}
                     />
-                  </Grid>
                   <p className={classes.error}>{errors.passwordRepeat && errors.passwordRepeat.message}</p>
+                  </Grid>
                   </> : null}
                 <Grid item xs={6}>
                   <CategoryFilter
