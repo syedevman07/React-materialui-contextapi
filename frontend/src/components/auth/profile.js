@@ -37,7 +37,7 @@ const useStyles = makeStyles({
   },
   error: {
     color: 'red'
-  }
+  },
 });
 
 const Profile = ({ isSignup }) => {
@@ -69,7 +69,7 @@ const Profile = ({ isSignup }) => {
       country: yup.string().required("Country is required"),
       city: yup.string().required("City is required"),
       password: yup.string().min(8).required('Password is required'),
-      passwordRepeat: yup.string().min(8).oneOf([yup.ref('password')], 'Passwords must match'),
+      passwordRepeat: yup.string().required("Required").min(8).oneOf([yup.ref('password')], 'Passwords must match'),
       category: yup.number().test('Categpru-test', 'Category is required when role is no a admin', 
         function(value) {
           return isAdmin() || value !== 0;
@@ -128,7 +128,6 @@ const Profile = ({ isSignup }) => {
                   control={control}
                   as={
                     <TextField
-                      error={errors.first_name}
                       type="text"
                       label="First Name"
                       fullWidth
@@ -142,6 +141,7 @@ const Profile = ({ isSignup }) => {
                       }}
                     />}
                 />
+                <p className={classes.error}>{errors.first_name && errors.first_name.message}</p>
               </Grid>
               <Grid item xs={6}>
                 <Controller
@@ -149,7 +149,6 @@ const Profile = ({ isSignup }) => {
                   control={control}
                   as={
                     <TextField
-                      error={errors.last_name}
                       type="text"
                       label="Last Name"
                       InputProps={{
@@ -163,6 +162,7 @@ const Profile = ({ isSignup }) => {
                       fullWidth
                     />}
                 />
+                <p className={classes.error}>{errors.last_name && errors.last_name.message}</p>
               </Grid>
               <Grid item xs={12}>
                 <Controller
@@ -170,7 +170,6 @@ const Profile = ({ isSignup }) => {
                   control={control}
                   as={
                     <TextField
-                      error={errors.email}
                       type="email"
                       label="Email"
                       defaultValue={currentUser.email}
@@ -184,6 +183,7 @@ const Profile = ({ isSignup }) => {
                       fullWidth
                     />}
                 />
+                <p className={classes.error}>{errors.email && errors.email.message}</p>
               </Grid>
               {isSignup ? <>
                 <Grid item xs={6}>
@@ -192,7 +192,6 @@ const Profile = ({ isSignup }) => {
                     control={control}
                     as={
                       <TextField
-                        error={errors.password}
                         type="password"
                         label="Password"
                         fullWidth
@@ -205,6 +204,7 @@ const Profile = ({ isSignup }) => {
                         }}
                       />}
                   />
+                  <p className={classes.error}>{errors.password && errors.password.message}</p>
                 </Grid>
                 <Grid item xs={6}>
                   <Controller
@@ -212,7 +212,6 @@ const Profile = ({ isSignup }) => {
                     control={control}
                     as={
                       <TextField
-                        error={errors.passwordRepeat}
                         type="password"
                         label="Password Repeat"
                         fullWidth
@@ -225,6 +224,7 @@ const Profile = ({ isSignup }) => {
                         }}
                       />}
                   />
+                  <p className={classes.error}>{errors.passwordRepeat && errors.passwordRepeat.message}</p>
                 </Grid> 
               </> : null }
               <Grid item xs={6}>
@@ -235,6 +235,7 @@ const Profile = ({ isSignup }) => {
                   error={errors.category}
                   onChangeHanlder={handleChangeCategory}
                 />
+                <p className={classes.error}>{errors.category && errors.category.message}</p>
               </Grid>
               <Grid item xs={6}>
                 <SubCategoryFilter
@@ -242,9 +243,9 @@ const Profile = ({ isSignup }) => {
                   defaultValue={subCategory}
                   defaultText="Select Sub Category"
                   category={category}
-                  error={errors.sub_category}
                   onChangeHanlder={handleSubCategoryChange}
                 />
+                <p className={classes.error}>{errors.sub_category && errors.sub_category.message}</p>
               </Grid>
               <Grid item xs={6}>
                 <Controller
@@ -252,7 +253,6 @@ const Profile = ({ isSignup }) => {
                   control={control}
                   as={
                     <TextField
-                      error={errors.country}
                       defaultValue={currentUser.country}
                       type="country"
                       label="Country"
@@ -266,6 +266,7 @@ const Profile = ({ isSignup }) => {
                       }}
                     />}
                 />
+                <p className={classes.error}>{errors.country && errors.country.message}</p>
               </Grid>
               <Grid item xs={6}>
                 <Controller
@@ -273,7 +274,6 @@ const Profile = ({ isSignup }) => {
                   control={control}
                   as={
                     <TextField
-                      error={errors.city}
                       defaultValue={currentUser.city}
                       type="city"
                       label="City"
@@ -287,6 +287,7 @@ const Profile = ({ isSignup }) => {
                       }}
                     />}
                 />
+                <p className={classes.error}>{errors.city && errors.city.message}</p>
               </Grid>
 
             <Grid item xs={6}>

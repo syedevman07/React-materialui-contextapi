@@ -173,7 +173,6 @@ const User = () => {
                   control={control}
                   as={
                     <TextField
-                      error={errors.first_name}
                       type="text"
                       label="Last Name"
                       InputProps={{
@@ -186,6 +185,7 @@ const User = () => {
                       fullWidth
                     />}
                 />
+                <p className={classes.error}>{errors.first_name && errors.first_name.message}</p>
               </Grid>
               <Grid item xs={6}>
                 <Controller
@@ -193,7 +193,6 @@ const User = () => {
                   control={control}
                   as={
                     <TextField
-                      error={errors.last_name}
                       type="text"
                       label="Last Name"
                       InputProps={{
@@ -206,6 +205,7 @@ const User = () => {
                       fullWidth
                     />}
                 />
+                <p className={classes.error}>{errors.last_name && errors.last_name.message}</p>
               </Grid>
               <Grid item xs={6}>
                 <Controller
@@ -213,7 +213,6 @@ const User = () => {
                   control={control}
                   as={
                     <TextField
-                      error={errors.email}
                       type="email"
                       label="Email"
                       InputProps={{
@@ -226,6 +225,7 @@ const User = () => {
                       fullWidth
                     />}
                 />
+                <p className={classes.error}>{errors.email && errors.email.message}</p>
               </Grid>
               <Grid item xs={6}>
                 <FormControl className={classes.formControl} fullWidth>
@@ -235,7 +235,6 @@ const User = () => {
                     id="demo-simple-select"
                     fullWidth
                     IconComponent={GroupIcon}
-                    error={errors.role}
                     value={role}
                     onChange={handleRoleChange}
                   >
@@ -243,6 +242,7 @@ const User = () => {
                     <MenuItem value={2}>Regular User</MenuItem>
                   </Select>
                 </FormControl>
+                <p className={classes.error}>{errors.role && errors.role.message}</p>
               </Grid>
               {creating ? <>
                 <Grid item xs={6}>
@@ -251,7 +251,6 @@ const User = () => {
                     control={control}
                     as={
                       <TextField
-                        error={errors.password}
                         type="password"
                         label="Password"
                         fullWidth
@@ -264,6 +263,7 @@ const User = () => {
                         }}
                       />}
                   />
+                  <p className={classes.error}>{errors.password && errors.password.message}</p>
                 </Grid>
                   <Grid item xs={6}>
                     <Controller
@@ -271,7 +271,6 @@ const User = () => {
                       control={control}
                       as={
                         <TextField
-                          error={errors.passwordRepeat}
                           type="password"
                           label="Password Repeat"
                           fullWidth
@@ -285,6 +284,7 @@ const User = () => {
                         />}
                     />
                   </Grid>
+                  <p className={classes.error}>{errors.passwordRepeat && errors.passwordRepeat.message}</p>
                   </> : null}
                 <Grid item xs={6}>
                   <CategoryFilter
@@ -301,9 +301,9 @@ const User = () => {
                     defaultValue={sub_category}
                     defaultText="Select Sub Category"
                     category={category}
-                    error={errors.sub_category}
                     onChangeHanlder={handleSubCategoryChange}
                   />
+                  <p className={classes.error}>{errors.sub_category && errors.sub_category.message}</p>
                 </Grid>
               <Grid item xs={6}>
                 <Controller
@@ -324,6 +324,7 @@ const User = () => {
                       }}
                     />}
                 />
+                <p className={classes.error}>{errors.country && errors.country.message}</p>
               </Grid>
               <Grid item xs={6}>
                 <Controller
@@ -331,7 +332,6 @@ const User = () => {
                   control={control}
                   as={
                     <TextField
-                      error={errors.city}
                       type="city"
                       label="City"
                       fullWidth
@@ -344,6 +344,7 @@ const User = () => {
                       }}
                     />}
                 />
+                <p className={classes.error}>{errors.city && errors.city.message}</p>
               </Grid>
 
             <Grid item xs={4}>

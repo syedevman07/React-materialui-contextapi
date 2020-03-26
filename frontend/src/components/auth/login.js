@@ -16,7 +16,7 @@ import { useUser } from '../../context/user';
 
 const validationSchema = yup.object().shape({
   email: yup.string().email().required(),
-  password: yup.string().required().min(8)
+  password: yup.string().required("Required").min(8)
 });
 
 const useStyles = makeStyles({
@@ -62,7 +62,6 @@ const Login = () => {
               control={control}
               as={
                 <TextField
-                  error={errors.email}
                   type="email"
                   label="Email"
                   fullWidth
@@ -75,6 +74,7 @@ const Login = () => {
                   }}
                 />}
             />
+            <p className={classes.error}>{errors.email && errors.email.message}</p>
             </Grid>
           <Grid item xs={12}>
             <Controller
@@ -95,6 +95,7 @@ const Login = () => {
                   }}
                 />}
             />
+            <p className={classes.error}>{errors.password && errors.password.message}</p>
           </Grid>
           <Grid item xs={12}>
               <Button type="submit" fullWidth variant="contained" color="primary">Submit</Button>
